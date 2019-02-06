@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package proyectoalfa;
+package master;
 
+import interfaces.Play;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
@@ -13,6 +14,10 @@ import java.net.SocketException;
 
 import java.net.*;
 import java.io.*;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,7 +26,7 @@ import java.util.logging.Logger;
  *
  * @author pmeji
  */
-public class GameMaster {
+public class GameMaster implements Play {
 
     //Global variables
     private int xCoor;
@@ -30,10 +35,44 @@ public class GameMaster {
     private int[][] scoreBoard;
     private int n = 3; //Number of wins per round to win
     private int maxNumPlayers = 10;
+    
+    private String InetAddressNum  = "228.5.6.7";
+    private int socket = 6789;
 
-    public GameMaster() {
+    public GameMaster() throws RemoteException {
+        super();
+    }
+
+    public GameMaster(int numPlayers, int numWins)  {
         round = 0;
+        maxNumPlayers = numPlayers;
+        n = numWins;
         scoreBoard = new int[maxNumPlayers][n];
+    }
+
+    // RMI 
+    public static void bindGame() {
+        //"file:/C:/Users/pmeji/Documents/OpWin/SistemasDistribuidos/ProyectoAlfa/src/master/master.policy"
+        System.setProperty("java.security.policy", "file:/C:/Users/pmeji/Documents/OpWin/SistemasDistribuidos/ProyectoAlfa/src/master/master.policy");
+
+        if (System.getSecurityManager() == null) {
+            System.setSecurityManager(new SecurityManager());
+        }
+
+        try {
+            LocateRegistry.createRegistry(1099);
+            String name = "HitMonster";
+            Play engine = new GameMaster();
+            Play stub
+                    = (Play) UnicastRemoteObject.exportObject(engine, 0);
+            Registry registry = LocateRegistry.getRegistry();
+            registry.rebind(name, stub);
+
+            System.out.println("HitMonster bound");
+        } catch (Exception e) {
+            System.err.println("HitMonster exception:");
+            e.printStackTrace();
+        }
     }
 
     public void sendMonster(int x, int y, int round) {
@@ -42,8 +81,8 @@ public class GameMaster {
             xCoor = x;
             yCoor = y;
 
-            InetAddress group = InetAddress.getByName("228.5.6.7"); // destination multicast group 
-            s = new MulticastSocket(6789);
+            InetAddress group = InetAddress.getByName(InetAddressNum); // destination multicast group 
+            s = new MulticastSocket(socket);
             s.joinGroup(group);
             //s.setTimeToLive(10);
             System.out.println("Messages' TTL (Time-To-Live): " + s.getTimeToLive());
@@ -83,9 +122,15 @@ public class GameMaster {
     }
 
     public static void main(String args[]) {
-        GameMaster gm = new GameMaster();
-        gm.sendMonster(1, 2, 1);
+        //GameMaster gm = new GameMaster(10,3);
+        bindGame();
 
+    }
+
+    @Override
+    public String login(String name) throws RemoteException {
+        String res = ""+InetAddressNum+","+socket;
+        return res; //To change body of generated methods, choose Tools | Templates.
     }
 
 }
@@ -111,7 +156,7 @@ class Connection extends Thread {
         try {			                 // an echo server
             String data = in.readUTF();
             System.out.println("Message received from: " + clientSocket.getRemoteSocketAddress());
-            
+
             out.writeUTF(data);
         } catch (EOFException e) {
             System.out.println("EOF:" + e.getMessage());

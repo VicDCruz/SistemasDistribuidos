@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package proyectoalfa;
+package player;
 
+import interfaces.Play;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.EOFException;
@@ -17,6 +18,9 @@ import java.net.MulticastSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -24,11 +28,15 @@ import java.util.logging.Logger;
  *
  * @author VicDCruz
  */
-public class Player {
+public class Player{
 
     private InetAddress group;
     private MulticastSocket socket;
     private byte[] buffer;
+    
+    public Player(){
+        
+    }
 
     public Player(String ipAdress, int socket) {
         try {
@@ -40,6 +48,28 @@ public class Player {
             Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    // RMI Lookup
+    public void lookUpGame() {
+        //"file:/C:/Users/pmeji/Documents/OpWin/SistemasDistribuidos/ProyectoAlfa/src/player/player.policy"
+        System.setProperty("java.security.policy", "file:/C:/Users/pmeji/Documents/OpWin/SistemasDistribuidos/ProyectoAlfa/src/player/player.policy");
+
+        if (System.getSecurityManager() == null) {
+            System.setSecurityManager(new SecurityManager());
+        }
+
+        try {
+            String name = "HitMonster";
+            Registry registry = LocateRegistry.getRegistry("localhost"); // server's ip address args[0]
+            Play playGame = (Play) registry.lookup(name);
+
+            System.out.println("La clave es: " + playGame.login("Paola"));
+
+        } catch (Exception e) {
+            System.err.println("exception");
+            e.printStackTrace();
         }
     }
 
@@ -77,7 +107,7 @@ public class Player {
             DataInputStream in = new DataInputStream(s.getInputStream());
             DataOutputStream out
                     = new DataOutputStream(s.getOutputStream());
-            out.writeUTF(""+x+","+y);        	// UTF is a string encoding 
+            out.writeUTF("" + x + "," + y);        	// UTF is a string encoding 
 
             String data = in.readUTF();
             System.out.println("Received: " + data);
@@ -98,9 +128,12 @@ public class Player {
         }
     }
 
-
-public static void main(String args[]) {
+    public static void main(String args[]) {
         System.out.println("Hello, I'm a player");
+        Player p = new Player();
+        p.lookUpGame();
+        
     }
     // get messages from others in group
+
 }
