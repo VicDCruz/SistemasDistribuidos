@@ -13,35 +13,35 @@ import java.net.SocketException;
 
 /**
  *
- * @author pmeji
+ * @author VicDCruz
  */
 public class Player {
     public static void main(String args[]){ 
   	 
-	MulticastSocket s =null;
-   	 try {
-                InetAddress group = InetAddress.getByName("228.5.6.7"); // destination multicast group 
-	    	s = new MulticastSocket(6789);
-	   	s.joinGroup(group); 
+		MulticastSocket s =null;
+		try {
+			InetAddress group = InetAddress.getByName("228.5.6.7"); // destination multicast group 
+			s = new MulticastSocket(6789);
+			s.joinGroup(group);
 
-	    	byte[] buffer = new byte[1000];
- 	   	for(int i=0; i< 3; i++) {
-                    System.out.println("Waiting for messages");
-                    DatagramPacket messageIn = 
-			new DatagramPacket(buffer, buffer.length);
- 		    s.receive(messageIn);
- 		    System.out.println("Message: " + new String(messageIn.getData())+ " from: "+ messageIn.getAddress());
-  	     	}
-	    	s.leaveGroup(group);		
- 	    }
-         catch (SocketException e){
-             System.out.println("Socket: " + e.getMessage());
-	 }
-         catch (IOException e){
-             System.out.println("IO: " + e.getMessage());
-         }
-	 finally {
-            if(s != null) s.close();
+			byte[] buffer = new byte[1000];
+			for(int i=0; i< 3; i++) {
+				System.out.println("Waiting for messages");
+				DatagramPacket messageIn = 
+					new DatagramPacket(buffer, buffer.length);
+				s.receive(messageIn);
+				System.out.println("Message: " + new String(messageIn.getData())+ " from: "+ messageIn.getAddress());
+			}
+				s.leaveGroup(group);		
+		}
+		catch (SocketException e){
+			System.out.println("Socket: " + e.getMessage());
+		}
+		catch (IOException e){
+			System.out.println("IO: " + e.getMessage());
+		}
+		finally {
+			if(s != null) s.close();
         }
     }		     
                  // get messages from others in group
