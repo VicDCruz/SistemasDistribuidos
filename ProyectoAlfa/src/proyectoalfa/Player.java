@@ -5,7 +5,6 @@
  */
 package proyectoalfa;
 
-
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
@@ -16,23 +15,23 @@ import java.net.SocketException;
  *
  * @author pmeji
  */
-public class GameMaster {
-        public static void main(String args[]){ 
+public class Player {
+    public static void main(String args[]){ 
   	 
 	MulticastSocket s =null;
    	 try {
-                
                 InetAddress group = InetAddress.getByName("228.5.6.7"); // destination multicast group 
 	    	s = new MulticastSocket(6789);
 	   	s.joinGroup(group); 
-                //s.setTimeToLive(10);
-                System.out.println("Messages' TTL (Time-To-Live): "+ s.getTimeToLive());
-                String myMessage="Hello";
-                byte [] m = myMessage.getBytes();
-	    	DatagramPacket messageOut = 
-			new DatagramPacket(m, m.length, group, 6789);
-	    	s.send(messageOut);
 
+	    	byte[] buffer = new byte[1000];
+ 	   	for(int i=0; i< 3; i++) {
+                    System.out.println("Waiting for messages");
+                    DatagramPacket messageIn = 
+			new DatagramPacket(buffer, buffer.length);
+ 		    s.receive(messageIn);
+ 		    System.out.println("Message: " + new String(messageIn.getData())+ " from: "+ messageIn.getAddress());
+  	     	}
 	    	s.leaveGroup(group);		
  	    }
          catch (SocketException e){
@@ -44,5 +43,6 @@ public class GameMaster {
 	 finally {
             if(s != null) s.close();
         }
-    }
+    }		     
+                 // get messages from others in group
 }
