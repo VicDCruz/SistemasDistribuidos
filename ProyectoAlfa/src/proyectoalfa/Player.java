@@ -12,13 +12,17 @@ import java.net.MulticastSocket;
 import java.net.SocketException;
 
 /**
+ * Servidor UDP
+ */
+
+/**
  *
  * @author VicDCruz
  */
 public class Player {
-	InetAddress group
+	InetAddress group;
 	MulticastSocket socket;
-	byte[] buffer
+	byte[] buffer;
 
 	Player(String ipAdress, int socket) {
 		this.group = InetAddress.getByName(ipAdress);
@@ -43,8 +47,8 @@ public class Player {
 			System.out.println("IO: " + e.getMessage());
 		}
 		finally {
-			if(this.socket != null) s.close();
-        }
+			if(this.socket != null) this.socket.close();
+		}
 	}
 
     public static void main(String args[]){ 
