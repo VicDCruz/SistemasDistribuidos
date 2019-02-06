@@ -26,11 +26,11 @@ import java.util.logging.Logger;
  */
 public class Player {
 
-    InetAddress group;
-    MulticastSocket socket;
-    byte[] buffer;
+    private InetAddress group;
+    private MulticastSocket socket;
+    private byte[] buffer;
 
-    Player(String ipAdress, int socket) {
+    public Player(String ipAdress, int socket) {
         try {
             this.group = InetAddress.getByName(ipAdress);
             this.socket = new MulticastSocket(socket);
