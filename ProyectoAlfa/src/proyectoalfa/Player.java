@@ -16,33 +16,39 @@ import java.net.SocketException;
  * @author VicDCruz
  */
 public class Player {
-    public static void main(String args[]){ 
-  	 
-		MulticastSocket s =null;
-		try {
-			InetAddress group = InetAddress.getByName("228.5.6.7"); // destination multicast group 
-			s = new MulticastSocket(6789);
-			s.joinGroup(group);
+	InetAddress group
+	MulticastSocket socket;
+	byte[] buffer
 
-			byte[] buffer = new byte[1000];
+	Player(String ipAdress, int socket) {
+		this.group = InetAddress.getByName(ipAdress);
+		this.socket = new MulticastSocket(socket);
+		this.socket.joinGroup(group);
+		this.buffer = new byte[1000];
+	}
+
+	public boolean receiveExampleMessage() {
+		try {
 			for(int i=0; i< 3; i++) {
 				System.out.println("Waiting for messages");
 				DatagramPacket messageIn = 
-					new DatagramPacket(buffer, buffer.length);
-				s.receive(messageIn);
+					new DatagramPacket(this.buffer, this.buffer.length);
+				this.socket.receive(messageIn);
 				System.out.println("Message: " + new String(messageIn.getData())+ " from: "+ messageIn.getAddress());
 			}
-				s.leaveGroup(group);		
-		}
-		catch (SocketException e){
+		} catch (SocketException e){
 			System.out.println("Socket: " + e.getMessage());
 		}
 		catch (IOException e){
 			System.out.println("IO: " + e.getMessage());
 		}
 		finally {
-			if(s != null) s.close();
+			if(this.socket != null) s.close();
         }
+	}
+
+    public static void main(String args[]){ 
+			System.out.println("hola");
     }		     
                  // get messages from others in group
 }
