@@ -75,9 +75,8 @@ public class Player {
 
     // RMI Lookup
     public boolean lookUpGame(String playerName) {
-        //"file:/C:/Users/pmeji/Documents/OpWin/SistemasDistribuidos/ProyectoAlfa/src/player/player.policy"
         boolean res = false;
-        System.setProperty("java.security.policy", "file:/C:/Users/pmeji/Documents/OpWin/SistemasDistribuidos/ProyectoAlfa/src/player/player.policy");
+        System.setProperty("java.security.policy", "file:./src/player/player.policy");
 
         if (System.getSecurityManager() == null) {
             System.setSecurityManager(new SecurityManager());
@@ -162,7 +161,7 @@ public class Player {
     public static void main(String args[]) {
         System.out.println("Hello, I'm a player");
         Player p = new Player("Paola");
-        //p.lookUpGame("Paola");
+        p.lookUpGame("Paola");
 
     }
     // get messages from others in group

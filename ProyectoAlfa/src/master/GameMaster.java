@@ -54,7 +54,7 @@ public class GameMaster implements Play {
     // RMI 
     public static void bindGame() {
         //"file:/C:/Users/pmeji/Documents/OpWin/SistemasDistribuidos/ProyectoAlfa/src/master/master.policy"
-        System.setProperty("java.security.policy", "file:/C:/Users/pmeji/Documents/OpWin/SistemasDistribuidos/ProyectoAlfa/src/master/master.policy");
+        System.setProperty("java.security.policy", "file:./src/master/master.policy");
 
         if (System.getSecurityManager() == null) {
             System.setSecurityManager(new SecurityManager());
