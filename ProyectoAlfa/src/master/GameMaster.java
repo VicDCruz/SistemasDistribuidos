@@ -63,7 +63,7 @@ public class GameMaster implements Play {
         try {
             LocateRegistry.createRegistry(1099);
             String name = "HitMonster";
-            Play engine = new GameMaster();
+            GameMaster engine = new GameMaster();
             Play stub
                     = (Play) UnicastRemoteObject.exportObject(engine, 0);
             Registry registry = LocateRegistry.getRegistry();
