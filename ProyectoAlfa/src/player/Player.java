@@ -5,6 +5,7 @@
  */
 package player;
 
+import interfaces.Credential;
 import interfaces.Play;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -28,22 +29,26 @@ import java.util.logging.Logger;
  *
  * @author VicDCruz
  */
-public class Player{
+public class Player {
 
     private InetAddress group;
     private MulticastSocket socket;
     private byte[] buffer;
-    
-    public Player(){
-        
+
+    private String InetAddressNum;
+    private int socketGroupNum;
+
+    public Player() {
     }
 
-    public Player(String ipAdress, int socket) {
+    //Sin RMI
+    public Player(String myInetAddressNum, int myGroup) {
         try {
-            this.group = InetAddress.getByName(ipAdress);
-            this.socket = new MulticastSocket(socket);
+            this.group = InetAddress.getByName(InetAddressNum); // destination multicast group 
+            this.socket = new MulticastSocket(6789);
             this.socket.joinGroup(group);
             this.buffer = new byte[1000];
+
         } catch (UnknownHostException ex) {
             Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -51,9 +56,27 @@ public class Player{
         }
     }
 
+    //Con RMI
+    public Player(String name) {
+        if (lookUpGame(name)) {
+            try {
+                this.group = InetAddress.getByName(InetAddressNum); // destination multicast group 
+                this.socket = new MulticastSocket(socketGroupNum);
+                this.socket.joinGroup(group);
+                this.buffer = new byte[1000];
+
+            } catch (UnknownHostException ex) {
+                Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
     // RMI Lookup
-    public void lookUpGame() {
+    public boolean lookUpGame(String playerName) {
         //"file:/C:/Users/pmeji/Documents/OpWin/SistemasDistribuidos/ProyectoAlfa/src/player/player.policy"
+        boolean res = false;
         System.setProperty("java.security.policy", "file:/C:/Users/pmeji/Documents/OpWin/SistemasDistribuidos/ProyectoAlfa/src/player/player.policy");
 
         if (System.getSecurityManager() == null) {
@@ -65,12 +88,20 @@ public class Player{
             Registry registry = LocateRegistry.getRegistry("localhost"); // server's ip address args[0]
             Play playGame = (Play) registry.lookup(name);
 
-            System.out.println("La clave es: " + playGame.login("Paola"));
+            Credential info = playGame.login(playerName);
+            InetAddressNum = info.getInetAddressNum();
+            socketGroupNum = info.getSocketGroupNum();
+            
+
+            System.out.println("La clave es: " +socketGroupNum + " "+ InetAddressNum);
+            res = true;
 
         } catch (Exception e) {
             System.err.println("exception");
             e.printStackTrace();
+            res = false;
         }
+        return res;
     }
 
     //UDP receiver
@@ -130,9 +161,9 @@ public class Player{
 
     public static void main(String args[]) {
         System.out.println("Hello, I'm a player");
-        Player p = new Player();
-        p.lookUpGame();
-        
+        Player p = new Player("Paola");
+        //p.lookUpGame("Paola");
+
     }
     // get messages from others in group
 

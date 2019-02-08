@@ -5,6 +5,7 @@
  */
 package master;
 
+import interfaces.Credential;
 import interfaces.Play;
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -37,7 +38,7 @@ public class GameMaster implements Play {
     private int maxNumPlayers = 10;
     
     private String InetAddressNum  = "228.5.6.7";
-    private int socket = 6789;
+    private int socketGroup = 6789;
 
     public GameMaster() throws RemoteException {
         super();
@@ -82,7 +83,7 @@ public class GameMaster implements Play {
             yCoor = y;
 
             InetAddress group = InetAddress.getByName(InetAddressNum); // destination multicast group 
-            s = new MulticastSocket(socket);
+            s = new MulticastSocket(socketGroup);
             s.joinGroup(group);
             //s.setTimeToLive(10);
             System.out.println("Messages' TTL (Time-To-Live): " + s.getTimeToLive());
@@ -128,9 +129,9 @@ public class GameMaster implements Play {
     }
 
     @Override
-    public String login(String name) throws RemoteException {
-        String res = ""+InetAddressNum+","+socket;
-        return res; //To change body of generated methods, choose Tools | Templates.
+    public Credential login(String name) throws RemoteException {
+        Credential info = new Credential(InetAddressNum,socketGroup);
+        return info; //To change body of generated methods, choose Tools | Templates.
     }
 
 }
