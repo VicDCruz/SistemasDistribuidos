@@ -41,10 +41,10 @@ public class Player {
     public Player() {
     }
 
-    //Sin RMI
+    // Sin RMI
     public Player(String myInetAddressNum, int myGroup) {
         try {
-            this.group = InetAddress.getByName(InetAddressNum); // destination multicast group 
+            this.group = InetAddress.getByName(InetAddressNum); // destination multicast group
             this.socket = new MulticastSocket(6789);
             this.socket.joinGroup(group);
             this.buffer = new byte[1000];
@@ -56,11 +56,11 @@ public class Player {
         }
     }
 
-    //Con RMI
+    // Con RMI
     public Player(String name) {
         if (lookUpGame(name)) {
             try {
-                this.group = InetAddress.getByName(InetAddressNum); // destination multicast group 
+                this.group = InetAddress.getByName(InetAddressNum); // destination multicast group
                 this.socket = new MulticastSocket(socketGroupNum);
                 this.socket.joinGroup(group);
                 this.buffer = new byte[1000];
@@ -101,7 +101,7 @@ public class Player {
             res = false;
         }
         return res;
-    }
+    } 
 
     //UDP receiver
     public boolean receiveMonster() {
@@ -124,7 +124,7 @@ public class Player {
             }
         }
         return true;
-    }
+    } 
 
     //TCP Sender
     public void sendAnswer(int x, int y) {
@@ -137,22 +137,22 @@ public class Player {
             DataInputStream in = new DataInputStream(s.getInputStream());
             DataOutputStream out
                     = new DataOutputStream(s.getOutputStream());
-            out.writeUTF("" + x + "," + y);        	// UTF is a string encoding 
+            out.writeUTF(x + ", " + y);        	// UTF is a string encoding 
 
             String data = in.readUTF();
             System.out.println("Received: " + data);
         } catch (UnknownHostException e) {
-            System.out.println("Sock:" + e.getMessage());
+            System.out.println("Sock: " + e.getMessage());
         } catch (EOFException e) {
-            System.out.println("EOF:" + e.getMessage());
+            System.out.println("EOF: " + e.getMessage());
         } catch (IOException e) {
-            System.out.println("IO:" + e.getMessage());
+            System.out.println("IO: " + e.getMessage());
         } finally {
             if (s != null) {
                 try {
                     s.close();
                 } catch (IOException e) {
-                    System.out.println("close:" + e.getMessage());
+                    System.out.println("close: " + e.getMessage());
                 }
             }
         }
@@ -162,7 +162,6 @@ public class Player {
         System.out.println("Hello, I'm a player");
         Player p = new Player("Paola");
         p.lookUpGame("Paola");
-
     }
     // get messages from others in group
 
