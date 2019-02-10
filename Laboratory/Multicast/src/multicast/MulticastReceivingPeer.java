@@ -28,9 +28,11 @@ public class MulticastReceivingPeer {
             byte[] buffer = new byte[1000];
             DatagramPacket messageIn = null;
             System.out.println("Waiting for messages");
-            messageIn = new DatagramPacket(buffer, buffer.length);
-            s.receive(messageIn);
-            System.out.println("Message: " + new String(messageIn.getData()) + " from: " + messageIn.getAddress());
+            for (int i = 0; i < 10; i++) {
+                messageIn = new DatagramPacket(buffer, buffer.length);
+                s.receive(messageIn);
+                System.out.println("Message: " + new String(messageIn.getData()) + " from: " + messageIn.getAddress());
+            }
             s.leaveGroup(group);
         } catch (SocketException e) {
             System.out.println("Socket: " + e.getMessage());
