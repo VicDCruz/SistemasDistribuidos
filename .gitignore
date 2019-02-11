@@ -23,4 +23,9 @@
 hs_err_pid*
 /ProyectoAlfa/nbproject/private/
 /ProyectoAlfa/build/
+<<<<<<< Updated upstream
 .vscode/launch.json
+=======
+/JavaBoTs/nbproject/private/
+/JavaBoTs/build/
+>>>>>>> Stashed changes
