@@ -35,7 +35,7 @@ public class Player {
     private MulticastSocket socket;
     private byte[] buffer;
 
-    private String InetAddressNum;
+    private String inetAddressNum;
     private int socketGroupNum;
 
     public Player() {
@@ -44,7 +44,7 @@ public class Player {
     // Sin RMI
     public Player(String myInetAddressNum, int myGroup) {
         try {
-            this.group = InetAddress.getByName(InetAddressNum); // destination multicast group
+            this.group = InetAddress.getByName(inetAddressNum); // destination multicast group
             this.socket = new MulticastSocket(6789);
             this.socket.joinGroup(group);
             this.buffer = new byte[1000];
@@ -60,7 +60,7 @@ public class Player {
     public Player(String name) {
         if (lookUpGame(name)) {
             try {
-                this.group = InetAddress.getByName(InetAddressNum); // destination multicast group
+                this.group = InetAddress.getByName(inetAddressNum); // destination multicast group
                 this.socket = new MulticastSocket(socketGroupNum);
                 this.socket.joinGroup(group);
                 this.buffer = new byte[1000];
@@ -88,11 +88,11 @@ public class Player {
             Play playGame = (Play) registry.lookup(name);
 
             Credential info = playGame.login(playerName);
-            InetAddressNum = info.getInetAddressNum();
+            inetAddressNum = info.getInetAddressNum();
             socketGroupNum = info.getSocketGroupNum();
             
 
-            System.out.println("La clave es: " +socketGroupNum + " "+ InetAddressNum);
+            System.out.println("La clave es: " +socketGroupNum + " "+ inetAddressNum);
             res = true;
 
         } catch (Exception e) {
