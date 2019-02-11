@@ -33,22 +33,30 @@ public class GameMaster implements Play {
     private int xCoor;
     private int yCoor;
     private int round;
-    private int[][] scoreBoard;
+    private String[][] scoreBoard;
     private int n = 3; //Number of wins per round to win
     private int maxNumPlayers = 10;
-    
     private String inetAddressNum  = "228.5.6.7";
+    private int currentPlayers;
     private int socketGroup = 6789;
 
     public GameMaster() throws RemoteException {
         super();
     }
 
-    public GameMaster(int numPlayers, int numWins)  {
+    public GameMaster(int numPlayers, int numWins, String InetAddressNum,int socketGroup) {
         round = 0;
         maxNumPlayers = numPlayers;
         n = numWins;
-        scoreBoard = new int[maxNumPlayers][n];
+        scoreBoard = new String[maxNumPlayers][n];
+        currentPlayers = 0;
+    }
+
+    public GameMaster(int numPlayers, int numWins) {
+        round = 0;
+        maxNumPlayers = numPlayers;
+        n = numWins;
+        scoreBoard = new String[maxNumPlayers][n];
     }
 
     // RMI 
@@ -123,14 +131,28 @@ public class GameMaster implements Play {
     }
 
     public static void main(String args[]) {
-        //GameMaster gm = new GameMaster(10,3);
         bindGame();
+        GameMaster gm = new GameMaster(10,3);
+        
 
     }
 
     @Override
     public Credential login(String name) throws RemoteException {
         Credential info = new Credential(inetAddressNum,socketGroup);
+
+        //Check if name already exists
+        //If it doesn't add new name
+        if(this.currentPlayers < this.maxNumPlayers){
+            //Look for player
+            for (int i = 0; i < currentPlayers; i++) {
+                if(scoreBoard[0][i].equals(name)){
+                    System.out.println("");;
+                }
+            }
+            
+        }
+
         return info; //To change body of generated methods, choose Tools | Templates.
     }
 
