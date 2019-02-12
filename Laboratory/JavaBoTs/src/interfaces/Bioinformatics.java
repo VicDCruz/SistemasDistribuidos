@@ -8,5 +8,5 @@ import java.rmi.RemoteException;
  */
 public interface Bioinformatics extends Remote{
 
-    public Task executeBioTask(Task aTask) throws RemoteException;
+    public int executeBioTask(Task aTask) throws RemoteException;
 }

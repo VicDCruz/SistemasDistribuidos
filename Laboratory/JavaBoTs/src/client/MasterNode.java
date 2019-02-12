@@ -1,98 +1,50 @@
 package client;
 
-import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
 
-import interfaces.Bioinformatics;
-import interfaces.DataMining;
-import interfaces.ImageProcessing;
 import interfaces.Task;
 
 /**
  * MasterNode
  */
-public class MasterNode implements Bioinformatics, DataMining, ImageProcessing {
+public class MasterNode {
 
-    public static void registerBio() {
-        try {
-            String name = "BioInformatics";
-            MasterNode engine = new MasterNode();
-            Bioinformatics stub = (Bioinformatics) UnicastRemoteObject.exportObject(engine, 0);
-            Registry registry = LocateRegistry.getRegistry();
-            registry.rebind(name, stub);
+    private Task[] bagBio;
+    private Task[] bagImage;
+    private Task[] bagData;
 
-            System.out.println("BioInformatics bound");
-        } catch (Exception e) {
-            System.err.println("BioInformatics exception:");
-            e.printStackTrace();
+    public MasterNode(Task[] bagBio, Task[] bagImage, Task[] bagData) {
+        this.bagBio = bagBio;
+        this.bagImage = bagImage;
+        this.bagData = bagData;
         }
+
+    public boolean createTaskBag(String registryIp) {
+        boolean resp = false;
+
+        MyThread m1 = new MyThread(this.bagBio);
+        m1.run();
+        MyThread m2 = new MyThread(this.bagData);
+        m2.run();
+        MyThread m3 = new MyThread(this.bagImage);
+        m3.run();
+
+        return resp;
     }
 
-    public static void registerData() {
-        try {
-            String name = "DataMining";
-            MasterNode engine = new MasterNode();
-            DataMining stub = (DataMining) UnicastRemoteObject.exportObject(engine, 0);
-            Registry registry = LocateRegistry.getRegistry();
-            registry.rebind(name, stub);
-
-            System.out.println("DataMining bound");
-        } catch (Exception e) {
-            System.err.println("DataMining exception:");
-            e.printStackTrace();
-        }
-    }
-
-    public static void registerImage() {
-        try {
-            String name = "ImageProcessing";
-            MasterNode engine = new MasterNode();
-            ImageProcessing stub = (ImageProcessing) UnicastRemoteObject.exportObject(engine, 0);
-            Registry registry = LocateRegistry.getRegistry();
-            registry.rebind(name, stub);
-
-            System.out.println("ImageProcessing bound");
-        } catch (Exception e) {
-            System.err.println("ImageProcessing exception:");
-            e.printStackTrace();
-        }
-    }
-
+    /**
+     * @param args the command line arguments
+     */
     public static void main(String[] args) {
         System.setProperty("java.security.policy", "file:./src/client/client.policy");
-
         if (System.getSecurityManager() == null) {
             System.setSecurityManager(new SecurityManager());
         }
         try {
             LocateRegistry.createRegistry(1099);
-        } catch (RemoteException e) {
+        } catch (Exception e) {
+            System.err.println("ImageProcessing exception:");
             e.printStackTrace();
         }
-
-        MasterNode.registerBio();
-        MasterNode.registerData();
-        MasterNode.registerImage();      
-    }
-
-    @Override
-    public Task executeImageTask(Task aTask) {
-        return null;
-    }
-
-    @Override
-    public Task executeDataTask(Task aTask) {
-        return null;
-    }
-
-    @Override
-    public Task executeBioTask(Task aTask) {
-        return null;
-    }
-
-    public boolean createTaskBag() {
-        return true;
     }
 }
