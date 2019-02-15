@@ -1,10 +1,9 @@
 package interfaces;
 
-
 /**
  * Task
  */
-public class Task  {
+public class Task {
     private int taskId;
     private String requirementId;
     private int length;
@@ -51,9 +50,4 @@ public class Task  {
     public void setOutput(int output) {
         this.output = output;
     }
-
-    
-   
-    
-    
-    }
+}

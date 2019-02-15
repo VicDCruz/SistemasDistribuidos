@@ -17,7 +17,7 @@ public class MasterNode {
         this.bagBio = bagBio;
         this.bagImage = bagImage;
         this.bagData = bagData;
-        }
+    }
 
     public boolean createTaskBag(String registryIp) {
         boolean resp = false;
