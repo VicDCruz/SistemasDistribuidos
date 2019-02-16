@@ -4,26 +4,26 @@ package interfaces;
  * Task
  */
 public class Task {
-    private int taskId;
+    private String taskId;
     private String requirementId;
-    private int length;
-    private int output;
+    private long length;
+    private String output;
 
     public Task() {
     }
 
-    public Task(int taskId, String requirement, int length) {
+    public Task(String taskId, String requirement, long length) {
         this.taskId = taskId;
         this.requirementId = requirement;
         this.length = length;
-        this.output = 3;
+        this.output = "";
     }
 
-    public int getTaskId() {
+    public String getTaskId() {
         return taskId;
     }
 
-    public void setTaskId(int taskId) {
+    public void setTaskId(String taskId) {
         this.taskId = taskId;
     }
 
@@ -35,7 +35,7 @@ public class Task {
         this.requirementId = requirementId;
     }
 
-    public int getLength() {
+    public long getLength() {
         return length;
     }
 
@@ -43,11 +43,11 @@ public class Task {
         this.length = length;
     }
 
-    public int getOutput() {
+    public String getOutput() {
         return output;
     }
 
-    public void setOutput(int output) {
+    public void setOutput(String output) {
         this.output = output;
     }
 }

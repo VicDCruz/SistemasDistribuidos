@@ -6,7 +6,7 @@ import java.rmi.RemoteException;
 /**
  * DataMining
  */
-public interface DataMining extends Remote{
+public interface DataMining extends Remote {
 
     public int executeDataTask(Task aTask) throws RemoteException;
 }
