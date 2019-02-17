@@ -1,15 +1,18 @@
 package interfaces;
 
+import java.io.Serializable;
+
 /**
  * Task
  */
-public class Task {
+public class Task implements Serializable{
     private String taskId;
     private String requirementId;
     private long length;
     private String output;
 
     public Task() {
+        super();
     }
 
     public Task(String taskId, String requirement, long length) {
