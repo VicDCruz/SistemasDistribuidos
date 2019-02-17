@@ -5,66 +5,52 @@ import java.io.Serializable;
 /**
  * Task
  */
-public class Task implements Serializable {
-    private int taskId;
-    private int requirementId;
-    private int length;
-    private int output;
+public class Task implements Serializable{
+    private String taskId;
+    private String requirementId;
+    private long length;
+    private String output;
 
-    /**
-     * @return the taskId
-     */
-    public int getTaskId() {
+    public Task() {
+        super();
+    }
+
+    public Task(String taskId, String requirement, long length) {
+        this.taskId = taskId;
+        this.requirementId = requirement;
+        this.length = length;
+        this.output = "";
+    }
+
+    public String getTaskId() {
         return taskId;
     }
 
-    /**
-     * @return the output
-     */
-    public int getOutput() {
-        return output;
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
     }
 
-    /**
-     * @param output the output to set
-     */
-    public void setOutput(int output) {
-        this.output = output;
+    public String getRequirementId() {
+        return requirementId;
     }
 
-    /**
-     * @return the length
-     */
-    public int getLength() {
+    public void setRequirementId(String requirementId) {
+        this.requirementId = requirementId;
+    }
+
+    public long getLength() {
         return length;
     }
 
-    /**
-     * @param length the length to set
-     */
     public void setLength(int length) {
         this.length = length;
     }
 
-    /**
-     * @return the requirementId
-     */
-    public int getRequirementId() {
-        return requirementId;
+    public String getOutput() {
+        return output;
     }
 
-    /**
-     * @param requirementId the requirementId to set
-     */
-    public void setRequirementId(int requirementId) {
-        this.requirementId = requirementId;
+    public void setOutput(String output) {
+        this.output = output;
     }
-
-    /**
-     * @param taskId the taskId to set
-     */
-    public void setTaskId(int taskId) {
-        this.taskId = taskId;
-    }
-
 }

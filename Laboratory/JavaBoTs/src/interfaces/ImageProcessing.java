@@ -6,7 +6,7 @@ import java.rmi.RemoteException;
 /**
  * ImageProcessing
  */
-public interface ImageProcessing extends Remote{
+public interface ImageProcessing extends Remote {
 
-    public Task executeImageTask(Task aTask) throws RemoteException;    
+    public int executeImageTask(Task aTask) throws RemoteException;
 }
