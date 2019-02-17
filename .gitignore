@@ -25,3 +25,5 @@ hs_err_pid*
 /ProyectoAlfa/build/
 .vscode/launch.json
 .DS_Store
+Laboratory/JavaBoTs/.vscode/launch.json
+**/.vscode
