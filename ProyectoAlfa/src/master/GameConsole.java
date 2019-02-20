@@ -5,17 +5,22 @@
  */
 package master;
 
+import interfaces.Coordinate;
+
 /**
  *
  * @author pmeji
  */
 public class GameConsole extends javax.swing.JFrame {
 
+    private Coordinate coor;
     /**
      * Creates new form GameConsole
      */
+    
     public GameConsole() {
         initComponents();
+        coor = new Coordinate(-1,-1);
     }
 
     /**
@@ -27,6 +32,7 @@ public class GameConsole extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jInternalFrame1 = new javax.swing.JInternalFrame();
         jCheckBox1 = new javax.swing.JCheckBox();
         jCheckBox2 = new javax.swing.JCheckBox();
@@ -42,6 +48,7 @@ public class GameConsole extends javax.swing.JFrame {
 
         jInternalFrame1.setVisible(true);
 
+        buttonGroup1.add(jCheckBox1);
         jCheckBox1.setText("Hole 1");
         jCheckBox1.setActionCommand("h1");
         jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
@@ -50,6 +57,7 @@ public class GameConsole extends javax.swing.JFrame {
             }
         });
 
+        buttonGroup1.add(jCheckBox2);
         jCheckBox2.setText("Hole 2");
         jCheckBox2.setActionCommand("h2");
         jCheckBox2.addActionListener(new java.awt.event.ActionListener() {
@@ -58,6 +66,7 @@ public class GameConsole extends javax.swing.JFrame {
             }
         });
 
+        buttonGroup1.add(jCheckBox3);
         jCheckBox3.setText("Hole 3");
         jCheckBox3.setActionCommand("h3");
         jCheckBox3.addActionListener(new java.awt.event.ActionListener() {
@@ -66,6 +75,7 @@ public class GameConsole extends javax.swing.JFrame {
             }
         });
 
+        buttonGroup1.add(jCheckBox4);
         jCheckBox4.setText("Hole 4");
         jCheckBox4.setActionCommand("h4");
         jCheckBox4.addActionListener(new java.awt.event.ActionListener() {
@@ -74,6 +84,7 @@ public class GameConsole extends javax.swing.JFrame {
             }
         });
 
+        buttonGroup1.add(jCheckBox5);
         jCheckBox5.setText("Hole 5");
         jCheckBox5.setActionCommand("h5");
         jCheckBox5.addActionListener(new java.awt.event.ActionListener() {
@@ -82,6 +93,7 @@ public class GameConsole extends javax.swing.JFrame {
             }
         });
 
+        buttonGroup1.add(jCheckBox6);
         jCheckBox6.setText("Hole 6");
         jCheckBox6.setActionCommand("h6");
         jCheckBox6.addActionListener(new java.awt.event.ActionListener() {
@@ -90,6 +102,7 @@ public class GameConsole extends javax.swing.JFrame {
             }
         });
 
+        buttonGroup1.add(jCheckBox7);
         jCheckBox7.setText("Hole 7");
         jCheckBox7.setActionCommand("h7");
         jCheckBox7.addActionListener(new java.awt.event.ActionListener() {
@@ -98,6 +111,7 @@ public class GameConsole extends javax.swing.JFrame {
             }
         });
 
+        buttonGroup1.add(jCheckBox8);
         jCheckBox8.setText("Hole 8");
         jCheckBox8.setActionCommand("h8");
         jCheckBox8.addActionListener(new java.awt.event.ActionListener() {
@@ -106,6 +120,7 @@ public class GameConsole extends javax.swing.JFrame {
             }
         });
 
+        buttonGroup1.add(jCheckBox9);
         jCheckBox9.setText("Hole 9");
         jCheckBox9.setActionCommand("h9");
         jCheckBox9.addActionListener(new java.awt.event.ActionListener() {
@@ -128,27 +143,31 @@ public class GameConsole extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jCheckBox9))
                     .addGroup(jInternalFrame1Layout.createSequentialGroup()
-                        .addComponent(jCheckBox4)
-                        .addGap(18, 18, 18)
-                        .addComponent(jCheckBox5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jCheckBox6))
-                    .addGroup(jInternalFrame1Layout.createSequentialGroup()
-                        .addComponent(jCheckBox1)
-                        .addGap(18, 18, 18)
-                        .addComponent(jCheckBox2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jCheckBox3)))
+                        .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jCheckBox1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jCheckBox4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jInternalFrame1Layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(jCheckBox5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jCheckBox6))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jInternalFrame1Layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(jCheckBox2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jCheckBox3)))))
                 .addContainerGap(62, Short.MAX_VALUE))
         );
         jInternalFrame1Layout.setVerticalGroup(
             jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jInternalFrame1Layout.createSequentialGroup()
                 .addGap(43, 43, 43)
-                .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox1)
-                    .addComponent(jCheckBox2)
-                    .addComponent(jCheckBox3))
+                .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jCheckBox2)
+                        .addComponent(jCheckBox3))
+                    .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jCheckBox4)
@@ -159,7 +178,7 @@ public class GameConsole extends javax.swing.JFrame {
                     .addComponent(jCheckBox7)
                     .addComponent(jCheckBox8)
                     .addComponent(jCheckBox9))
-                .addContainerGap(46, Short.MAX_VALUE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -178,40 +197,56 @@ public class GameConsole extends javax.swing.JFrame {
 
     private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
         // TODO add your handling code here:
+        updateCoordinates(1);
     }//GEN-LAST:event_jCheckBox1ActionPerformed
 
     private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox2ActionPerformed
         // TODO add your handling code here:
+        updateCoordinates(2);
     }//GEN-LAST:event_jCheckBox2ActionPerformed
 
     private void jCheckBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox3ActionPerformed
         // TODO add your handling code here:
+        updateCoordinates(3);
+       
     }//GEN-LAST:event_jCheckBox3ActionPerformed
 
     private void jCheckBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox4ActionPerformed
         // TODO add your handling code here:
+        updateCoordinates(4);
     }//GEN-LAST:event_jCheckBox4ActionPerformed
 
     private void jCheckBox5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox5ActionPerformed
         // TODO add your handling code here:
+        updateCoordinates(5);
     }//GEN-LAST:event_jCheckBox5ActionPerformed
 
     private void jCheckBox6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox6ActionPerformed
         // TODO add your handling code here:
+        updateCoordinates(6);
     }//GEN-LAST:event_jCheckBox6ActionPerformed
 
     private void jCheckBox7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox7ActionPerformed
         // TODO add your handling code here:
+        updateCoordinates(7);
     }//GEN-LAST:event_jCheckBox7ActionPerformed
 
     private void jCheckBox8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox8ActionPerformed
         // TODO add your handling code here:
+        updateCoordinates(8);
     }//GEN-LAST:event_jCheckBox8ActionPerformed
 
     private void jCheckBox9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox9ActionPerformed
         // TODO add your handling code here:
+        updateCoordinates(9);
     }//GEN-LAST:event_jCheckBox9ActionPerformed
 
+    public void updateCoordinates(int num){
+        coor.setX(3-(num%2));
+        coor.setY(3-(num%3));
+        System.out.println(""+(3-(num%3)) +","+(3-(num%2)));
+        
+    }
     /**
      * @param args the command line arguments
      */
@@ -248,6 +283,7 @@ public class GameConsole extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JCheckBox jCheckBox3;

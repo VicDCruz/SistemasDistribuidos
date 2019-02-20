@@ -107,7 +107,7 @@ public class Player {
     public boolean receiveMonster() {
         MulticastSocket s = null;
         try {
-            for (int i = 0; i < 3; i++) {
+            while (true) {
                 System.out.println("Waiting for messages");
                 DatagramPacket messageIn
                         = new DatagramPacket(this.buffer, this.buffer.length);
@@ -161,7 +161,7 @@ public class Player {
     public static void main(String args[]) {
         System.out.println("Hello, I'm a player");
         Player p = new Player("Paola");
-        p.lookUpGame("Paola");
+        p.receiveMonster();
     }
     // get messages from others in group
 

@@ -50,6 +50,7 @@ public class GameMaster implements Play {
         n = numWins;
         scoreBoard = new String[maxNumPlayers][n];
         currentPlayers = 0;
+         
     }
 
     public GameMaster(int numPlayers, int numWins) {
@@ -57,6 +58,7 @@ public class GameMaster implements Play {
         maxNumPlayers = numPlayers;
         n = numWins;
         scoreBoard = new String[maxNumPlayers][n];
+        currentPlayers = 0;
     }
 
     // RMI 
@@ -93,7 +95,7 @@ public class GameMaster implements Play {
             InetAddress group = InetAddress.getByName(inetAddressNum); // destination multicast group 
             s = new MulticastSocket(socketGroup);
             s.joinGroup(group);
-            //s.setTimeToLive(10);
+            s.setTimeToLive(100);
             System.out.println("Messages' TTL (Time-To-Live): " + s.getTimeToLive());
 
             String myMessage = "(" + x + ", " + y + ") round = " + round;
@@ -130,9 +132,15 @@ public class GameMaster implements Play {
         }
     }
 
-    public static void main(String args[]) {
+    public static void main(String args[]) throws InterruptedException {
         bindGame();
         GameMaster gm = new GameMaster(10,3);
+        while(true){
+            gm.sendMonster(2, 3, 1);
+            Thread.sleep(20);
+        }
+        
+        
         
 
     }
