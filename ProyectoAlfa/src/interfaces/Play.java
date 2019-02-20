@@ -14,7 +14,7 @@ import java.rmi.RemoteException;
  */
 public interface Play extends Remote {
     
-    public Credential login(String name) throws RemoteException;
+    public Credential login(String name, String password, String ip) throws RemoteException;
     //IP servidor
     //Conexion Monstruo
     
