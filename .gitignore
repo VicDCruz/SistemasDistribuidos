@@ -23,8 +23,8 @@
 hs_err_pid*
 /ProyectoAlfa/nbproject/private/
 /ProyectoAlfa/build/
-<<<<<<< Updated upstream
 .vscode/launch.json
+<<<<<<< HEAD
 =======
 /JavaBoTs/nbproject/private/
 /JavaBoTs/build/
@@ -40,3 +40,8 @@ hs_err_pid*
 /servletPrueba/nbproject/private/
 /servletPrueba/build/
 /servletPrueba/dist/
+=======
+.DS_Store
+Laboratory/JavaBoTs/.vscode/launch.json
+**/.vscode
+>>>>>>> 7ad1f899e9035dda9e83818afb50967ea695305f

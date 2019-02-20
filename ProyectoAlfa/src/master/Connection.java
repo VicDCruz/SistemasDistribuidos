@@ -29,11 +29,12 @@ class Connection extends Thread {
 
     @Override
     public void run() {
-        try {			                 // an echo server
+        try { // an echo server
             String data = in.readUTF();
             System.out.println("Message received from: " + clientSocket.getRemoteSocketAddress());
-
+            // PONER METODOLOGíA -> VICTOR CRUZ
             out.writeUTF(data);
+            this.closeConnection();
         } catch (EOFException e) {
             System.out.println("EOF:" + e.getMessage());
         } catch (IOException e) {
@@ -44,6 +45,15 @@ class Connection extends Thread {
             } catch (IOException e) {
                 System.out.println(e);
             }
+        }
+    }
+
+    public void closeConnection() {
+
+        try {
+            clientSocket.close();
+        } catch (IOException e) {
+            System.out.println(e);
         }
     }
 }

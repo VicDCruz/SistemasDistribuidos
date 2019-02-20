@@ -24,6 +24,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.net.InetAddress;
 
 /**
  *
@@ -43,6 +44,7 @@ public class Player {
 
     // Sin RMI
     public Player(String myInetAddressNum, int myGroup) {
+        InetAddress inetAddress = InetAddress.getLocalHost();
         try {
             this.group = InetAddress.getByName(inetAddressNum); // destination multicast group
             this.socket = new MulticastSocket(6789);
@@ -57,8 +59,9 @@ public class Player {
     }
 
     // Con RMI
-    public Player(String name) {
-        if (lookUpGame(name)) {
+    public Player(String name, String password) {
+        InetAddress inetAddress = InetAddress.getLocalHost();
+        if (lookUpGame(name, password, inetAddress.getHostAddress())) {
             try {
                 this.group = InetAddress.getByName(inetAddressNum); // destination multicast group
                 this.socket = new MulticastSocket(socketGroupNum);
@@ -74,8 +77,7 @@ public class Player {
     }
 
     // RMI Lookup
-    public boolean lookUpGame(String playerName) {
-        boolean res = false;
+    public boolean lookUpGame(String playerName, String password, String ip) {
         System.setProperty("java.security.policy", "file:./src/player/player.policy");
 
         if (System.getSecurityManager() == null) {
@@ -87,33 +89,48 @@ public class Player {
             Registry registry = LocateRegistry.getRegistry("localhost"); // server's ip address args[0]
             Play playGame = (Play) registry.lookup(name);
 
-            Credential info = playGame.login(playerName);
+            Credential info = playGame.login(playerName, password, ip);
+            if (info == null) {
+                System.out.println("Sala totalmente llena");
+                return false;
+            }
             inetAddressNum = info.getInetAddressNum();
             socketGroupNum = info.getSocketGroupNum();
-            
 
-            System.out.println("La clave es: " +socketGroupNum + " "+ inetAddressNum);
-            res = true;
-
+            System.out.println("La clave es: " + socketGroupNum + " " + inetAddressNum);
+            return true;
         } catch (Exception e) {
             System.err.println("exception");
             e.printStackTrace();
-            res = false;
+            return false;
         }
-        return res;
-    } 
+    }
 
-    //UDP receiver
+    // UDP receiver
     public boolean receiveMonster() {
         MulticastSocket s = null;
         try {
+<<<<<<< HEAD
             while (true) {
                 System.out.println("Waiting for messages");
                 DatagramPacket messageIn
                         = new DatagramPacket(this.buffer, this.buffer.length);
                 this.socket.receive(messageIn);
                 System.out.println("Message: " + new String(messageIn.getData()) + " from: " + messageIn.getAddress());
+=======
+            InetAddress group = InetAddress.getByName("228.5.60.7"); // destination multicast group
+            s = new MulticastSocket(this.socketGroupNum);
+            s.joinGroup(group);
+            System.out.println("Waiting for messages");
+            DatagramPacket messageIn = new DatagramPacket(this.buffer, this.buffer.length);
+            s.receive(messageIn);
+            String[] data = messageIn.getData().toString().split(",");
+            int[] coordinates = new int[data.length];
+            for (int i = 0; i < data.length; i++) {
+                coordinates[i] = (int) data[i];
+>>>>>>> 7ad1f899e9035dda9e83818afb50967ea695305f
             }
+            System.out.println("Message: " + new String(messageIn.getData()) + " from: " + messageIn.getAddress());
         } catch (SocketException e) {
             System.out.println("Socket: " + e.getMessage());
         } catch (IOException e) {
@@ -124,23 +141,25 @@ public class Player {
             }
         }
         return true;
-    } 
+    }
 
-    //TCP Sender
-    public void sendAnswer(int x, int y) {
+    // TCP Sender
+    public boolean sendAnswer(int x, int y) {
         Socket s = null;
         try {
             int serverPort = 7896;
 
             s = new Socket("localhost", serverPort);
-            //   s = new Socket("127.0.0.1", serverPort);    
             DataInputStream in = new DataInputStream(s.getInputStream());
-            DataOutputStream out
-                    = new DataOutputStream(s.getOutputStream());
-            out.writeUTF(x + ", " + y);        	// UTF is a string encoding 
-
-            String data = in.readUTF();
-            System.out.println("Received: " + data);
+            DataOutputStream out = new DataOutputStream(s.getOutputStream());
+            String messageOut = x + ", " + y;
+            out.writeUTF(messageOut); // UTF is a string encoding
+            String messageIn = in.readUTF();
+            if (messageIn.equals(messageOut)) {
+                System.out.println("Confirmation received");
+                return true;
+            }
+            return false;
         } catch (UnknownHostException e) {
             System.out.println("Sock: " + e.getMessage());
         } catch (EOFException e) {
@@ -156,13 +175,19 @@ public class Player {
                 }
             }
         }
+        return false;
     }
 
     public static void main(String args[]) {
+        InetAddress inetAddress = InetAddress.getLocalHost();
         System.out.println("Hello, I'm a player");
+<<<<<<< HEAD
         Player p = new Player("Paola");
         p.receiveMonster();
+=======
+        Player p = new Player("Paola", "hola");
+        p.lookUpGame("Paola", "hola", inetAddress.getHostAddress());
+>>>>>>> 7ad1f899e9035dda9e83818afb50967ea695305f
     }
-    // get messages from others in group
 
 }

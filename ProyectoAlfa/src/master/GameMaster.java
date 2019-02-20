@@ -21,6 +21,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.ArrayList;
 
 /**
  * Cliente UDP (Multicast) Servidor TCP
@@ -29,41 +30,50 @@ import java.util.logging.Logger;
  */
 public class GameMaster implements Play {
 
-    //Global variables
+    // Global variables
     private int xCoor;
     private int yCoor;
     private int round;
-    private String[][] scoreBoard;
-    private int n = 3; //Number of wins per round to win
+    private int totalRounds = 30;
+    private int[] scoreBoard;
+    private int n = 3; // Number of wins per round to win
     private int maxNumPlayers = 10;
-    private String inetAddressNum  = "228.5.6.7";
-    private int currentPlayers;
+    private String inetAddressNum = "228.5.6.7";
+    private ArrayList<User> currentPlayers;
     private int socketGroup = 6789;
 
     public GameMaster() throws RemoteException {
         super();
     }
 
-    public GameMaster(int numPlayers, int numWins, String InetAddressNum,int socketGroup) {
+    public GameMaster(int numPlayers, int numWins, String InetAddressNum, int socketGroup) {
         round = 0;
         maxNumPlayers = numPlayers;
         n = numWins;
         scoreBoard = new String[maxNumPlayers][n];
+<<<<<<< HEAD
         currentPlayers = 0;
          
+=======
+        currentPlayers = new ArrayList<User>();
+>>>>>>> 7ad1f899e9035dda9e83818afb50967ea695305f
     }
 
     public GameMaster(int numPlayers, int numWins) {
         round = 0;
         maxNumPlayers = numPlayers;
         n = numWins;
+<<<<<<< HEAD
         scoreBoard = new String[maxNumPlayers][n];
         currentPlayers = 0;
+=======
+        scoreBoard = new int[maxNumPlayers];
+>>>>>>> 7ad1f899e9035dda9e83818afb50967ea695305f
     }
 
-    // RMI 
+    // RMI
     public static void bindGame() {
-        //"file:/C:/Users/pmeji/Documents/OpWin/SistemasDistribuidos/ProyectoAlfa/src/master/master.policy"
+        // "file:/C:/Users/pmeji/Documents/OpWin/SistemasDistribuidos/ProyectoAlfa/src/master/master.policy"
         System.setProperty("java.security.policy", "file:./src/master/master.policy");
 
         if (System.getSecurityManager() == null) {
@@ -74,8 +84,7 @@ public class GameMaster implements Play {
             LocateRegistry.createRegistry(1099);
             String name = "HitMonster";
             GameMaster engine = new GameMaster();
-            Play stub
-                    = (Play) UnicastRemoteObject.exportObject(engine, 0);
+            Play stub = (Play) UnicastRemoteObject.exportObject(engine, 0);
             Registry registry = LocateRegistry.getRegistry();
             registry.rebind(name, stub);
 
@@ -92,16 +101,19 @@ public class GameMaster implements Play {
             xCoor = x;
             yCoor = y;
 
-            InetAddress group = InetAddress.getByName(inetAddressNum); // destination multicast group 
+            InetAddress group = InetAddress.getByName(inetAddressNum); // destination multicast group
             s = new MulticastSocket(socketGroup);
             s.joinGroup(group);
+<<<<<<< HEAD
             s.setTimeToLive(100);
+=======
+            // s.setTimeToLive(10);
+>>>>>>> 7ad1f899e9035dda9e83818afb50967ea695305f
             System.out.println("Messages' TTL (Time-To-Live): " + s.getTimeToLive());
 
-            String myMessage = "(" + x + ", " + y + ") round = " + round;
+            String myMessage = x + ", " + y + ", " + round;
             byte[] m = myMessage.getBytes();
-            DatagramPacket messageOut
-                    = new DatagramPacket(m, m.length, group, 6789);
+            DatagramPacket messageOut = new DatagramPacket(m, m.length, group, 6789);
             s.send(messageOut);
 
             s.leaveGroup(group);
@@ -123,7 +135,7 @@ public class GameMaster implements Play {
             ServerSocket listenSocket = new ServerSocket(serverPort);
             while (true) {
                 System.out.println("Waiting for messages...");
-                Socket clientSocket = listenSocket.accept();  // Listens for a connection to be made to this socket and accepts it. The method blocks until a connection is made. 
+                Socket clientSocket = listenSocket.accept();
                 Connection c = new Connection(clientSocket);
                 c.start();
             }
@@ -134,6 +146,7 @@ public class GameMaster implements Play {
 
     public static void main(String args[]) throws InterruptedException {
         bindGame();
+<<<<<<< HEAD
         GameMaster gm = new GameMaster(10,3);
         while(true){
             gm.sendMonster(2, 3, 1);
@@ -142,26 +155,24 @@ public class GameMaster implements Play {
         
         
         
+=======
+        GameMaster gm = new GameMaster(10, 3);
+>>>>>>> 7ad1f899e9035dda9e83818afb50967ea695305f
 
     }
 
     @Override
-    public Credential login(String name) throws RemoteException {
-        Credential info = new Credential(inetAddressNum,socketGroup);
+    public Credential login(String name, String password, String ip) throws RemoteException {
+        Credential info = new Credential(this.inetAddressNum, this.socketGroup);
+        User newPlayer = new User(name, password, ip);
 
-        //Check if name already exists
-        //If it doesn't add new name
-        if(this.currentPlayers < this.maxNumPlayers){
-            //Look for player
-            for (int i = 0; i < currentPlayers; i++) {
-                if(scoreBoard[0][i].equals(name)){
-                    System.out.println("");;
-                }
-            }
-            
+        // Check if name already exists
+        // If it doesn't add new name
+        if (!this.currentPlayers.contains(newPlayer) && this.currentPlayers.size() < this.maxNumPlayers) {
+            this.currentPlayers.add(newPlayer);
+        } else if (this.currentPlayers.size() < this.maxNumPlayers) {
+            return null;
         }
-
-        return info; //To change body of generated methods, choose Tools | Templates.
+        return info; // To change body of generated methods, choose Tools | Templates.
     }
-
 }
