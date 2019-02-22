@@ -50,25 +50,16 @@ public class GameMaster implements Play {
         round = 0;
         maxNumPlayers = numPlayers;
         n = numWins;
-        scoreBoard = new String[maxNumPlayers][n];
-<<<<<<< HEAD
-        currentPlayers = 0;
-         
-=======
         currentPlayers = new ArrayList<User>();
->>>>>>> 7ad1f899e9035dda9e83818afb50967ea695305f
+        scoreBoard = new int[maxNumPlayers];
     }
 
     public GameMaster(int numPlayers, int numWins) {
         round = 0;
         maxNumPlayers = numPlayers;
         n = numWins;
-<<<<<<< HEAD
-        scoreBoard = new String[maxNumPlayers][n];
-        currentPlayers = 0;
-=======
+        currentPlayers = new ArrayList<User>();
         scoreBoard = new int[maxNumPlayers];
->>>>>>> 7ad1f899e9035dda9e83818afb50967ea695305f
     }
 
     // RMI
@@ -104,11 +95,8 @@ public class GameMaster implements Play {
             InetAddress group = InetAddress.getByName(inetAddressNum); // destination multicast group
             s = new MulticastSocket(socketGroup);
             s.joinGroup(group);
-<<<<<<< HEAD
             s.setTimeToLive(100);
-=======
             // s.setTimeToLive(10);
->>>>>>> 7ad1f899e9035dda9e83818afb50967ea695305f
             System.out.println("Messages' TTL (Time-To-Live): " + s.getTimeToLive());
 
             String myMessage = x + ", " + y + ", " + round;
@@ -146,18 +134,12 @@ public class GameMaster implements Play {
 
     public static void main(String args[]) throws InterruptedException {
         bindGame();
-<<<<<<< HEAD
-        GameMaster gm = new GameMaster(10,3);
-        while(true){
+        //GameMaster gm = new GameMaster(10,3);
+        /*while(true){
             gm.sendMonster(2, 3, 1);
             Thread.sleep(20);
-        }
+        }*/        
         
-        
-        
-=======
-        GameMaster gm = new GameMaster(10, 3);
->>>>>>> 7ad1f899e9035dda9e83818afb50967ea695305f
 
     }
 

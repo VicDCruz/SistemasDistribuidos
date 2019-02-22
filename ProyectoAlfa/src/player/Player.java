@@ -44,8 +44,8 @@ public class Player {
 
     // Sin RMI
     public Player(String myInetAddressNum, int myGroup) {
-        InetAddress inetAddress = InetAddress.getLocalHost();
         try {
+            InetAddress inetAddress = InetAddress.getLocalHost();
             this.group = InetAddress.getByName(inetAddressNum); // destination multicast group
             this.socket = new MulticastSocket(6789);
             this.socket.joinGroup(group);
@@ -59,7 +59,7 @@ public class Player {
     }
 
     // Con RMI
-    public Player(String name, String password) {
+    public Player(String name, String password) throws UnknownHostException {
         InetAddress inetAddress = InetAddress.getLocalHost();
         if (lookUpGame(name, password, inetAddress.getHostAddress())) {
             try {
@@ -109,15 +109,7 @@ public class Player {
     // UDP receiver
     public boolean receiveMonster() {
         MulticastSocket s = null;
-        try {
-<<<<<<< HEAD
-            while (true) {
-                System.out.println("Waiting for messages");
-                DatagramPacket messageIn
-                        = new DatagramPacket(this.buffer, this.buffer.length);
-                this.socket.receive(messageIn);
-                System.out.println("Message: " + new String(messageIn.getData()) + " from: " + messageIn.getAddress());
-=======
+        try {       
             InetAddress group = InetAddress.getByName("228.5.60.7"); // destination multicast group
             s = new MulticastSocket(this.socketGroupNum);
             s.joinGroup(group);
@@ -127,12 +119,12 @@ public class Player {
             String[] data = messageIn.getData().toString().split(",");
             int[] coordinates = new int[data.length];
             for (int i = 0; i < data.length; i++) {
-                coordinates[i] = (int) data[i];
->>>>>>> 7ad1f899e9035dda9e83818afb50967ea695305f
+                coordinates[i] = Integer.parseInt(data[i]);
             }
             System.out.println("Message: " + new String(messageIn.getData()) + " from: " + messageIn.getAddress());
         } catch (SocketException e) {
             System.out.println("Socket: " + e.getMessage());
+                    
         } catch (IOException e) {
             System.out.println("IO: " + e.getMessage());
         } finally {
@@ -178,16 +170,19 @@ public class Player {
         return false;
     }
 
-    public static void main(String args[]) {
+    public static void main(String args[]) throws UnknownHostException {
         InetAddress inetAddress = InetAddress.getLocalHost();
         System.out.println("Hello, I'm a player");
-<<<<<<< HEAD
-        Player p = new Player("Paola");
-        p.receiveMonster();
-=======
-        Player p = new Player("Paola", "hola");
-        p.lookUpGame("Paola", "hola", inetAddress.getHostAddress());
->>>>>>> 7ad1f899e9035dda9e83818afb50967ea695305f
+
+        Player p;
+        try {
+            p = new Player("Paola", "hola");
+            p.lookUpGame("Paola", "hola", inetAddress.getHostAddress());
+        } catch (UnknownHostException ex) {
+            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+        }
+   
+
     }
 
 }
