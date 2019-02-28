@@ -83,4 +83,7 @@ public class Monster {
         return output;
     }
 
+    public String toString() {
+        return "X: " + this.x + ", Y: " + this.y + ", ROUND: " + this.round;
+    }
 }

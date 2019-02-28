@@ -29,6 +29,7 @@ public class GameMaster implements Register {
     private int remainingSpaces;
     private int totalRounds;
     private String ip;
+    private String multicastIp = "228.5.60.7";
     private int multicastPort = 6789;
     private int tcpPort = 6780;
 
@@ -79,7 +80,7 @@ public class GameMaster implements Register {
             int newPosition = this.players.length - this.remainingSpaces;
             players[newPosition] = user;
             this.remainingSpaces--;
-            return new Information(this.ip, this.multicastPort, this.tcpPort);
+            return new Information(this.ip, this.multicastPort, this.tcpPort, this.multicastIp);
         }
         System.out.println("Registrado");
         return null;
@@ -123,14 +124,15 @@ public class GameMaster implements Register {
     }
 
     public boolean sendMonster(int x, int y, int round) {
+        System.setProperty("java.net.preferIPv4Stack", "true");
         boolean output = false;
         GameMaster.hasWinner = false;
         GameMaster.gMasterStatic = this;
         Monster monster = new Monster(x, y, round);
         MulticastSocket sender = null;
         try {
-            InetAddress group = InetAddress.getByName(this.ip);
-            sender = new MulticastSocket(6789);
+            InetAddress group = InetAddress.getByName(this.multicastIp);
+            sender = new MulticastSocket(this.multicastPort);
             sender.joinGroup(group);
             System.out.println("Sending MULTICAST msgs");
             byte[] informationToSend = monster.getBytes();
@@ -183,6 +185,6 @@ public class GameMaster implements Register {
 
     public static void main(String[] args) {
         GameMaster gameMaster = new GameMaster(30, 10);
-        gameMaster.receiveAnswer();
+        gameMaster.sendMonster(1, 0, 2);
     }
 }
