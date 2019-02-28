@@ -14,11 +14,13 @@ import java.io.Serializable;
 public class Information implements Serializable {
     private String ip;
     private int multicastPort;
+    private String multicastIp;
     private int tcpPort;
 
-    public Information(String ip, int multicastPort, int tcpPort) {
+    public Information(String ip, int multicastPort, int tcpPort, String multicastIp) {
         this.ip = ip;
         this.multicastPort = multicastPort;
+        this.multicastIp = multicastIp;
         this.tcpPort = tcpPort;
     }
 
@@ -32,5 +34,9 @@ public class Information implements Serializable {
 
     public int getTcpPort() {
         return tcpPort;
+    }
+    
+    public String getMulticastIp() {
+        return multicastIp;
     }
 }

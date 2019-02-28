@@ -10,9 +10,11 @@ import java.rmi.registry.Registry;
 
 import interfaces.Register;
 import java.io.IOException;
+import java.net.DatagramPacket;
 import java.net.MulticastSocket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import master.Monster;
 
 /**
  * Player
@@ -23,6 +25,7 @@ public class Player {
     private String ip;
     private String ipGameMaster;
     private int multicastPort;
+    private String multicastIp;
     private int tcpPort;
 
     public Player(String name, String password) {
@@ -49,6 +52,7 @@ public class Player {
                 this.ipGameMaster = information.getIp();
                 this.multicastPort = information.getMulticastPort();
                 this.tcpPort = information.getTcpPort();
+                this.multicastIp = information.getMulticastIp();
                 System.out.println("Registrado con exito");
                 System.out.println(this.ipGameMaster);
                 System.out.println(this.multicastPort);
@@ -62,17 +66,35 @@ public class Player {
     }
     
     public boolean receiveMonster() {
+        System.setProperty("java.net.preferIPv4Stack", "true");
+        boolean output = false;
+        MulticastSocket socket = null;
         try {
-            MulticastSocket socket = new MulticastSocket(this.multicastPort);
-            return true;
+            socket = new MulticastSocket(this.multicastPort);
+            System.out.println(this.multicastIp);
+            InetAddress group = InetAddress.getByName(this.multicastIp);
+            socket.joinGroup(group);
+            byte[] buffer = new byte[1000];
+            DatagramPacket messageIn = null;
+            System.out.println("Esperando mensajes...");
+            messageIn = new DatagramPacket(buffer, buffer.length);
+            socket.receive(messageIn);
+            this.currentMonster = new Monster(messageIn.getData());
+            System.out.println("Message: " + this.currentMonster.toString() + " from: " + messageIn.getAddress());
+            socket.leaveGroup(group);
+            output = true;
         } catch (IOException ex) {
             Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (socket != null)
+                socket.close();
         }
-        return false;
+        return output;
     }
 
     public static void main(String[] args) {
         Player player = new Player("Victor", "hola123");
         player.logIn();
+        player.receiveMonster();
     }
 }
