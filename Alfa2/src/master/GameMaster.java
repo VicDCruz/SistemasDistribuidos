@@ -14,6 +14,8 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
 import interfaces.Register;
+import java.net.SocketException;
+import java.util.Random;
 
 /**
  * GameMaster Esta clase funciona como SERVIDOR de TCP para los múltiples
@@ -32,11 +34,16 @@ public class GameMaster implements Register {
     private String multicastIp = "228.5.60.7";
     private int multicastPort = 6789;
     private int tcpPort = 6780;
+    private Monster currentMonster;
 
     public GameMaster(int groupMaxSize, int totalRounds) {
         this.players = new User[groupMaxSize];
         this.remainingSpaces = groupMaxSize;
         this.totalRounds = totalRounds;
+        
+        //TEMPORAL
+        currentMonster = new Monster(-1,-1,-1);
+        
         try {
             InetAddress inet = InetAddress.getLocalHost();
             this.ip = inet.getHostAddress();
@@ -52,6 +59,54 @@ public class GameMaster implements Register {
 
     public GameMaster() {
         super();
+    }
+
+    public static GameMaster getgMasterStatic() {
+        return gMasterStatic;
+    }
+
+    public static void setgMasterStatic(GameMaster gMasterStatic) {
+        GameMaster.gMasterStatic = gMasterStatic;
+    }
+
+    public static boolean isHasWinner() {
+        return hasWinner;
+    }
+
+    public static void setHasWinner(boolean hasWinner) {
+        GameMaster.hasWinner = hasWinner;
+    }
+
+    public String getMulticastIp() {
+        return multicastIp;
+    }
+
+    public void setMulticastIp(String multicastIp) {
+        this.multicastIp = multicastIp;
+    }
+
+    public int getMulticastPort() {
+        return multicastPort;
+    }
+
+    public void setMulticastPort(int multicastPort) {
+        this.multicastPort = multicastPort;
+    }
+
+    public int getTcpPort() {
+        return tcpPort;
+    }
+
+    public void setTcpPort(int tcpPort) {
+        this.tcpPort = tcpPort;
+    }
+
+    public Monster getCurrentMonster() {
+        return currentMonster;
+    }
+
+    public void setCurrentMonster(Monster currentMonster) {
+        this.currentMonster = currentMonster;
     }
 
     public void setRemainingSpaces(int remainingSpaces) {
@@ -151,6 +206,43 @@ public class GameMaster implements Register {
         return output;
     }
 
+    
+    
+    //Sendmonster 2
+        public void sendMonster2(Monster newMonster) {
+        MulticastSocket s = null;
+        try {
+  
+            InetAddress group = InetAddress.getByName(this.multicastIp); // destination multicast group
+            s = new MulticastSocket(this.multicastPort);
+            s.joinGroup(group);
+            s.setTimeToLive(100);
+            currentMonster = newMonster;
+            
+            String myMessage = currentMonster.toString();
+            System.out.println("Messages' TTL (Time-To-Live): " + s.getTimeToLive() +" " + myMessage);
+            byte[] m = myMessage.getBytes();
+            DatagramPacket messageOut = new DatagramPacket(m, m.length, group, this.multicastPort);
+            s.send(messageOut);
+
+            s.leaveGroup(group);
+        } catch (SocketException e) {
+            System.out.println("Socket: " + e.getMessage());
+        } catch (IOException e) {
+            System.out.println("IO: " + e.getMessage());
+        } finally {
+            if (s != null) {
+                s.close();
+            }
+        }
+
+    }
+    
+    
+    
+    
+    
+    
     //TCP
     public boolean receiveAnswer() {
         GameMaster.gMasterStatic = this;
@@ -188,5 +280,18 @@ public class GameMaster implements Register {
         GameMaster gameMaster = new GameMaster(30, 10);
 //        gameMaster.sendMonster(1, 0, 2);
         gameMaster.receiveAnswer();
+        int a, b;
+        Random rand = new Random();
+        while(true){
+            a = rand.nextInt(10);
+            b = rand.nextInt(10);
+            //gameMaster.sendMonster2(a, b,1);
+        }
+        
+        /*Monster n = new Monster(1,2,3);
+        String p =n.toString(); 
+        System.out.println(p);
+        n.deString(p);
+        System.out.println(n.toString());*/
     }
 }

@@ -16,6 +16,7 @@ import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.MulticastSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import master.Monster;
@@ -48,6 +49,73 @@ public class Player {
         currentMonster = new Monster(-1,-1,1,this.ip);
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    public String getIpGameMaster() {
+        return ipGameMaster;
+    }
+
+    public void setIpGameMaster(String ipGameMaster) {
+        this.ipGameMaster = ipGameMaster;
+    }
+
+    public int getMulticastPort() {
+        return multicastPort;
+    }
+
+    public void setMulticastPort(int multicastPort) {
+        this.multicastPort = multicastPort;
+    }
+
+    public String getMulticastIp() {
+        return multicastIp;
+    }
+
+    public void setMulticastIp(String multicastIp) {
+        this.multicastIp = multicastIp;
+    }
+
+    public int getTcpPort() {
+        return tcpPort;
+    }
+
+    public void setTcpPort(int tcpPort) {
+        this.tcpPort = tcpPort;
+    }
+
+    public Monster getCurrentMonster() {
+        return currentMonster;
+    }
+
+    public void setCurrentMonster(Monster currentMonster) {
+        this.currentMonster = currentMonster;
+    }
+
+    
+    
+    
     public void logIn() {
         System.setProperty("java.security.policy", "file:./src/player/player.policy");
         if (System.getSecurityManager() == null) {
@@ -76,7 +144,7 @@ public class Player {
 
     //UDP
     public boolean receiveMonster() {
-        System.setProperty("java.net.preferIPv4Stack", "true");
+        //System.setProperty("java.net.preferIPv4Stack", "true");
         boolean output = false;
         MulticastSocket socket = null;
         try {
@@ -101,6 +169,47 @@ public class Player {
         }
         return output;
     }
+    
+    
+    
+    //============ SEGUNDO INTENTO
+       public boolean receiveMonster2() {
+        MulticastSocket s = null;
+        try {       
+            InetAddress group = InetAddress.getByName(this.multicastIp); // destination multicast group
+            s = new MulticastSocket(this.multicastPort);
+            s.joinGroup(group);
+            System.out.println("Waiting for messages");
+            byte[] buffer = new byte[1000];
+            DatagramPacket messageIn = new DatagramPacket(buffer, buffer.length);
+            s.receive(messageIn);
+            System.out.println(messageIn.getData().toString());
+            System.out.println(currentMonster.toString());
+            currentMonster.deString(new String(messageIn.getData()));
+            System.out.println(currentMonster.toString());
+            /*
+            String[] data = messageIn.getData().toString().split(",");
+            int[] coordinates = new int[data.length];
+            for (int i = 0; i < data.length; i++) {
+                coordinates[i] = Integer.parseInt(data[i]);
+            }
+*/
+            System.out.println("Message: " + new String(messageIn.getData()) + " from: " + messageIn.getAddress());
+        } catch (SocketException e) {
+            System.out.println("Socket: " + e.getMessage());
+                    
+        } catch (IOException e) {
+            System.out.println("IO: " + e.getMessage());
+        } finally {
+            if (s != null) {
+                s.close();
+            }
+        }
+        return true;
+    }
+
+    
+    
 
     //TCP 
     public boolean sendAnswer() {
@@ -149,6 +258,9 @@ public class Player {
     public static void main(String[] args) {
         Player player = new Player("Victor", "hola123");
         player.logIn();
-        player.sendAnswer();
+        while(true){
+           player.receiveMonster2();
+        }
+  
     }
 }
