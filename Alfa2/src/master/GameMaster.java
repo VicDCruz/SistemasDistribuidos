@@ -68,12 +68,12 @@ public class GameMaster implements Register {
     public void setIp(String ip) {
         this.ip = ip;
     }
-    
 
     @Override
     public synchronized Information logIn(String username, String password, String ip) {
-        if (this.remainingSpaces == 0)
+        if (this.remainingSpaces == 0) {
             return null;
+        }
         User user = new User(username, password, ip);
         if (this.binarySearch(this.players, user, 0, this.players.length - 1) == -1) {
             int newPosition = this.players.length - this.remainingSpaces;
@@ -107,8 +107,9 @@ public class GameMaster implements Register {
     }
 
     private <T extends Comparable<T>> int binarySearch(T[] array, T element, int low, int high) {
-        if (low > high)
+        if (low > high) {
             return -1;
+        }
         int middle = (high + low) / 2;
         T middleElement = array[middle];
         int comparisson = element.compareTo(middleElement);
@@ -116,8 +117,9 @@ public class GameMaster implements Register {
             return this.binarySearch(array, element, low, middle - 1);
         } else if (comparisson > 0) {
             return this.binarySearch(array, element, middle + 1, high);
-        } else
+        } else {
             return middle;
+        }
     }
 
     public boolean sendMonster(int x, int y, int round) {
@@ -147,19 +149,28 @@ public class GameMaster implements Register {
         return output;
     }
 
+    //TCP
     public boolean receiveAnswer() {
+        boolean resp = false;
         try {
             ServerSocket listenSocket = new ServerSocket(this.tcpPort);
-            System.out.println("Waiting for messages...");
-            Socket clientSocket = listenSocket.accept();
-            Connection connection = new Connection(clientSocket);
-            connection.start();
-            return true;
+            while (true) {
+                System.out.println("Waiting for messages...");
+                Socket clientSocket = listenSocket.accept();
+                Connection connection = new Connection(clientSocket);
+                connection.start();
+                
+                
+            }
+
         } catch (IOException e) {
-            e.printStackTrace();
-            return false;
+            System.out.println("Listen :" + e.getMessage());
         }
+        return resp;
     }
+
+    
+  
 
     public static User findPlayer(String ip) {
         int i = GameMaster.gMasterStatic.binarySearch(GameMaster.gMasterStatic.players, new User("", "", ip), 0,
@@ -172,5 +183,6 @@ public class GameMaster implements Register {
 
     public static void main(String[] args) {
         GameMaster gameMaster = new GameMaster(30, 10);
+        gameMaster.receiveAnswer();
     }
 }

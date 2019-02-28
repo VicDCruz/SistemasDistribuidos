@@ -9,21 +9,28 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 import interfaces.Register;
+import java.io.EOFException;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.MulticastSocket;
+import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import master.Monster;
 
 /**
  * Player
  */
 public class Player {
+
     private String name;
     private String password;
     private String ip;
     private String ipGameMaster;
     private int multicastPort;
     private int tcpPort;
+    private Monster currentMonster; 
 
     public Player(String name, String password) {
         this.name = name;
@@ -34,6 +41,9 @@ public class Player {
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
+              
+        //EN UN FUTURO BORRAR
+        currentMonster = new Monster(-1,-1,1);
     }
 
     public void logIn() {
@@ -60,7 +70,8 @@ public class Player {
             e.printStackTrace();
         }
     }
-    
+
+    //UDP
     public boolean receiveMonster() {
         try {
             MulticastSocket socket = new MulticastSocket(this.multicastPort);
@@ -71,8 +82,48 @@ public class Player {
         return false;
     }
 
+    //TCP 
+    public boolean sendAnswer() {
+        boolean resp = false;
+
+        Socket s = null;
+        try {
+            int serverPort = tcpPort;
+
+            s = new Socket("localhost", serverPort);
+            //   s = new Socket("127.0.0.1", serverPort); 
+            ObjectInputStream in = new ObjectInputStream(s.getInputStream());
+            ObjectOutputStream out
+                    = new ObjectOutputStream(s.getOutputStream());
+
+            System.out.println("Mandando desde el cliente");
+            out.writeObject(currentMonster);        	// UTF is a string encoding 
+
+            Monster me = (Monster) in.readObject();
+            System.out.println("Received: " + me.getIp());
+        } catch (UnknownHostException e) {
+            System.out.println("Sock:" + e.getMessage());
+        } catch (EOFException e) {
+            System.out.println("EOF:" + e.getMessage());
+        } catch (IOException e) {
+            System.out.println("IO:" + e.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (s != null) {
+                try {
+                    s.close();
+                } catch (IOException e) {
+                    System.out.println("close:" + e.getMessage());
+                }
+            }
+        }
+        return resp;
+    }
+
     public static void main(String[] args) {
         Player player = new Player("Victor", "hola123");
         player.logIn();
+        player.sendAnswer();
     }
 }
