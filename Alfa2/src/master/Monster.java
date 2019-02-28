@@ -4,6 +4,7 @@ package master;
  * Monster
  */
 public class Monster {
+
     private int x;
     private int y;
     private int round;
@@ -30,6 +31,22 @@ public class Monster {
         if (array.length >= 4) {
             this.ip = new String(array, 3, array.length);
         }
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public void setRound(int round) {
+        this.round = round;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 
     /**
@@ -64,7 +81,7 @@ public class Monster {
         byte x = (byte) this.x;
         byte y = (byte) this.y;
         byte round = (byte) this.round;
-        byte[] output = { x, y, round };
+        byte[] output = {x, y, round};
         if (this.ip != null) {
             byte[] ipBytes = this.ip.getBytes();
             output = this.appendArrays(output, ipBytes);
@@ -86,4 +103,11 @@ public class Monster {
     public String toString() {
         return "X: " + this.x + ", Y: " + this.y + ", ROUND: " + this.round;
     }
+
+    public void deString(String s) {
+        this.x = s.charAt(3) - 48;
+        this.y = s.charAt(9)  - 48;
+        this.round = s.charAt(19)  - 48;
+    }
+
 }
