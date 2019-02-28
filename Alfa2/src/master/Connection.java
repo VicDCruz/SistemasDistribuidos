@@ -30,11 +30,19 @@ public class Connection extends Thread {
         try {
             Monster monster = (Monster) this.in.readObject();
             System.out.println("Monster received...");
+            System.out.println(monster.toString());
             if (!GameMaster.hasWinner) {
                 User player = GameMaster.findPlayer(monster.getIp());
-                this.out.writeObject(player.getScore());
+                if (player != null) {
+                    System.out.println("Score: " + player.getScore() + 1);
+                    GameMaster.hasWinner = true;
+                    this.out.writeObject(player.getScore() + 1);
+                } else {
+                    System.out.println("No existen registros");
+                }
+            } else {
+                this.out.writeObject(null);
             }
-            this.out.writeObject(null);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

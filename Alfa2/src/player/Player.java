@@ -45,7 +45,7 @@ public class Player {
         }
               
         //EN UN FUTURO BORRAR
-        currentMonster = new Monster(-1,-1,1);
+        currentMonster = new Monster(-1,-1,1,this.ip);
     }
 
     public void logIn() {
@@ -106,21 +106,26 @@ public class Player {
     public boolean sendAnswer() {
         boolean resp = false;
 
-        Socket s = null;
+        Socket socket = null;
         try {
-            int serverPort = tcpPort;
+            int serverPort = this.tcpPort;
 
-            s = new Socket("localhost", serverPort);
+            socket = new Socket("localhost", serverPort);
             //   s = new Socket("127.0.0.1", serverPort); 
-            ObjectInputStream in = new ObjectInputStream(s.getInputStream());
+            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
             ObjectOutputStream out
-                    = new ObjectOutputStream(s.getOutputStream());
+                    = new ObjectOutputStream(socket.getOutputStream());
 
             System.out.println("Mandando desde el cliente");
-            out.writeObject(currentMonster);        	// UTF is a string encoding 
+            out.writeObject(this.currentMonster);        	// UTF is a string encoding 
 
-            Monster me = (Monster) in.readObject();
-            System.out.println("Received: " + me.getIp());
+            int score = (int) in.readObject();
+            if (score > -1) {
+                System.out.println("Received: " + score);
+                System.out.println("Gane!!");
+            } else {
+                System.out.println("Perdi!");
+            }
         } catch (UnknownHostException e) {
             System.out.println("Sock:" + e.getMessage());
         } catch (EOFException e) {
@@ -130,9 +135,9 @@ public class Player {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            if (s != null) {
+            if (socket != null) {
                 try {
-                    s.close();
+                    socket.close();
                 } catch (IOException e) {
                     System.out.println("close:" + e.getMessage());
                 }

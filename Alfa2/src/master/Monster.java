@@ -1,9 +1,11 @@
 package master;
 
+import java.io.Serializable;
+
 /**
  * Monster
  */
-public class Monster {
+public class Monster implements Serializable {
     private int x;
     private int y;
     private int round;

@@ -153,6 +153,7 @@ public class GameMaster implements Register {
 
     //TCP
     public boolean receiveAnswer() {
+        GameMaster.gMasterStatic = this;
         boolean resp = false;
         try {
             ServerSocket listenSocket = new ServerSocket(this.tcpPort);
@@ -185,6 +186,7 @@ public class GameMaster implements Register {
 
     public static void main(String[] args) {
         GameMaster gameMaster = new GameMaster(30, 10);
-        gameMaster.sendMonster(1, 0, 2);
+//        gameMaster.sendMonster(1, 0, 2);
+        gameMaster.receiveAnswer();
     }
 }
