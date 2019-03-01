@@ -142,7 +142,6 @@ public class GameMaster implements Register {
     }
 
     public void registry() throws RemoteException {
-        System.setProperty("java.security.policy", "file:./src/master/master.policy");
         if (System.getSecurityManager() == null) {
             System.setSecurityManager(new SecurityManager());
         }
@@ -277,6 +276,7 @@ public class GameMaster implements Register {
     }
 
     public static void main(String[] args) {
+        System.setProperty("java.net.preferIPv4Stack" , "true");
         GameMaster gameMaster = new GameMaster(30, 10);
 //        gameMaster.sendMonster(1, 0, 2);
         gameMaster.receiveAnswer();
@@ -287,11 +287,5 @@ public class GameMaster implements Register {
             b = rand.nextInt(10);
             //gameMaster.sendMonster2(a, b,1);
         }
-        
-        /*Monster n = new Monster(1,2,3);
-        String p =n.toString(); 
-        System.out.println(p);
-        n.deString(p);
-        System.out.println(n.toString());*/
     }
 }
