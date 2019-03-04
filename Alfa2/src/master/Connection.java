@@ -5,8 +5,6 @@ import java.io.ObjectOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-import javax.xml.crypto.Data;
-
 /**
  * Connection
  */
@@ -31,12 +29,13 @@ public class Connection extends Thread {
             Monster monster = (Monster) this.in.readObject();
             System.out.println("Monster received...");
             System.out.println(monster.toString());
-            if (!GameMaster.hasWinner) {
-                User player = GameMaster.findPlayer(monster.getIp());
+            if (!Statics.hasWinner) {
+                User player = Statics.findPlayer(monster.getIp());
                 if (player != null) {
                     System.out.println("Score: " + player.getScore() + 1);
-                    GameMaster.hasWinner = true;
+                    Statics.hasWinner = true;
                     this.out.writeObject(player.getScore() + 1);
+                    Statics.updateScore(player, player.getScore() + 1);
                 } else {
                     System.out.println("No existen registros");
                 }

@@ -12,10 +12,10 @@ import java.io.Serializable;
  * @author daniel
  */
 public class Information implements Serializable {
-    private String ip;
-    private int multicastPort;
-    private String multicastIp;
-    private int tcpPort;
+    private final String ip;
+    private final int multicastPort;
+    private final String multicastIp;
+    private final int tcpPort;
 
     public Information(String ip, int multicastPort, int tcpPort, String multicastIp) {
         this.ip = ip;

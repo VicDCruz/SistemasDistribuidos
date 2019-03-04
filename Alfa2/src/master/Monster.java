@@ -30,7 +30,7 @@ public class Monster implements Serializable {
         this.y = (int) array[1];
         this.round = (int) array[2];
         if (array.length >= 4) {
-            this.ip = new String(array, 3, array.length);
+            this.ip = new String(array, 3, array.length - 3);
         }
     }
 

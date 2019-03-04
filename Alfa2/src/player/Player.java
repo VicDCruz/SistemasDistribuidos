@@ -17,6 +17,7 @@ import java.net.DatagramPacket;
 import java.net.MulticastSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import master.Monster;
@@ -113,9 +114,6 @@ public class Player {
         this.currentMonster = currentMonster;
     }
 
-    
-    
-    
     public void logIn() {
         System.setProperty("java.security.policy", "file:./src/player/player.policy");
         if (System.getSecurityManager() == null) {
@@ -226,6 +224,7 @@ public class Player {
                     = new ObjectOutputStream(socket.getOutputStream());
 
             System.out.println("Mandando desde el cliente");
+            this.currentMonster.setIp(this.ip);
             out.writeObject(this.currentMonster);        	// UTF is a string encoding 
 
             int score = (int) in.readObject();
@@ -256,11 +255,21 @@ public class Player {
     }
 
     public static void main(String[] args) {
+        System.setProperty("java.net.preferIPv4Stack" , "true");
+        Scanner keyboard = new Scanner(System.in);
+        System.out.println("Registrando");
+        int myint = keyboard.nextInt();
         Player player = new Player("Victor", "hola123");
         player.logIn();
-        while(true){
-           player.receiveMonster2();
-        }
+        System.out.println("Recibiendo monstruo");
+        keyboard.nextInt();
+        player.receiveMonster();
+        System.out.println("Enviando respuesta");
+        keyboard.nextInt();
+        player.sendAnswer();
+//        while(true){
+//           player.receiveMonster2();
+//        }
   
     }
 }

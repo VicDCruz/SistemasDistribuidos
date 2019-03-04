@@ -26,11 +26,8 @@ hs_err_pid*
 /ProyectoAlfa/nbproject/private/
 /ProyectoAlfa/build/
 .vscode/launch.json
-<<<<<<< HEAD
-=======
 /JavaBoTs/nbproject/private/
 /JavaBoTs/build/
->>>>>>> Stashed changes
 /WebApplication1/nbproject/private/
 /WebApplication1/build/
 /Seguros/nbproject/private/
@@ -42,8 +39,7 @@ hs_err_pid*
 /servletPrueba/nbproject/private/
 /servletPrueba/build/
 /servletPrueba/dist/
-=======
 .DS_Store
 Laboratory/JavaBoTs/.vscode/launch.json
 **/.vscode
->>>>>>> 7ad1f899e9035dda9e83818afb50967ea695305f
+Alfa2/nbproject/private/

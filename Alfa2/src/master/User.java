@@ -8,6 +8,7 @@ public class User implements Comparable<User>{
     private String name;
     private String password;
     private String ip;
+    private int tcpPort;
     private int score;
 
     public User(String name, String password, String ip) {
@@ -15,6 +16,20 @@ public class User implements Comparable<User>{
         this.name = name;
         this.password = password;
         this.ip = ip;
+    }
+
+    /**
+     * @return the tcpPort
+     */
+    public int getTcpPort() {
+        return tcpPort;
+    }
+
+    /**
+     * @param tcpPort the tcpPort to set
+     */
+    public void setTcpPort(int tcpPort) {
+        this.tcpPort = tcpPort;
     }
 
     /**
