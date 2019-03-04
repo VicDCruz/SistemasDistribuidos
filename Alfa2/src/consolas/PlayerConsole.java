@@ -5,6 +5,9 @@
  */
 package consolas;
 
+import java.awt.Color;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import master.GameMaster;
 import master.Monster;
 import player.Player;
@@ -24,16 +27,74 @@ public class PlayerConsole extends javax.swing.JFrame {
      */
     public PlayerConsole() {
         initComponents();
-
+        
+        System.out.println("Player Console");
+        jInternalFrame1.setTitle("Player");
         player = new Player("Victor", "hola123");
         player.logIn();
-
-        while (true) {
-            player.receiveMonster2();
+        
+      
+        int x; 
+        int y;
+        for (int i = 0; i < 1000; i++) {
+            
+       
+            player.receiveMonster();
             enteringMonster = player.getCurrentMonster();
-            //FALTA QUE MUESTRA EL ENTERING MONSSTER
-        }
+            x = enteringMonster.getX();
+            y= enteringMonster.getY();
+  
+            
+            switch (x){
+                case 1: switch(y){
+                
+                    case 1: jCheckBox1.setForeground(Color.red); break;
+                    case 2: jCheckBox2.setForeground(Color.red); break; 
+                    case 3: jCheckBox3.setForeground(Color.red); break;
+                }
+               case 2: switch(y){
+                    case 1: jCheckBox4.setForeground(Color.red); break;
+                    case 2: jCheckBox5.setForeground(Color.red); break; 
+                    case 3: jCheckBox6.setForeground(Color.red); break;
+                }
+               case 3: switch(y){
+                    case 1: jCheckBox7.setForeground(Color.red); break;
+                    case 2: jCheckBox8.setForeground(Color.red); break; 
+                    case 3: jCheckBox9.setForeground(Color.red); break;
+                }
+            }
+   
+  
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(PlayerConsole.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            switch (x){
+                case 1: switch(y){
+                
+                    case 1: jCheckBox1.setForeground(Color.BLACK); break;
+                    case 2: jCheckBox2.setForeground(Color.BLACK); break; 
+                    case 3: jCheckBox3.setForeground(Color.BLACK); break;
+                }
+               case 2: switch(y){
+                    case 1: jCheckBox4.setForeground(Color.BLACK); break;
+                    case 2: jCheckBox5.setForeground(Color.BLACK); break; 
+                    case 3: jCheckBox6.setForeground(Color.BLACK); break;
+                }
+               case 3: switch(y){
+                    case 1: jCheckBox7.setForeground(Color.BLACK); break;
+                    case 2: jCheckBox8.setForeground(Color.BLACK); break; 
+                    case 3: jCheckBox9.setForeground(Color.BLACK); break;
+                }
+            }
+            
+            
+            
+        //}
 
+    }
     }
 
     /**
