@@ -34,7 +34,7 @@ public class Player extends Thread {
     private int multicastPort;
     private String multicastIp;
     private int tcpPort;
-    private Monster currentMonster; 
+    private Monster currentMonster;
 
     public Player(String name, String password) {
         this.name = name;
@@ -45,9 +45,9 @@ public class Player extends Thread {
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
-              
+
         //EN UN FUTURO BORRAR
-        currentMonster = new Monster(-1,-1,1,this.ip);
+        currentMonster = new Monster(-1, -1, 1, this.ip);
     }
 
     public String getPassword() {
@@ -124,6 +124,7 @@ public class Player extends Thread {
                 System.out.println(this.ipGameMaster);
                 System.out.println(this.multicastPort);
                 System.out.println(this.tcpPort);
+
             } else {
                 System.out.println("No se pudo registrar");
             }
@@ -132,7 +133,7 @@ public class Player extends Thread {
         }
     }
 
-    //UDP
+     //UDP
     public boolean receiveMonster() {
         //System.setProperty("java.net.preferIPv4Stack", "true");
         boolean output = false;
@@ -159,46 +160,6 @@ public class Player extends Thread {
         }
         return output;
     }
-    
-    
-    
-    //============ SEGUNDO INTENTO
-       public boolean receiveMonster2() {
-        MulticastSocket s = null;
-        try {       
-            InetAddress group = InetAddress.getByName(this.multicastIp); // destination multicast group
-            s = new MulticastSocket(this.multicastPort);
-            s.joinGroup(group);
-            System.out.println("Waiting for messages");
-            byte[] buffer = new byte[1000];
-            DatagramPacket messageIn = new DatagramPacket(buffer, buffer.length);
-            s.receive(messageIn);
-            System.out.println(messageIn.getData().toString());
-            System.out.println(currentMonster.toString());
-            currentMonster.deString(new String(messageIn.getData()));
-            System.out.println(currentMonster.toString());
-            /*
-            String[] data = messageIn.getData().toString().split(",");
-            int[] coordinates = new int[data.length];
-            for (int i = 0; i < data.length; i++) {
-                coordinates[i] = Integer.parseInt(data[i]);
-            }
-*/
-            System.out.println("Message: " + new String(messageIn.getData()) + " from: " + messageIn.getAddress());
-        } catch (SocketException e) {
-            System.out.println("Socket: " + e.getMessage());
-                    
-        } catch (IOException e) {
-            System.out.println("IO: " + e.getMessage());
-        } finally {
-            if (s != null) {
-                s.close();
-            }
-        }
-        return true;
-    }
-
-    
     
 
     //TCP 
@@ -272,7 +233,7 @@ public class Player extends Thread {
     }
 
     public static void main(String[] args) {
-        System.setProperty("java.net.preferIPv4Stack" , "true");
+        System.setProperty("java.net.preferIPv4Stack", "true");
         Scanner keyboard = new Scanner(System.in);
         System.out.println("Registrando");
         int myint = keyboard.nextInt();
@@ -280,14 +241,14 @@ public class Player extends Thread {
         Player player = new Player("Victor " + random, "hola123");
         player.logIn();
         System.out.println("Recibiendo monstruo");
-        keyboard.nextInt();
-        player.receiveMonster();
-        System.out.println("Enviando respuesta");
-        keyboard.nextInt();
-        player.sendAnswer();
-//        while(true){
-//           player.receiveMonster2();
-//        }
-  
+        //keyboard.nextInt();
+        // player.receiveMonster2();
+        //System.out.println("Enviando respuesta");
+        //keyboard.nextInt();
+        //player.sendAnswer();
+        while (true) {
+            player.receiveMonster();
+        }
+
     }
 }

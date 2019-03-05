@@ -14,6 +14,7 @@ public class Statics {
     public static int remainingSpaces;
     public static int totalRounds;
     public static User[] players;
+    public static boolean hasWinner;
     
     public static User findPlayer(String ip) {
         int i = Statics.binarySearch(Statics.players, new User("", "", ip), 0,

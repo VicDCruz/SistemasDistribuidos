@@ -37,10 +37,10 @@ public class GameMaster implements Register {
         Statics.players = new User[groupMaxSize];
         Statics.remainingSpaces = groupMaxSize;
         Statics.totalRounds = totalRounds;
-        
+
         //TEMPORAL
-        currentMonster = new Monster(-1,-1,-1);
-        
+        currentMonster = new Monster(-1, -1, -1);
+
         try {
             InetAddress inet = InetAddress.getLocalHost();
             this.ip = inet.getHostAddress();
@@ -122,7 +122,7 @@ public class GameMaster implements Register {
 
     public void registry() throws RemoteException {
         System.setProperty("java.security.policy",
-                    "file:./src/master/master.policy");
+                "file:./src/master/master.policy");
         if (System.getSecurityManager() == null) {
             System.setSecurityManager(new SecurityManager());
         }
@@ -139,10 +139,12 @@ public class GameMaster implements Register {
         System.out.println("Funciones de RMI registradas");
     }
 
-    public boolean sendMonster(int x, int y, int round) {
+    
+    public boolean sendMonster(Monster monster) {
         System.setProperty("java.net.preferIPv4Stack", "true");
         boolean output = false;
-        Monster monster = new Monster(x, y, round);
+        Statics.hasWinner = false;
+        //Monster monster = new Monster(x, y, round);
         MulticastSocket sender = null;
         try {
             InetAddress group = InetAddress.getByName(this.multicastIp);
@@ -164,44 +166,9 @@ public class GameMaster implements Register {
         }
         return output;
     }
+     
 
-    
-    
-    //Sendmonster 2
-        public void sendMonster2(Monster newMonster) {
-        MulticastSocket s = null;
-        try {
-  
-            InetAddress group = InetAddress.getByName(this.multicastIp); // destination multicast group
-            s = new MulticastSocket(this.multicastPort);
-            s.joinGroup(group);
-            s.setTimeToLive(100);
-            currentMonster = newMonster;
-            
-            String myMessage = currentMonster.toString();
-            System.out.println("Messages' TTL (Time-To-Live): " + s.getTimeToLive() +" " + myMessage);
-            byte[] m = myMessage.getBytes();
-            DatagramPacket messageOut = new DatagramPacket(m, m.length, group, this.multicastPort);
-            s.send(messageOut);
-
-            s.leaveGroup(group);
-        } catch (SocketException e) {
-            System.out.println("Socket: " + e.getMessage());
-        } catch (IOException e) {
-            System.out.println("IO: " + e.getMessage());
-        } finally {
-            if (s != null) {
-                s.close();
-            }
-        }
-
-    }
-    
-    
-    
-    
-    
-    
+   
     //TCP
     public boolean receiveAnswer() {
         boolean resp = false;
@@ -211,22 +178,23 @@ public class GameMaster implements Register {
     }
 
     public static void main(String[] args) {
-        System.setProperty("java.net.preferIPv4Stack" , "true");
+        System.setProperty("java.net.preferIPv4Stack", "true");
         GameMaster gameMaster = new GameMaster(30, 10);
-        Scanner keyboard = new Scanner(System.in);
+        //Scanner keyboard = new Scanner(System.in);
         System.out.println("Enviando monstruo");
-        keyboard.nextInt();
-        gameMaster.sendMonster(1, 0, 2);
+        //keyboard.nextInt();
+
         System.out.println("Recibiendo respuesta");
-        keyboard.nextInt();
-        gameMaster.receiveAnswer();
-        keyboard.nextInt();
+        //keyboard.nextInt();
+        //gameMaster.receiveAnswer();
+        //keyboard.nextInt();
         int a, b;
-//        Random rand = new Random();
-//        while(true){
-//            a = rand.nextInt(10);
-//            b = rand.nextInt(10);
-//            //gameMaster.sendMonster2(a, b,1);
-//        }
+        Random rand = new Random();
+        while (true) {
+            a = rand.nextInt(10);
+            b = rand.nextInt(10);
+            Monster m = new Monster(a, b, 1);
+            gameMaster.sendMonster(m);
+        }
     }
 }

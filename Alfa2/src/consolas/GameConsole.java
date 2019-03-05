@@ -5,6 +5,7 @@
  */
 package consolas;
 
+import java.awt.Color;
 import master.GameMaster;
 import master.Monster;
 
@@ -22,6 +23,9 @@ public class GameConsole extends javax.swing.JFrame {
      */
     public GameConsole() {
         initComponents();
+        jInternalFrame1.setTitle("Game Console");
+        System.out.println("Game Console");
+
         gm = new GameMaster(30, 10);
         boxMonster = gm.getCurrentMonster();
     }
@@ -202,7 +206,7 @@ public class GameConsole extends javax.swing.JFrame {
         // TODO add your handling code here:
         boxMonster.setX(1);
         boxMonster.setY(1);
-       gm.sendMonster2(boxMonster);
+       gm.sendMonster(boxMonster);
 
     }//GEN-LAST:event_jCheckBox1ActionPerformed
 
@@ -210,14 +214,14 @@ public class GameConsole extends javax.swing.JFrame {
         // TODO add your handling code here:
         boxMonster.setX(2);
         boxMonster.setY(1);
-        gm.sendMonster2(boxMonster);
+        gm.sendMonster(boxMonster);
     }//GEN-LAST:event_jCheckBox2ActionPerformed
 
     private void jCheckBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox3ActionPerformed
         // TODO add your handling code here:
         boxMonster.setX(3);
         boxMonster.setY(1);
-        gm.sendMonster2(boxMonster);
+        gm.sendMonster(boxMonster);
 
     }//GEN-LAST:event_jCheckBox3ActionPerformed
 
@@ -225,42 +229,42 @@ public class GameConsole extends javax.swing.JFrame {
         // TODO add your handling code here:
         boxMonster.setX(1);
         boxMonster.setY(2);
-        gm.sendMonster2(boxMonster);
+        gm.sendMonster(boxMonster);
     }//GEN-LAST:event_jCheckBox4ActionPerformed
 
     private void jCheckBox5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox5ActionPerformed
         // TODO add your handling code here:
         boxMonster.setX(2);
         boxMonster.setY(2);
-        gm.sendMonster2(boxMonster);
+        gm.sendMonster(boxMonster);
     }//GEN-LAST:event_jCheckBox5ActionPerformed
 
     private void jCheckBox6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox6ActionPerformed
         // TODO add your handling code here:
         boxMonster.setX(3);
         boxMonster.setY(2);
-        gm.sendMonster2(boxMonster);
+        gm.sendMonster(boxMonster);
     }//GEN-LAST:event_jCheckBox6ActionPerformed
 
     private void jCheckBox7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox7ActionPerformed
         // TODO add your handling code here:
         boxMonster.setX(1);
         boxMonster.setY(3);
-        gm.sendMonster2(boxMonster);
+        gm.sendMonster(boxMonster);
     }//GEN-LAST:event_jCheckBox7ActionPerformed
 
     private void jCheckBox8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox8ActionPerformed
         // TODO add your handling code here:
         boxMonster.setX(2);
         boxMonster.setY(3);
-        gm.sendMonster2(boxMonster);
+        gm.sendMonster(boxMonster);
     }//GEN-LAST:event_jCheckBox8ActionPerformed
 
     private void jCheckBox9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox9ActionPerformed
         // TODO add your handling code here:
         boxMonster.setX(3);
         boxMonster.setY(3);
-        gm.sendMonster2(boxMonster);
+        gm.sendMonster(boxMonster);
     }//GEN-LAST:event_jCheckBox9ActionPerformed
 
 

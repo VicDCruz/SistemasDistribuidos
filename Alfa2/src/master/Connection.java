@@ -53,13 +53,17 @@ public class Connection extends Thread {
                 Monster monster = (Monster) this.in.readObject();
                 System.out.println("Monster received...");
                 System.out.println(monster.toString());
-                User player = Statics.findPlayer(monster.getIp());
-                if (player != null) {
-                    System.out.println("Score: " + player.getScore() + 1);
-                    this.out.writeObject(player.getScore() + 1);
-                    Statics.updateScore(player, player.getScore() + 1);
+                if (!Statics.hasWinner) {
+                    User player = Statics.findPlayer(monster.getIp());
+                    if (player != null) {
+                        System.out.println("Score: " + player.getScore() + 1);
+                        this.out.writeObject(player.getScore() + 1);
+                        Statics.updateScore(player, player.getScore() + 1);
+                    } else {
+                        System.out.println("No existen registros");
+                    }
                 } else {
-                    System.out.println("No existen registros");
+                    this.out.writeObject(-1);
                 }
             }
         } catch (IOException ex) {
