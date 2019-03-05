@@ -105,6 +105,11 @@ public class User implements Comparable<User>{
         if (anObject.getClass() != this.getClass()) return -1;
         User newUser = (User) anObject;
         int output = newUser.getIp().compareTo(this.ip);
+        if (output == 0 && newUser.getName().equals(this.name)) {
+            output = 0;
+        } else {
+            output = -1;
+        }
         return output;
     }
 

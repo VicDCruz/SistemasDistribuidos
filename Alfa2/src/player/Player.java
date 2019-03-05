@@ -25,7 +25,7 @@ import master.Monster;
 /**
  * Player
  */
-public class Player {
+public class Player extends Thread {
 
     private String name;
     private String password;
@@ -48,14 +48,6 @@ public class Player {
               
         //EN UN FUTURO BORRAR
         currentMonster = new Monster(-1,-1,1,this.ip);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getPassword() {
@@ -220,13 +212,24 @@ public class Player {
             socket = new Socket("localhost", serverPort);
             //   s = new Socket("127.0.0.1", serverPort); 
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-            ObjectOutputStream out
-                    = new ObjectOutputStream(socket.getOutputStream());
+            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
 
+            out.writeObject(this.ip);
+            int newPort = (int) in.readObject();
+            
+            try {
+                socket.close();
+            } catch (IOException e) {
+                System.out.println("close:" + e.getMessage());
+            }
             System.out.println("Mandando desde el cliente");
             this.currentMonster.setIp(this.ip);
-            out.writeObject(this.currentMonster);        	// UTF is a string encoding 
-
+            
+            socket = new Socket("localhost", newPort);
+            in = new ObjectInputStream(socket.getInputStream());
+            out = new ObjectOutputStream(socket.getOutputStream());
+            
+            out.writeObject(this.currentMonster);   
             int score = (int) in.readObject();
             if (score > -1) {
                 System.out.println("Received: " + score);
@@ -253,13 +256,28 @@ public class Player {
         }
         return resp;
     }
+    
+    @Override
+    public void run() {
+        System.setProperty("java.net.preferIPv4Stack" , "true");
+        Scanner keyboard = new Scanner(System.in);
+        System.out.println("Registrando");
+        this.logIn();
+        System.out.println("Recibiendo monstruo");
+        keyboard.nextInt();
+        this.receiveMonster();
+        System.out.println("Enviando respuesta");
+        keyboard.nextInt();
+        this.sendAnswer();
+    }
 
     public static void main(String[] args) {
         System.setProperty("java.net.preferIPv4Stack" , "true");
         Scanner keyboard = new Scanner(System.in);
         System.out.println("Registrando");
         int myint = keyboard.nextInt();
-        Player player = new Player("Victor", "hola123");
+        double random = Math.random();
+        Player player = new Player("Victor " + random, "hola123");
         player.logIn();
         System.out.println("Recibiendo monstruo");
         keyboard.nextInt();

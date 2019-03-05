@@ -35,7 +35,7 @@ public class Information implements Serializable {
     public int getTcpPort() {
         return tcpPort;
     }
-    
+
     public String getMulticastIp() {
         return multicastIp;
     }

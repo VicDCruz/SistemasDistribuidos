@@ -142,7 +142,6 @@ public class GameMaster implements Register {
     public boolean sendMonster(int x, int y, int round) {
         System.setProperty("java.net.preferIPv4Stack", "true");
         boolean output = false;
-        Statics.hasWinner = false;
         Monster monster = new Monster(x, y, round);
         MulticastSocket sender = null;
         try {
@@ -206,18 +205,8 @@ public class GameMaster implements Register {
     //TCP
     public boolean receiveAnswer() {
         boolean resp = false;
-        try {
-            ServerSocket listenSocket = new ServerSocket(this.tcpPort);
-            while (true) {
-                System.out.println("Waiting for messages...");
-                Socket clientSocket = listenSocket.accept();
-                Connection connection = new Connection(clientSocket);
-                connection.start();
-            }
-
-        } catch (IOException e) {
-            System.out.println("Listen :" + e.getMessage());
-        }
+        ReceiveAnswer ra = new ReceiveAnswer(this.tcpPort);
+        ra.start();
         return resp;
     }
 
