@@ -172,7 +172,7 @@ public class Player extends Thread {
         try {
             int serverPort = this.tcpPort;
 
-            socket = new Socket("localhost", serverPort);
+            socket = new Socket(this.ipGameMaster, serverPort);
             //   s = new Socket("127.0.0.1", serverPort); 
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
@@ -188,7 +188,7 @@ public class Player extends Thread {
             System.out.println("Mandando desde el cliente");
             this.currentMonster.setId(this.id);
             
-            socket = new Socket("localhost", newPort);
+            socket = new Socket(this.ipGameMaster, newPort);
             in = new ObjectInputStream(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
             
