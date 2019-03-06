@@ -47,7 +47,7 @@ public class Player extends Thread {
             e.printStackTrace();
         }
 
-        //EN UN FUTURO BORRAR
+        // EN UN FUTURO BORRAR
         currentMonster = new Monster(-1, -1, 1, this.ip);
     }
 
@@ -135,9 +135,9 @@ public class Player extends Thread {
         }
     }
 
-     //UDP
+    // UDP
     public boolean receiveMonster() {
-        //System.setProperty("java.net.preferIPv4Stack", "true");
+        // System.setProperty("java.net.preferIPv4Stack", "true");
         boolean output = false;
         MulticastSocket socket = null;
         try {
@@ -162,9 +162,8 @@ public class Player extends Thread {
         }
         return output;
     }
-    
 
-    //TCP 
+    // TCP
     public boolean sendAnswer() {
         boolean resp = false;
 
@@ -173,13 +172,13 @@ public class Player extends Thread {
             int serverPort = this.tcpPort;
 
             socket = new Socket(this.ipGameMaster, serverPort);
-            //   s = new Socket("127.0.0.1", serverPort); 
+            // s = new Socket("127.0.0.1", serverPort);
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
 
             out.writeObject(this.ip);
             int newPort = (int) in.readObject();
-            
+
             try {
                 socket.close();
             } catch (IOException e) {
@@ -187,18 +186,21 @@ public class Player extends Thread {
             }
             System.out.println("Mandando desde el cliente");
             this.currentMonster.setId(this.id);
-            
+
             socket = new Socket(this.ipGameMaster, newPort);
             in = new ObjectInputStream(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
-            
+
             out.writeObject(this.currentMonster);
             int score = (int) in.readObject();
             if (score > -1) {
                 System.out.println("Received: " + score);
-                System.out.println("Gane!!");
+                System.out.println("Gane el MONSTRUO " + this.id);
+                if (score >= 10) {
+                    System.out.println("GANE la ronda");
+                }
             } else {
-                System.out.println("Perdi!");
+                System.out.println("Perdi el MONSTRUO");
             }
         } catch (UnknownHostException e) {
             System.out.println("Sock:" + e.getMessage());
@@ -219,19 +221,23 @@ public class Player extends Thread {
         }
         return resp;
     }
-    
+
     @Override
     public void run() {
-        System.setProperty("java.net.preferIPv4Stack" , "true");
-        Scanner keyboard = new Scanner(System.in);
+        System.setProperty("java.net.preferIPv4Stack", "true");
         System.out.println("Registrando");
         this.logIn();
-        System.out.println("Recibiendo monstruo");
-        keyboard.nextInt();
-        this.receiveMonster();
-        System.out.println("Enviando respuesta");
-        keyboard.nextInt();
-        this.sendAnswer();
+        while (true) {
+            System.out.println("Recibiendo monstruo");
+            this.receiveMonster();
+            System.out.println("Enviando respuesta");
+            this.sendAnswer();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public static void main(String[] args) {

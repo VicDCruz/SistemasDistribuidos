@@ -37,7 +37,7 @@ public class GameMaster implements Register {
         Statics.remainingSpaces = groupMaxSize;
         Statics.totalRounds = totalRounds;
 
-        //TEMPORAL
+        // TEMPORAL
         currentMonster = new Monster(-1, -1, -1);
 
         try {
@@ -85,8 +85,7 @@ public class GameMaster implements Register {
     }
 
     public void registry() throws RemoteException {
-        System.setProperty("java.security.policy",
-                "file:./src/master/master.policy");
+        System.setProperty("java.security.policy", "file:./src/master/master.policy");
         if (System.getSecurityManager() == null) {
             System.setSecurityManager(new SecurityManager());
         }
@@ -103,12 +102,11 @@ public class GameMaster implements Register {
         System.out.println("Funciones de RMI registradas");
     }
 
-    
     public boolean sendMonster(Monster monster) {
         System.setProperty("java.net.preferIPv4Stack", "true");
         boolean output = false;
         Statics.hasWinner = false;
-        //Monster monster = new Monster(x, y, round);
+        // Monster monster = new Monster(x, y, round);
         MulticastSocket sender = null;
         try {
             InetAddress group = InetAddress.getByName(this.multicastIp);
@@ -130,10 +128,8 @@ public class GameMaster implements Register {
         }
         return output;
     }
-     
 
-   
-    //TCP
+    // TCP
     public boolean receiveAnswer() {
         boolean resp = false;
         ReceiveAnswer ra = new ReceiveAnswer(this.tcpPort);
@@ -144,20 +140,15 @@ public class GameMaster implements Register {
     public static void main(String[] args) {
         System.setProperty("java.net.preferIPv4Stack", "true");
         GameMaster gameMaster = new GameMaster(30, 10);
-        Scanner keyboard = new Scanner(System.in);
-        System.out.println("Enviando monstruo");
-        keyboard.nextInt();
-        gameMaster.sendMonster(new Monster(1,2,0));
-        System.out.println("Recibiendo respuesta");
-        gameMaster.receiveAnswer();
-        keyboard.nextInt();
-//        int a, b;
-//        Random rand = new Random();
-//        while (true) {
-//            a = rand.nextInt(10);
-//            b = rand.nextInt(10);
-//            Monster m = new Monster(a, b, 1);
-//            gameMaster.sendMonster(m);
-//        }
+        int a, b;
+        Random rand = new Random();
+        while (true) {
+            a = rand.nextInt(10);
+            b = rand.nextInt(10);
+            System.out.println("Enviando monstruo");
+            gameMaster.sendMonster(new Monster(a, b, 1));
+            System.out.println("Recibiendo respuesta");
+            gameMaster.receiveAnswer();
+        }
     }
 }
