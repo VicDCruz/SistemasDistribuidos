@@ -1,10 +1,13 @@
 package master;
 
+import java.util.UUID;
+
 /**
  * User
  */
 public class User implements Comparable<User>{
 
+    private final String id;
     private String name;
     private String password;
     private String ip;
@@ -12,10 +15,24 @@ public class User implements Comparable<User>{
     private int score;
 
     public User(String name, String password, String ip) {
+        this.id = UUID.randomUUID().toString();
         this.score = 0;
         this.name = name;
         this.password = password;
         this.ip = ip;
+    }
+    
+    public User(String ip, String id) {
+        this.id = id;
+        this.score = 0;
+        this.ip = ip;
+    }
+
+    /**
+     * @return the id
+     */
+    public String getId() {
+        return id;
     }
 
     /**
@@ -104,7 +121,7 @@ public class User implements Comparable<User>{
         if (anObject == null) return -1;
         if (anObject.getClass() != this.getClass()) return -1;
         User newUser = (User) anObject;
-        int output = newUser.getIp().compareTo(this.ip);
+        int output = newUser.getId().compareTo(this.id);
         return output;
     }
 

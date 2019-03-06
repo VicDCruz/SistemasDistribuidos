@@ -13,15 +13,21 @@ import java.io.Serializable;
  */
 public class Information implements Serializable {
     private final String ip;
+    private final String userId;
     private final int multicastPort;
     private final String multicastIp;
     private final int tcpPort;
 
-    public Information(String ip, int multicastPort, int tcpPort, String multicastIp) {
+    public Information(String ip, int multicastPort, int tcpPort, String multicastIp, String userId) {
         this.ip = ip;
+        this.userId = userId;
         this.multicastPort = multicastPort;
         this.multicastIp = multicastIp;
         this.tcpPort = tcpPort;
+    }
+
+    public String getUserId() {
+        return userId;
     }
 
     public String getIp() {
@@ -35,7 +41,7 @@ public class Information implements Serializable {
     public int getTcpPort() {
         return tcpPort;
     }
-    
+
     public String getMulticastIp() {
         return multicastIp;
     }

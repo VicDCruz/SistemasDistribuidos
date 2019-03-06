@@ -26,7 +26,6 @@ import java.util.Scanner;
  */
 public class GameMaster implements Register {
 
-    private static GameMaster gMasterStatic;
     private String ip;
     private String multicastIp = "228.5.60.7";
     private int multicastPort = 6789;
@@ -58,44 +57,8 @@ public class GameMaster implements Register {
         super();
     }
 
-    public static GameMaster getgMasterStatic() {
-        return gMasterStatic;
-    }
-
-    public static void setgMasterStatic(GameMaster gMasterStatic) {
-        GameMaster.gMasterStatic = gMasterStatic;
-    }
-
-    public String getMulticastIp() {
-        return multicastIp;
-    }
-
-    public void setMulticastIp(String multicastIp) {
-        this.multicastIp = multicastIp;
-    }
-
-    public int getMulticastPort() {
-        return multicastPort;
-    }
-
-    public void setMulticastPort(int multicastPort) {
-        this.multicastPort = multicastPort;
-    }
-
-    public int getTcpPort() {
-        return tcpPort;
-    }
-
-    public void setTcpPort(int tcpPort) {
-        this.tcpPort = tcpPort;
-    }
-
     public Monster getCurrentMonster() {
         return currentMonster;
-    }
-
-    public void setCurrentMonster(Monster currentMonster) {
-        this.currentMonster = currentMonster;
     }
 
     public void setIp(String ip) {
@@ -108,13 +71,14 @@ public class GameMaster implements Register {
             return null;
         }
         User user = new User(username, password, ip);
-        if (Statics.binarySearch(Statics.players, user, 0, Statics.totalPlayers) == -1) {
+        if (Statics.totalPlayers == 0 || Statics.binarySearch(Statics.players, user, 0, Statics.totalPlayers) == -1) {
             int newPosition = Statics.players.length - Statics.remainingSpaces;
             Statics.players[newPosition] = user;
             Statics.remainingSpaces--;
             Statics.totalPlayers++;
             user.setTcpPort(this.tcpPort + Statics.totalPlayers);
-            return new Information(this.ip, this.multicastPort, this.tcpPort, this.multicastIp);
+            Statics.addUser(user);
+            return new Information(this.ip, this.multicastPort, this.tcpPort, this.multicastIp, user.getId());
         }
         System.out.println("Registrado");
         return null;
@@ -172,39 +136,28 @@ public class GameMaster implements Register {
     //TCP
     public boolean receiveAnswer() {
         boolean resp = false;
-        try {
-            ServerSocket listenSocket = new ServerSocket(this.tcpPort);
-            while (true) {
-                System.out.println("Waiting for messages...");
-                Socket clientSocket = listenSocket.accept();
-                Connection connection = new Connection(clientSocket);
-                connection.start();
-            }
-
-        } catch (IOException e) {
-            System.out.println("Listen :" + e.getMessage());
-        }
+        ReceiveAnswer ra = new ReceiveAnswer(this.tcpPort);
+        ra.start();
         return resp;
     }
 
     public static void main(String[] args) {
         System.setProperty("java.net.preferIPv4Stack", "true");
         GameMaster gameMaster = new GameMaster(30, 10);
-        //Scanner keyboard = new Scanner(System.in);
+        Scanner keyboard = new Scanner(System.in);
         System.out.println("Enviando monstruo");
-        //keyboard.nextInt();
-
+        keyboard.nextInt();
+        gameMaster.sendMonster(new Monster(1,2,0));
         System.out.println("Recibiendo respuesta");
-        //keyboard.nextInt();
-        //gameMaster.receiveAnswer();
-        //keyboard.nextInt();
-        int a, b;
-        Random rand = new Random();
-        while (true) {
-            a = rand.nextInt(10);
-            b = rand.nextInt(10);
-            Monster m = new Monster(a, b, 1);
-            gameMaster.sendMonster(m);
-        }
+        gameMaster.receiveAnswer();
+        keyboard.nextInt();
+//        int a, b;
+//        Random rand = new Random();
+//        while (true) {
+//            a = rand.nextInt(10);
+//            b = rand.nextInt(10);
+//            Monster m = new Monster(a, b, 1);
+//            gameMaster.sendMonster(m);
+//        }
     }
 }
