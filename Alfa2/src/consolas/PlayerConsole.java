@@ -36,7 +36,7 @@ public class PlayerConsole extends javax.swing.JFrame {
       
         int x; 
         int y;
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 1; i++) {
             
        
             player.receiveMonster();
@@ -66,7 +66,7 @@ public class PlayerConsole extends javax.swing.JFrame {
    
   
             try {
-                Thread.sleep(100);
+                Thread.sleep(10);
             } catch (InterruptedException ex) {
                 Logger.getLogger(PlayerConsole.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -96,6 +96,7 @@ public class PlayerConsole extends javax.swing.JFrame {
 
     }
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
