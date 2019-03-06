@@ -9,20 +9,20 @@ public class Monster implements Serializable {
     private int x;
     private int y;
     private int round;
-    private String ip;
+    private String id;
 
     public Monster(int x, int y, int round) {
         this.x = x;
         this.y = y;
         this.round = round;
-        this.ip = null;
+        this.id = null;
     }
 
-    public Monster(int x, int y, int round, String ip) {
+    public Monster(int x, int y, int round, String id) {
         this.x = x;
         this.y = y;
         this.round = round;
-        this.ip = ip;
+        this.id = id;
     }
 
     public Monster(byte[] array) {
@@ -30,7 +30,7 @@ public class Monster implements Serializable {
         this.y = (int) array[1];
         this.round = (int) array[2];
         if (array.length >= 4) {
-            this.ip = new String(array, 3, array.length - 3);
+            this.id = new String(array, 3, array.length - 3);
         }
     }
 
@@ -46,8 +46,8 @@ public class Monster implements Serializable {
         this.round = round;
     }
 
-    public void setIp(String ip) {
-        this.ip = ip;
+    public void setId(String id) {
+        this.id = id;
     }
 
     /**
@@ -72,10 +72,10 @@ public class Monster implements Serializable {
     }
 
     /**
-     * @return the ip
+     * @return the id
      */
-    public String getIp() {
-        return this.ip;
+    public String getId() {
+        return this.id;
     }
 
     public byte[] getBytes() {
@@ -83,9 +83,9 @@ public class Monster implements Serializable {
         byte y = (byte) this.y;
         byte round = (byte) this.round;
         byte[] output = {x, y, round};
-        if (this.ip != null) {
-            byte[] ipBytes = this.ip.getBytes();
-            output = this.appendArrays(output, ipBytes);
+        if (this.id != null) {
+            byte[] idBytes = this.id.getBytes();
+            output = this.appendArrays(output, idBytes);
         }
         return output;
     }

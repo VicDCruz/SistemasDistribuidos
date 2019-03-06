@@ -54,8 +54,9 @@ public class Connection extends Thread {
                 System.out.println("Monster received...");
                 System.out.println(monster.toString());
                 if (!Statics.hasWinner) {
-                    User player = Statics.findPlayer(monster.getIp());
+                    User player = Statics.findPlayer(monster.getId());
                     if (player != null) {
+                        Statics.hasWinner = true;
                         System.out.println("Score: " + player.getScore() + 1);
                         this.out.writeObject(player.getScore() + 1);
                         Statics.updateScore(player, player.getScore() + 1);

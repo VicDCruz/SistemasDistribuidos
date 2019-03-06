@@ -16,13 +16,50 @@ public class Statics {
     public static User[] players;
     public static boolean hasWinner;
     
-    public static User findPlayer(String ip) {
-        int i = Statics.binarySearch(Statics.players, new User("", "", ip), 0,
-                Statics.totalPlayers);
+    public static User findPlayer(String id) {
+        int i = Statics.binarySearch(Statics.players, new User("", id), 0,
+                Statics.totalPlayers - 1);
         if (i != -1) {
             return Statics.players[i];
         }
         return null;
+    }
+    
+    public static void addUser(User newUser) {
+        Statics.players[Statics.totalPlayers - 1] = newUser;
+        Statics.players = Statics.quickSort(Statics.players, 0, Statics.totalPlayers - 1);
+    }
+    
+    public static <T extends Comparable<T>> T[] quickSort(T[] array, int low, int high) {
+        if (low >= high) {
+            return array;
+        }
+        int mean = (low + high) / 2;
+        T pivot = array[mean];
+        int leftIndex = low, rightIndex = high;
+        while (leftIndex < rightIndex)
+        {
+            int comparisonLeft = pivot.compareTo(array[leftIndex]);
+            int comparisonRight = pivot.compareTo(array[rightIndex]);
+            if ((comparisonLeft > 0 && comparisonRight < 0) || 
+                ((comparisonLeft == 0 && comparisonRight < 0) || (comparisonLeft > 0 && comparisonRight == 0))) {
+                T tmp = array[leftIndex];
+                array[leftIndex] = array[rightIndex];
+                array[rightIndex] = tmp;
+                leftIndex++;
+                rightIndex--;
+            } else if(comparisonLeft < 0 && comparisonRight < 0) {
+                leftIndex++;
+            } else if(comparisonLeft > 0 && comparisonRight > 0) {
+                rightIndex--;
+            } else {
+                leftIndex++;
+                rightIndex--;
+            }
+        }
+        quickSort(array, low, mean);
+        quickSort(array, mean + 1, high);
+        return array;
     }
     
     public static <T extends Comparable<T>> int binarySearch(T[] array, T element, int low, int high) {
@@ -31,7 +68,10 @@ public class Statics {
         }
         int middle = (high + low) / 2;
         T middleElement = array[middle];
-        int comparisson = element.compareTo(middleElement);
+        if (middleElement == null) {
+            return -1;
+        }
+        int comparisson = middleElement.compareTo(element);
         if (comparisson < 0) {
             return Statics.binarySearch(array, element, low, middle - 1);
         } else if (comparisson > 0) {
@@ -42,7 +82,7 @@ public class Statics {
     }
 
     public static void updateScore(User player, int newScore) {
-        int i = Statics.binarySearch(Statics.players, player, 0, Statics.totalPlayers);
+        int i = Statics.binarySearch(Statics.players, player, 0, Statics.totalPlayers - 1);
         Statics.players[i].setScore(newScore);
     }
 }

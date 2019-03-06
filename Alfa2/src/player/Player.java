@@ -27,6 +27,7 @@ import master.Monster;
  */
 public class Player extends Thread {
 
+    private String id;
     private String name;
     private String password;
     private String ip;
@@ -120,6 +121,7 @@ public class Player extends Thread {
                 this.multicastPort = information.getMulticastPort();
                 this.tcpPort = information.getTcpPort();
                 this.multicastIp = information.getMulticastIp();
+                this.id = information.getUserId();
                 System.out.println("Registrado con exito");
                 System.out.println(this.ipGameMaster);
                 System.out.println(this.multicastPort);
@@ -184,13 +186,13 @@ public class Player extends Thread {
                 System.out.println("close:" + e.getMessage());
             }
             System.out.println("Mandando desde el cliente");
-            this.currentMonster.setIp(this.ip);
+            this.currentMonster.setId(this.id);
             
             socket = new Socket("localhost", newPort);
             in = new ObjectInputStream(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
             
-            out.writeObject(this.currentMonster);   
+            out.writeObject(this.currentMonster);
             int score = (int) in.readObject();
             if (score > -1) {
                 System.out.println("Received: " + score);
@@ -241,11 +243,10 @@ public class Player extends Thread {
         Player player = new Player("Victor " + random, "hola123");
         player.logIn();
         System.out.println("Recibiendo monstruo");
-        //keyboard.nextInt();
-        // player.receiveMonster2();
-        //System.out.println("Enviando respuesta");
-        //keyboard.nextInt();
-        //player.sendAnswer();
+        player.receiveMonster();
+        System.out.println("Enviando respuesta");
+        keyboard.nextInt();
+        player.sendAnswer();
         while (true) {
             player.receiveMonster();
         }
