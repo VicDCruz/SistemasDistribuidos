@@ -1,3 +1,5 @@
+Alfa2/nbproject
+
 # Compiled class file
 *.class
 
@@ -21,6 +23,23 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+/ProyectoAlfa/nbproject/private/
+/ProyectoAlfa/build/
 .vscode/launch.json
+/JavaBoTs/nbproject/private/
+/JavaBoTs/build/
+/WebApplication1/nbproject/private/
+/WebApplication1/build/
+/Seguros/nbproject/private/
+/Seguros/build/
+/Seguros/dist/
+/Segurs2/nbproject/private/
+/Segurs2/build/
+/WebApplication1/dist/
+/servletPrueba/nbproject/private/
+/servletPrueba/build/
+/servletPrueba/dist/
 .DS_Store
 Laboratory/JavaBoTs/.vscode/launch.json
+**/.vscode
+Alfa2/nbproject/private/*
