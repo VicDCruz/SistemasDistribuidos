@@ -6,6 +6,12 @@
 package consolas;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.InetAddress;
+import java.net.MulticastSocket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import master.GameMaster;
@@ -16,87 +22,87 @@ import player.Player;
  *
  * @author pmeji
  */
-public class PlayerConsole extends javax.swing.JFrame {
+public class PlayerConsole1 extends javax.swing.JFrame implements ActionListener {
 
     private Player player;
     private Monster enteringMonster;
     private Monster leavingMonster;
-
+    private int x;
+    private int y;
     /**
      * Creates new form GameConsole
      */
-    public PlayerConsole() {
+    public PlayerConsole1() {
         initComponents();
-        
+
         System.out.println("Player Console");
         jInternalFrame1.setTitle("Player");
         player = new Player("Victor", "hola123");
-        player.logIn();
-        
-      
-        int x; 
-        int y;
-        //for (int i = 0; i < 1; i++) {
-            
-       
-            player.receiveMonster();
-            enteringMonster = player.getCurrentMonster();
-            x = enteringMonster.getX();
-            y= enteringMonster.getY();
-  
-            
-            switch (x){
-                case 1: switch(y){
-                
-                    case 1: jCheckBox1.setForeground(Color.red); break;
-                    case 2: jCheckBox2.setForeground(Color.red); break; 
-                    case 3: jCheckBox3.setForeground(Color.red); break;
+        //player.logIn();
+        player.start();
+    }
+    
+    private void showMonster(){
+         switch (y) {
+            case 1:
+                switch (x) {
+                    case 1:
+                        jCheckBox1.setForeground(Color.red);
+                        break;
+                    case 2:
+                        jCheckBox2.setForeground(Color.red);
+                        break;
+                    case 3:
+                        jCheckBox3.setForeground(Color.red);
+                        break;
+                }break;
+            case 2:
+                switch (x) {
+                    case 1:
+                        jCheckBox4.setForeground(Color.red);
+                        break;
+                    case 2:
+                        jCheckBox5.setForeground(Color.red);
+                        break;
+                    case 3:
+                        jCheckBox6.setForeground(Color.red);
+                        break;
+                }break;
+            case 3:
+                switch (x) {
+                    case 1:
+                        jCheckBox7.setForeground(Color.red);
+                        break;
+                    case 2:
+                        jCheckBox8.setForeground(Color.red);
+                        break;
+                    case 3:
+                        jCheckBox9.setForeground(Color.red);
+                        break;
                 }
-               case 2: switch(y){
-                    case 1: jCheckBox4.setForeground(Color.red); break;
-                    case 2: jCheckBox5.setForeground(Color.red); break; 
-                    case 3: jCheckBox6.setForeground(Color.red); break;
-                }
-               case 3: switch(y){
-                    case 1: jCheckBox7.setForeground(Color.red); break;
-                    case 2: jCheckBox8.setForeground(Color.red); break; 
-                    case 3: jCheckBox9.setForeground(Color.red); break;
-                }
-            }
-   
-  
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(PlayerConsole.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-            switch (x){
-                case 1: switch(y){
+        }
+    }
+    
+    private void cleanMonster(){
+            switch (y){
+                case 1: switch(x){
                 
                     case 1: jCheckBox1.setForeground(Color.BLACK); break;
                     case 2: jCheckBox2.setForeground(Color.BLACK); break; 
                     case 3: jCheckBox3.setForeground(Color.BLACK); break;
                 }
-               case 2: switch(y){
+               case 2: switch(x){
                     case 1: jCheckBox4.setForeground(Color.BLACK); break;
                     case 2: jCheckBox5.setForeground(Color.BLACK); break; 
                     case 3: jCheckBox6.setForeground(Color.BLACK); break;
                 }
-               case 3: switch(y){
+               case 3: switch(x){
                     case 1: jCheckBox7.setForeground(Color.BLACK); break;
                     case 2: jCheckBox8.setForeground(Color.BLACK); break; 
                     case 3: jCheckBox9.setForeground(Color.BLACK); break;
                 }
-            //}
-            
-            
-            
-        //}
-
     }
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -118,6 +124,7 @@ public class PlayerConsole extends javax.swing.JFrame {
         jCheckBox7 = new javax.swing.JCheckBox();
         jCheckBox8 = new javax.swing.JCheckBox();
         jCheckBox9 = new javax.swing.JCheckBox();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -204,34 +211,47 @@ public class PlayerConsole extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Check");
+        jButton1.setActionCommand("update");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jInternalFrame1Layout = new javax.swing.GroupLayout(jInternalFrame1.getContentPane());
         jInternalFrame1.getContentPane().setLayout(jInternalFrame1Layout);
         jInternalFrame1Layout.setHorizontalGroup(
             jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jInternalFrame1Layout.createSequentialGroup()
-                .addGap(70, 70, 70)
                 .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jInternalFrame1Layout.createSequentialGroup()
-                        .addComponent(jCheckBox7)
-                        .addGap(18, 18, 18)
-                        .addComponent(jCheckBox8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jCheckBox9))
-                    .addGroup(jInternalFrame1Layout.createSequentialGroup()
-                        .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jCheckBox1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jCheckBox4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(70, 70, 70)
                         .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jInternalFrame1Layout.createSequentialGroup()
+                                .addComponent(jCheckBox7)
                                 .addGap(18, 18, 18)
-                                .addComponent(jCheckBox5)
+                                .addComponent(jCheckBox8)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jCheckBox6))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jInternalFrame1Layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(jCheckBox2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jCheckBox3)))))
+                                .addComponent(jCheckBox9))
+                            .addGroup(jInternalFrame1Layout.createSequentialGroup()
+                                .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jCheckBox1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jCheckBox4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jInternalFrame1Layout.createSequentialGroup()
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jCheckBox5)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jCheckBox6))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jInternalFrame1Layout.createSequentialGroup()
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jCheckBox2)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jCheckBox3))))))
+                    .addGroup(jInternalFrame1Layout.createSequentialGroup()
+                        .addGap(115, 115, 115)
+                        .addComponent(jButton1)))
                 .addContainerGap(62, Short.MAX_VALUE))
         );
         jInternalFrame1Layout.setVerticalGroup(
@@ -253,7 +273,9 @@ public class PlayerConsole extends javax.swing.JFrame {
                     .addComponent(jCheckBox7)
                     .addComponent(jCheckBox8)
                     .addComponent(jCheckBox9))
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -274,80 +296,68 @@ public class PlayerConsole extends javax.swing.JFrame {
         // TODO add your handling code here:
         leavingMonster.setX(1);
         leavingMonster.setY(1);
-        player.setCurrentMonster(leavingMonster);
-        player.sendAnswer();
-
+        player.run();
 
     }//GEN-LAST:event_jCheckBox1ActionPerformed
 
     private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox2ActionPerformed
-        // TODO add your handling code here:
-        leavingMonster.setX(2);
+        leavingMonster.setX(1);
         leavingMonster.setY(1);
-        player.setCurrentMonster(leavingMonster);
-        player.sendAnswer();
+
     }//GEN-LAST:event_jCheckBox2ActionPerformed
 
     private void jCheckBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox3ActionPerformed
         // TODO add your handling code here:
-        leavingMonster.setX(3);
-        leavingMonster.setY(1);
-        player.setCurrentMonster(leavingMonster);
-        player.sendAnswer();
+
 
     }//GEN-LAST:event_jCheckBox3ActionPerformed
 
     private void jCheckBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox4ActionPerformed
         // TODO add your handling code here:
-        leavingMonster.setX(1);
-        leavingMonster.setY(2);
-        player.setCurrentMonster(leavingMonster);
-        player.sendAnswer();
+
     }//GEN-LAST:event_jCheckBox4ActionPerformed
 
     private void jCheckBox5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox5ActionPerformed
         // TODO add your handling code here:
-        leavingMonster.setX(2);
-        leavingMonster.setY(2);
-        player.setCurrentMonster(leavingMonster);
-        player.sendAnswer();
+
     }//GEN-LAST:event_jCheckBox5ActionPerformed
 
     private void jCheckBox6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox6ActionPerformed
         // TODO add your handling code here:
-        leavingMonster.setX(3);
-        leavingMonster.setY(2);
-        player.setCurrentMonster(leavingMonster);
-        player.sendAnswer();
+
     }//GEN-LAST:event_jCheckBox6ActionPerformed
 
     private void jCheckBox7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox7ActionPerformed
         // TODO add your handling code here:
-        leavingMonster.setX(1);
-        leavingMonster.setY(3);
-        player.setCurrentMonster(leavingMonster);
-        player.sendAnswer();
+
     }//GEN-LAST:event_jCheckBox7ActionPerformed
 
     private void jCheckBox8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox8ActionPerformed
-        // TODO add your handling code here:
-        leavingMonster.setX(2);
-        leavingMonster.setY(3);
-        player.setCurrentMonster(leavingMonster);
-        player.sendAnswer();
+
     }//GEN-LAST:event_jCheckBox8ActionPerformed
 
     private void jCheckBox9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox9ActionPerformed
         // TODO add your handling code here:
-        leavingMonster.setX(3);
-        leavingMonster.setY(3);
-        player.setCurrentMonster(leavingMonster);
-        player.sendAnswer();
+
     }//GEN-LAST:event_jCheckBox9ActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.cleanMonster();
+       // player.receiveMonster();
+        player.run();
+        enteringMonster = player.getCurrentMonster();
+        x = enteringMonster.getX();
+        y = enteringMonster.getY();
+        this.showMonster();
+
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+
+
     /**
-     * @param args the command line arguments
-     */
+         * @param args the command line arguments
+         */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -362,13 +372,13 @@ public class PlayerConsole extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PlayerConsole.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PlayerConsole1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PlayerConsole.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PlayerConsole1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PlayerConsole.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PlayerConsole1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PlayerConsole.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PlayerConsole1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -378,13 +388,14 @@ public class PlayerConsole extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new PlayerConsole().setVisible(true);
+                new PlayerConsole1().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JButton jButton1;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JCheckBox jCheckBox3;
@@ -396,4 +407,9 @@ public class PlayerConsole extends javax.swing.JFrame {
     private javax.swing.JCheckBox jCheckBox9;
     private javax.swing.JInternalFrame jInternalFrame1;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

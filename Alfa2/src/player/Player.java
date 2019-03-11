@@ -222,16 +222,20 @@ public class Player extends Thread {
     
     @Override
     public void run() {
-        System.setProperty("java.net.preferIPv4Stack" , "true");
-        Scanner keyboard = new Scanner(System.in);
+        System.setProperty("java.net.preferIPv4Stack", "true");
         System.out.println("Registrando");
         this.logIn();
-        System.out.println("Recibiendo monstruo");
-        keyboard.nextInt();
-        this.receiveMonster();
-        System.out.println("Enviando respuesta");
-        keyboard.nextInt();
-        this.sendAnswer();
+        //while (true) {
+            System.out.println("Recibiendo monstruo");
+            this.receiveMonster();
+            System.out.println("Enviando respuesta");
+            this.sendAnswer();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        
     }
 
     public static void main(String[] args) {
