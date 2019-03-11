@@ -85,4 +85,10 @@ public class Statics {
         int i = Statics.binarySearch(Statics.players, player, 0, Statics.totalPlayers - 1);
         Statics.players[i].setScore(newScore);
     }
+
+	public static void resetScore() {
+        for (int i = 0; i < Statics.totalPlayers; i++) {
+            Statics.players[i].setScore(0);
+        }
+	}
 }

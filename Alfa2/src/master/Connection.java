@@ -57,9 +57,11 @@ public class Connection extends Thread {
                     User player = Statics.findPlayer(monster.getId());
                     if (player != null) {
                         Statics.hasWinner = true;
-                        System.out.println("Score: " + player.getScore() + 1);
-                        this.out.writeObject(player.getScore() + 1);
                         Statics.updateScore(player, player.getScore() + 1);
+                        this.out.writeObject(player.getScore() + 1);
+                        if (player.getScore() + 1 >= 10) {
+                            Statics.resetScore();
+                        }
                     } else {
                         System.out.println("No existen registros");
                     }
