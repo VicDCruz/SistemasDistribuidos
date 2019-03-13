@@ -14,6 +14,7 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import master.GameMaster;
 import master.Monster;
 import player.Player;
@@ -29,17 +30,21 @@ public class PlayerConsole1 extends javax.swing.JFrame implements ActionListener
     private Monster leavingMonster;
     private int x;
     private int y;
+    private double r;
     /**
      * Creates new form GameConsole
      */
     public PlayerConsole1() {
         initComponents();
+        r = Math.random();
+        System.out.println("Player Console: "+r);
+        jInternalFrame1.setTitle("Player: "+r);
+        player = new Player(r + "", "hola123");
+        player.logIn();
+        leavingMonster = new Monster(-1,-1,1);
+        enteringMonster = new Monster(-1,-1,1);
+        jTextField1.setVisible(false);
 
-        System.out.println("Player Console");
-        jInternalFrame1.setTitle("Player");
-        player = new Player("Victor", "hola123");
-        //player.logIn();
-        player.start();
     }
     
     private void showMonster(){
@@ -103,6 +108,20 @@ public class PlayerConsole1 extends javax.swing.JFrame implements ActionListener
                 }
     }
     }
+    
+    private void catchMonster(){
+        this.cleanMonster();
+        if(player.isIsWinner() == true){
+            player.setIsWinner(false);
+            JOptionPane.showMessageDialog(null, "¡Felicidades " + r + ". Ganaste la ronda :) ");
+        }
+
+        player.receiveMonster();
+        enteringMonster = player.getCurrentMonster();
+        x = enteringMonster.getX();
+        y = enteringMonster.getY();
+        this.showMonster();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -125,6 +144,7 @@ public class PlayerConsole1 extends javax.swing.JFrame implements ActionListener
         jCheckBox8 = new javax.swing.JCheckBox();
         jCheckBox9 = new javax.swing.JCheckBox();
         jButton1 = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -211,11 +231,18 @@ public class PlayerConsole1 extends javax.swing.JFrame implements ActionListener
             }
         });
 
-        jButton1.setText("Check");
+        jButton1.setText("START");
         jButton1.setActionCommand("update");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
+            }
+        });
+
+        jTextField1.setText("GANASTE :)");
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
             }
         });
 
@@ -226,33 +253,35 @@ public class PlayerConsole1 extends javax.swing.JFrame implements ActionListener
             .addGroup(jInternalFrame1Layout.createSequentialGroup()
                 .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jInternalFrame1Layout.createSequentialGroup()
-                        .addGap(70, 70, 70)
-                        .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jInternalFrame1Layout.createSequentialGroup()
-                                .addComponent(jCheckBox7)
-                                .addGap(18, 18, 18)
-                                .addComponent(jCheckBox8)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jCheckBox9))
-                            .addGroup(jInternalFrame1Layout.createSequentialGroup()
-                                .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jCheckBox1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jCheckBox4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jInternalFrame1Layout.createSequentialGroup()
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jCheckBox5)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jCheckBox6))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jInternalFrame1Layout.createSequentialGroup()
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jCheckBox2)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jCheckBox3))))))
-                    .addGroup(jInternalFrame1Layout.createSequentialGroup()
                         .addGap(115, 115, 115)
-                        .addComponent(jButton1)))
-                .addContainerGap(62, Short.MAX_VALUE))
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jInternalFrame1Layout.createSequentialGroup()
+                        .addGap(70, 70, 70)
+                        .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jInternalFrame1Layout.createSequentialGroup()
+                                    .addComponent(jCheckBox7)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jCheckBox8)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(jCheckBox9))
+                                .addGroup(jInternalFrame1Layout.createSequentialGroup()
+                                    .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(jCheckBox1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jCheckBox4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jInternalFrame1Layout.createSequentialGroup()
+                                            .addGap(18, 18, 18)
+                                            .addComponent(jCheckBox5)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                            .addComponent(jCheckBox6))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jInternalFrame1Layout.createSequentialGroup()
+                                            .addGap(18, 18, 18)
+                                            .addComponent(jCheckBox2)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                            .addComponent(jCheckBox3))))))))
+                .addContainerGap(77, Short.MAX_VALUE))
         );
         jInternalFrame1Layout.setVerticalGroup(
             jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -273,9 +302,11 @@ public class PlayerConsole1 extends javax.swing.JFrame implements ActionListener
                     .addComponent(jCheckBox7)
                     .addComponent(jCheckBox8)
                     .addComponent(jCheckBox9))
-                .addGap(18, 18, 18)
+                .addGap(13, 13, 13)
                 .addComponent(jButton1)
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -296,62 +327,110 @@ public class PlayerConsole1 extends javax.swing.JFrame implements ActionListener
         // TODO add your handling code here:
         leavingMonster.setX(1);
         leavingMonster.setY(1);
-        player.run();
+        player.setCurrentMonster(leavingMonster);
+        player.sendAnswer();
+        this.cleanMonster();
+        
+        this.catchMonster();
 
     }//GEN-LAST:event_jCheckBox1ActionPerformed
 
     private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox2ActionPerformed
-        leavingMonster.setX(1);
+        leavingMonster.setX(2);
         leavingMonster.setY(1);
 
+        player.setCurrentMonster(leavingMonster);
+        player.sendAnswer();
+        
+        this.catchMonster();
     }//GEN-LAST:event_jCheckBox2ActionPerformed
 
     private void jCheckBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox3ActionPerformed
         // TODO add your handling code here:
-
+        leavingMonster.setX(3);
+        leavingMonster.setY(1);
+        player.setCurrentMonster(leavingMonster);
+        player.sendAnswer();
+        
+        this.catchMonster();
 
     }//GEN-LAST:event_jCheckBox3ActionPerformed
 
     private void jCheckBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox4ActionPerformed
         // TODO add your handling code here:
-
+        leavingMonster.setX(1);
+        leavingMonster.setY(2);
+        player.setCurrentMonster(leavingMonster);
+        player.sendAnswer();
+        
+        this.catchMonster();
     }//GEN-LAST:event_jCheckBox4ActionPerformed
 
     private void jCheckBox5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox5ActionPerformed
         // TODO add your handling code here:
-
+        leavingMonster.setX(2);
+        leavingMonster.setY(2);
+        player.setCurrentMonster(leavingMonster);
+        player.sendAnswer();
+        
+        this.catchMonster();
     }//GEN-LAST:event_jCheckBox5ActionPerformed
 
     private void jCheckBox6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox6ActionPerformed
         // TODO add your handling code here:
-
+        leavingMonster.setX(3);
+        leavingMonster.setY(2);
+        player.setCurrentMonster(leavingMonster);
+        player.sendAnswer();
+        
+        this.catchMonster();
     }//GEN-LAST:event_jCheckBox6ActionPerformed
 
     private void jCheckBox7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox7ActionPerformed
         // TODO add your handling code here:
-
+        leavingMonster.setX(1);
+        leavingMonster.setY(3);
+        player.setCurrentMonster(leavingMonster);
+        player.sendAnswer();
+        
+        this.catchMonster();
     }//GEN-LAST:event_jCheckBox7ActionPerformed
 
     private void jCheckBox8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox8ActionPerformed
-
+        leavingMonster.setX(2);
+        leavingMonster.setY(3);
+        player.setCurrentMonster(leavingMonster);
+        player.sendAnswer();
+        
+        this.catchMonster();
     }//GEN-LAST:event_jCheckBox8ActionPerformed
 
     private void jCheckBox9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox9ActionPerformed
         // TODO add your handling code here:
+        leavingMonster.setX(3);
+        leavingMonster.setY(3);
+        player.setCurrentMonster(leavingMonster);
+        player.sendAnswer();
+        
+        this.catchMonster();
 
     }//GEN-LAST:event_jCheckBox9ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        this.cleanMonster();
-       // player.receiveMonster();
-        player.run();
-        enteringMonster = player.getCurrentMonster();
-        x = enteringMonster.getX();
-        y = enteringMonster.getY();
-        this.showMonster();
-
-
+         if(player.isIsWinner() == true){
+            jTextField1.setVisible(true);
+            player.setIsWinner(false);
+        }
+        else{
+            jTextField1.setVisible(false);
+        }
+        this.catchMonster();
+       
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
 
 
@@ -389,6 +468,7 @@ public class PlayerConsole1 extends javax.swing.JFrame implements ActionListener
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new PlayerConsole1().setVisible(true);
+                
             }
         });
     }
@@ -406,6 +486,7 @@ public class PlayerConsole1 extends javax.swing.JFrame implements ActionListener
     private javax.swing.JCheckBox jCheckBox8;
     private javax.swing.JCheckBox jCheckBox9;
     private javax.swing.JInternalFrame jInternalFrame1;
+    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 
     @Override

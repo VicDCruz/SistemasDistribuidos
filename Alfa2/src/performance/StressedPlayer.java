@@ -1,5 +1,6 @@
-package player;
+package performance;
 
+import player.*;
 import interfaces.Information;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -25,7 +26,7 @@ import master.Monster;
 /**
  * Player
  */
-public class Player extends Thread {
+public class StressedPlayer extends Thread {
 
     private String id;
     private String name;
@@ -38,7 +39,7 @@ public class Player extends Thread {
     private Monster currentMonster;
     private boolean isWinner;
 
-    public Player(String name, String password) {
+    public StressedPlayer(String name, String password) {
         this.name = name;
         this.password = password;
         try {
@@ -165,10 +166,11 @@ public class Player extends Thread {
             socket.leaveGroup(group);
             output = true;
         } catch (IOException ex) {
-            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(StressedPlayer.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            if (socket != null)
+            if (socket != null) {
                 socket.close();
+            }
         }
         return output;
     }
@@ -206,7 +208,7 @@ public class Player extends Thread {
             if (score > -1) {
                 System.out.println("Received: " + score);
                 System.out.println("Gane el MONSTRUO " + this.id);
-                if (score >= 10) {
+                if (score >= 2) {
                     System.out.println("GANE la ronda");
                     isWinner = true;
                 }
@@ -220,7 +222,7 @@ public class Player extends Thread {
         } catch (IOException e) {
             System.out.println("IO:" + e.getMessage());
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(StressedPlayer.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             if (socket != null) {
                 try {
@@ -238,6 +240,22 @@ public class Player extends Thread {
         System.setProperty("java.net.preferIPv4Stack", "true");
         System.out.println("Registrando");
         this.logIn();
+
+        /*//Consigue el scheduler desde el rmi en rmihost
+        Registry registry;
+        try {
+            registry = LocateRegistry.getRegistry("localhost");
+            SchedulerInterface sch = (SchedulerInterface) registry.lookup("Scheduler");
+            //Consigue tu id + tiempo de espera para mandar solicitudes
+            id = sch.clientID();
+            miCliente.idC = id;
+            delay = sch.nanoDelay();
+            milis = (long) (Math.floor(delay * 1e-6));
+            nanos = (long) (delay - milis * 1e6);
+            System.out.println("Cliente numero: " + id);
+        } catch (RemoteException ex) {
+            Logger.getLogger(StressedPlayer.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
 
         while (true) {
 
@@ -260,7 +278,7 @@ public class Player extends Thread {
         System.out.println("Registrando");
         int myint = keyboard.nextInt();
         double random = Math.random();
-        Player player = new Player("Victor " + random, "hola123");
+        StressedPlayer player = new StressedPlayer("Victor " + random, "hola123");
         player.logIn();
         System.out.println("Recibiendo monstruo");
         player.receiveMonster();
