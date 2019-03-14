@@ -1,12 +1,9 @@
 package master;
 
 import interfaces.Information;
-import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.net.UnknownHostException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -14,9 +11,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
 import interfaces.Register;
-import java.net.SocketException;
 import java.util.Random;
-import java.util.Scanner;
 
 /**
  * GameMaster Esta clase funciona como SERVIDOR de TCP para los múltiples
@@ -70,8 +65,10 @@ public class GameMaster implements Register {
         if (Statics.remainingSpaces == 0) {
             return null;
         }
+        int resultSearch;
         User user = new User(username, password, ip);
-        if (Statics.totalPlayers == 0 || Statics.binarySearch(Statics.players, user, 0, Statics.totalPlayers) == -1) {
+        resultSearch = Statics.binarySearch(Statics.players, user, 0, Statics.totalPlayers);
+        if (Statics.totalPlayers == 0 || resultSearch == -1) {
             int newPosition = Statics.players.length - Statics.remainingSpaces;
             Statics.players[newPosition] = user;
             Statics.remainingSpaces--;
@@ -80,7 +77,12 @@ public class GameMaster implements Register {
             Statics.addUser(user);
             return new Information(this.ip, this.multicastPort, this.tcpPort, this.multicastIp, user.getId());
         }
-        System.out.println("Registrado");
+        if (resultSearch != -1) {
+            System.out.println("Registrado");
+            User oldPlayer = Statics.getPlayer(resultSearch);
+            return new Information(this.ip, this.multicastPort, this.tcpPort, this.multicastIp, oldPlayer.getId());
+        }
+        System.out.println("No Registrado");
         return null;
     }
 

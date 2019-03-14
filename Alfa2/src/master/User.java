@@ -105,6 +105,7 @@ public class User implements Comparable<User>{
         this.score = score;
     }
 
+    @Override
     public boolean equals(Object anObject) {
         if (anObject == null) return false;
         if (anObject.getClass() != this.getClass()) return false;
@@ -122,6 +123,12 @@ public class User implements Comparable<User>{
         if (anObject.getClass() != this.getClass()) return -1;
         User newUser = (User) anObject;
         int output = newUser.getId().compareTo(this.id);
+        if (output != 0) {
+            if (newUser.getName().compareTo(this.name) == 0 &&
+                    newUser.getPassword().compareTo(this.password) == 0) {
+                output = 0;
+            }
+        }
         return output;
     }
 

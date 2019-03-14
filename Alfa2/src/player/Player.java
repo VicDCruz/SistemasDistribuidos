@@ -16,7 +16,6 @@ import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.MulticastSocket;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -123,7 +122,10 @@ public class Player extends Thread {
             System.setSecurityManager(new SecurityManager());
         }
         try {
-            Registry registry = LocateRegistry.getRegistry("localhost");
+            System.out.println("No olvidar comentar 125 y 126 y poner la IP!!!");
+            System.exit(0);
+            String ipRmi = "";
+            Registry registry = LocateRegistry.getRegistry(ipRmi);
             Register register = (Register) registry.lookup("Register");
             Information information = register.logIn(this.name, this.password, ip);
             if (information != null) {

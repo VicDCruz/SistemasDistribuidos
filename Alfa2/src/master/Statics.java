@@ -25,6 +25,13 @@ public class Statics {
         return null;
     }
     
+    public static User getPlayer(int i) {
+        if (i != -1) {
+            return Statics.players[i];
+        }
+        return null;
+    }
+    
     public static void addUser(User newUser) {
         Statics.players[Statics.totalPlayers - 1] = newUser;
         Statics.players = Statics.quickSort(Statics.players, 0, Statics.totalPlayers - 1);

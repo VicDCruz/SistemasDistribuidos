@@ -5,7 +5,7 @@
  */
 package consolas;
 
-import java.awt.Color;
+import javax.swing.JFrame;
 import master.GameMaster;
 import master.Monster;
 
@@ -23,6 +23,7 @@ public class GameConsole extends javax.swing.JFrame {
      */
     public GameConsole() {
         initComponents();
+        jInternalFrame1.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         jInternalFrame1.setTitle("Game Console");
         System.out.println("Game Console");
 
@@ -308,6 +309,7 @@ public class GameConsole extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                System.setProperty("java.net.preferIPv4Stack", "true");
                 new GameConsole().setVisible(true);
             }
         });
