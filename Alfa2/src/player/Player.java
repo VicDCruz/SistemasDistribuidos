@@ -36,6 +36,7 @@ public class Player extends Thread {
     private int tcpPort;
     private Monster currentMonster;
     private boolean isWinner;
+    private int score;
 
     public Player(String name, String password) {
         this.name = name;
@@ -50,6 +51,10 @@ public class Player extends Thread {
         // EN UN FUTURO BORRAR
         currentMonster = new Monster(1, 1, 1, this.ip);
         isWinner = false;
+    }
+
+    public int getScore() {
+        return this.score;
     }
 
     public boolean isIsWinner() {
@@ -206,6 +211,7 @@ public class Player extends Thread {
             out.writeObject(this.currentMonster);
             int score = (int) in.readObject();
             if (score > -1) {
+                this.score = score;
                 System.out.println("Received: " + score);
                 System.out.println("Gane el MONSTRUO " + this.id);
                 if (score >= 10) {

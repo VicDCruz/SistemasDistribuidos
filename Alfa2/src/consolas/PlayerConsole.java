@@ -38,10 +38,10 @@ public class PlayerConsole extends javax.swing.JFrame implements ActionListener 
         JPasswordField pass = new JPasswordField(10);
         panel.add(label);
         panel.add(pass);
-        String[] options = new String[]{"OK", "Cancel"};
-        int option = JOptionPane.showOptionDialog(null, panel, "The title",
+        String[] options = new String[]{"Aceptar", "Cancelar"};
+        int option = JOptionPane.showOptionDialog(null, panel, "Password",
                                  JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE,
-                                 null, options, options[1]);
+                                 null, options, options[0]);
         String password = null;
         if(option == 0) // pressing OK button
         {
@@ -58,7 +58,7 @@ public class PlayerConsole extends javax.swing.JFrame implements ActionListener 
         player.logIn();
         leavingMonster = new Monster(-1, -1, 1);
         enteringMonster = new Monster(-1, -1, 1);
-        jTextField1.setVisible(false);
+        jTextField.setVisible(true);
     }
 
     private void showMonster() {
@@ -181,7 +181,7 @@ public class PlayerConsole extends javax.swing.JFrame implements ActionListener 
         jCheckBox8 = new javax.swing.JCheckBox();
         jCheckBox9 = new javax.swing.JCheckBox();
         jButton1 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        jTextField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -276,10 +276,11 @@ public class PlayerConsole extends javax.swing.JFrame implements ActionListener 
             }
         });
 
-        jTextField1.setText("GANASTE :)");
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        jTextField.setEditable(false);
+        jTextField.setText("Puntaje: 0");
+        jTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                jTextFieldActionPerformed(evt);
             }
         });
 
@@ -295,7 +296,7 @@ public class PlayerConsole extends javax.swing.JFrame implements ActionListener 
                     .addGroup(jInternalFrame1Layout.createSequentialGroup()
                         .addGap(70, 70, 70)
                         .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(jInternalFrame1Layout.createSequentialGroup()
                                     .addComponent(jCheckBox7)
@@ -341,9 +342,9 @@ public class PlayerConsole extends javax.swing.JFrame implements ActionListener 
                     .addComponent(jCheckBox9))
                 .addGap(13, 13, 13)
                 .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -366,9 +367,9 @@ public class PlayerConsole extends javax.swing.JFrame implements ActionListener 
         leavingMonster.setY(1);
         player.setCurrentMonster(leavingMonster);
         player.sendAnswer();
-
-        this.catchMonster();
-
+        if (player.getScore() >= 0) {
+            jTextField.setText("Puntaje: " + player.getScore());
+        }
     }//GEN-LAST:event_jCheckBox1ActionPerformed
 
     private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox2ActionPerformed
@@ -376,8 +377,9 @@ public class PlayerConsole extends javax.swing.JFrame implements ActionListener 
         leavingMonster.setY(1);
         player.setCurrentMonster(leavingMonster);
         player.sendAnswer();
-
-        this.catchMonster();
+        if (player.getScore() >= 0) {
+            jTextField.setText("Puntaje: " + player.getScore());
+        }
     }//GEN-LAST:event_jCheckBox2ActionPerformed
 
     private void jCheckBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox3ActionPerformed
@@ -386,9 +388,9 @@ public class PlayerConsole extends javax.swing.JFrame implements ActionListener 
         leavingMonster.setY(1);
         player.setCurrentMonster(leavingMonster);
         player.sendAnswer();
-
-        this.catchMonster();
-
+        if (player.getScore() >= 0) {
+            jTextField.setText("Puntaje: " + player.getScore());
+        }
     }//GEN-LAST:event_jCheckBox3ActionPerformed
 
     private void jCheckBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox4ActionPerformed
@@ -397,8 +399,9 @@ public class PlayerConsole extends javax.swing.JFrame implements ActionListener 
         leavingMonster.setY(2);
         player.setCurrentMonster(leavingMonster);
         player.sendAnswer();
-
-        this.catchMonster();
+        if (player.getScore() >= 0) {
+            jTextField.setText("Puntaje: " + player.getScore());
+        }
     }//GEN-LAST:event_jCheckBox4ActionPerformed
 
     private void jCheckBox5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox5ActionPerformed
@@ -407,8 +410,9 @@ public class PlayerConsole extends javax.swing.JFrame implements ActionListener 
         leavingMonster.setY(2);
         player.setCurrentMonster(leavingMonster);
         player.sendAnswer();
-
-        this.catchMonster();
+        if (player.getScore() >= 0) {
+            jTextField.setText("Puntaje: " + player.getScore());
+        }
     }//GEN-LAST:event_jCheckBox5ActionPerformed
 
     private void jCheckBox6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox6ActionPerformed
@@ -417,8 +421,9 @@ public class PlayerConsole extends javax.swing.JFrame implements ActionListener 
         leavingMonster.setY(2);
         player.setCurrentMonster(leavingMonster);
         player.sendAnswer();
-
-        this.catchMonster();
+        if (player.getScore() >= 0) {
+            jTextField.setText("Puntaje: " + player.getScore());
+        }
     }//GEN-LAST:event_jCheckBox6ActionPerformed
 
     private void jCheckBox7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox7ActionPerformed
@@ -427,8 +432,9 @@ public class PlayerConsole extends javax.swing.JFrame implements ActionListener 
         leavingMonster.setY(3);
         player.setCurrentMonster(leavingMonster);
         player.sendAnswer();
-
-        this.catchMonster();
+        if (player.getScore() >= 0) {
+            jTextField.setText("Puntaje: " + player.getScore());
+        }
     }//GEN-LAST:event_jCheckBox7ActionPerformed
 
     private void jCheckBox8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox8ActionPerformed
@@ -436,8 +442,9 @@ public class PlayerConsole extends javax.swing.JFrame implements ActionListener 
         leavingMonster.setY(3);
         player.setCurrentMonster(leavingMonster);
         player.sendAnswer();
-
-        this.catchMonster();
+        if (player.getScore() >= 0) {
+            jTextField.setText("Puntaje: " + player.getScore());
+        }
     }//GEN-LAST:event_jCheckBox8ActionPerformed
 
     private void jCheckBox9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox9ActionPerformed
@@ -446,27 +453,20 @@ public class PlayerConsole extends javax.swing.JFrame implements ActionListener 
         leavingMonster.setY(3);
         player.setCurrentMonster(leavingMonster);
         player.sendAnswer();
-
-        this.catchMonster();
-
+        if (player.getScore() >= 0) {
+            jTextField.setText("Puntaje: " + player.getScore());
+        }
     }//GEN-LAST:event_jCheckBox9ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if (player.isIsWinner() == true) {
-            jTextField1.setVisible(true);
-            player.setIsWinner(false);
-        } else {
-            jTextField1.setVisible(false);
-        }
-//        this.catchMonster();
         Receiver re = new Receiver(this);
         re.start();
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void jTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_jTextFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -526,7 +526,7 @@ public class PlayerConsole extends javax.swing.JFrame implements ActionListener 
     private javax.swing.JCheckBox jCheckBox8;
     private javax.swing.JCheckBox jCheckBox9;
     private javax.swing.JInternalFrame jInternalFrame1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField;
     // End of variables declaration//GEN-END:variables
 
     @Override

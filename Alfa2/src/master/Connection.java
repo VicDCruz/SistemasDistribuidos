@@ -58,8 +58,8 @@ public class Connection extends Thread {
                     if (player != null) {
                         Statics.hasWinner = true;
                         Statics.updateScore(player, player.getScore() + 1);
-                        this.out.writeObject(player.getScore() + 1);
-                        if (player.getScore() + 1 >= 10) {
+                        this.out.writeObject(player.getScore());
+                        if (player.getScore() >= 10) {
                             Statics.resetScore();
                         }
                     } else {
