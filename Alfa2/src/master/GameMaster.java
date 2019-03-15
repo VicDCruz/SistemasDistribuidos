@@ -4,13 +4,15 @@ import interfaces.Information;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
-import java.net.UnknownHostException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
 import interfaces.Register;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.Random;
 
 /**
@@ -35,12 +37,31 @@ public class GameMaster implements Register {
         // TEMPORAL
         currentMonster = new Monster(-1, -1, -1);
 
-        try {
-            InetAddress inet = InetAddress.getLocalHost();
-            this.ip = inet.getHostAddress();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
+        String systemipaddress = "";
+        try
+        { 
+            URL url_name = new URL("https://bot.whatismyipaddress.com");
+            BufferedReader sc = new BufferedReader(new InputStreamReader(url_name.openStream()));
+            systemipaddress = sc.readLine().trim();
+            if (!(systemipaddress.length() > 0))
+            {
+                try 
+                {
+                    InetAddress localhost = InetAddress.getLocalHost();
+                    System.out.println((localhost.getHostAddress()).trim());
+                    systemipaddress = (localhost.getHostAddress()).trim();
+                }
+                catch(Exception e1)
+                {
+                    systemipaddress = "Cannot Execute Properly";
+                }
+            }
         }
+        catch (Exception e2)
+        {
+            systemipaddress = "Cannot Execute Properly";
+        }
+        this.ip = systemipaddress;
         try {
             this.registry();
         } catch (RemoteException e) {
@@ -58,6 +79,10 @@ public class GameMaster implements Register {
 
     public void setIp(String ip) {
         this.ip = ip;
+    }
+    
+    public String getIp() {
+        return this.ip;
     }
 
     @Override

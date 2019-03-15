@@ -29,6 +29,8 @@ public class GameConsole extends javax.swing.JFrame {
 
         gm = new GameMaster(30, 2);
         boxMonster = gm.getCurrentMonster();
+        gm.receiveAnswer();
+        System.setProperty("java.rmi.server.hostname",gm.getIp());
     }
 
     /**
@@ -208,8 +210,6 @@ public class GameConsole extends javax.swing.JFrame {
         boxMonster.setX(1);
         boxMonster.setY(1);
        gm.sendMonster(boxMonster);
-       gm.receiveAnswer();
-
     }//GEN-LAST:event_jCheckBox1ActionPerformed
 
     private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox2ActionPerformed
@@ -217,7 +217,6 @@ public class GameConsole extends javax.swing.JFrame {
         boxMonster.setX(2);
         boxMonster.setY(1);
         gm.sendMonster(boxMonster);
-        gm.receiveAnswer();
     }//GEN-LAST:event_jCheckBox2ActionPerformed
 
     private void jCheckBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox3ActionPerformed
@@ -225,7 +224,6 @@ public class GameConsole extends javax.swing.JFrame {
         boxMonster.setX(3);
         boxMonster.setY(1);
         gm.sendMonster(boxMonster);
-        gm.receiveAnswer();
     }//GEN-LAST:event_jCheckBox3ActionPerformed
 
     private void jCheckBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox4ActionPerformed
@@ -233,7 +231,6 @@ public class GameConsole extends javax.swing.JFrame {
         boxMonster.setX(1);
         boxMonster.setY(2);
         gm.sendMonster(boxMonster);
-        gm.receiveAnswer();
     }//GEN-LAST:event_jCheckBox4ActionPerformed
 
     private void jCheckBox5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox5ActionPerformed
@@ -241,7 +238,6 @@ public class GameConsole extends javax.swing.JFrame {
         boxMonster.setX(2);
         boxMonster.setY(2);
         gm.sendMonster(boxMonster);
-        gm.receiveAnswer();
     }//GEN-LAST:event_jCheckBox5ActionPerformed
 
     private void jCheckBox6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox6ActionPerformed
@@ -249,7 +245,6 @@ public class GameConsole extends javax.swing.JFrame {
         boxMonster.setX(3);
         boxMonster.setY(2);
         gm.sendMonster(boxMonster);
-        gm.receiveAnswer();
     }//GEN-LAST:event_jCheckBox6ActionPerformed
 
     private void jCheckBox7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox7ActionPerformed
@@ -257,7 +252,6 @@ public class GameConsole extends javax.swing.JFrame {
         boxMonster.setX(1);
         boxMonster.setY(3);
         gm.sendMonster(boxMonster);
-        gm.receiveAnswer();
     }//GEN-LAST:event_jCheckBox7ActionPerformed
 
     private void jCheckBox8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox8ActionPerformed
@@ -265,7 +259,6 @@ public class GameConsole extends javax.swing.JFrame {
         boxMonster.setX(2);
         boxMonster.setY(3);
         gm.sendMonster(boxMonster);
-        gm.receiveAnswer();
     }//GEN-LAST:event_jCheckBox8ActionPerformed
 
     private void jCheckBox9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox9ActionPerformed
@@ -273,7 +266,6 @@ public class GameConsole extends javax.swing.JFrame {
         boxMonster.setX(3);
         boxMonster.setY(3);
         gm.sendMonster(boxMonster);
-        gm.receiveAnswer();
     }//GEN-LAST:event_jCheckBox9ActionPerformed
 
 
