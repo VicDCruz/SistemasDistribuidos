@@ -46,7 +46,6 @@ public class PlayerConsole extends javax.swing.JFrame implements ActionListener 
         if(option == 0) // pressing OK button
         {
             password = new String(pass.getPassword());
-            System.out.println("Your password is: " + password);
         } else {
             System.exit(0);
         }

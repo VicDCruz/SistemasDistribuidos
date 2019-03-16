@@ -3,9 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package master;
+package consolas;
 
-import interfaces.Coordinate;
+import javax.swing.JFrame;
+import master.GameMaster;
+import master.Monster;
 
 /**
  *
@@ -13,14 +15,22 @@ import interfaces.Coordinate;
  */
 public class GameConsole extends javax.swing.JFrame {
 
-    private Coordinate coor;
+    private GameMaster gm;
+    private Monster boxMonster;
+
     /**
      * Creates new form GameConsole
      */
-    
     public GameConsole() {
         initComponents();
-        coor = new Coordinate(-1,-1);
+        jInternalFrame1.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        jInternalFrame1.setTitle("Game Console");
+        System.out.println("Game Console");
+
+        gm = new GameMaster(30, 2);
+        System.setProperty("java.rmi.server.hostname",gm.getIp());
+        boxMonster = gm.getCurrentMonster();
+        gm.receiveAnswer();
     }
 
     /**
@@ -197,56 +207,69 @@ public class GameConsole extends javax.swing.JFrame {
 
     private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
         // TODO add your handling code here:
-        updateCoordinates(1);
+        boxMonster.setX(1);
+        boxMonster.setY(1);
+       gm.sendMonster(boxMonster);
     }//GEN-LAST:event_jCheckBox1ActionPerformed
 
     private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox2ActionPerformed
         // TODO add your handling code here:
-        updateCoordinates(2);
+        boxMonster.setX(2);
+        boxMonster.setY(1);
+        gm.sendMonster(boxMonster);
     }//GEN-LAST:event_jCheckBox2ActionPerformed
 
     private void jCheckBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox3ActionPerformed
         // TODO add your handling code here:
-        updateCoordinates(3);
-       
+        boxMonster.setX(3);
+        boxMonster.setY(1);
+        gm.sendMonster(boxMonster);
     }//GEN-LAST:event_jCheckBox3ActionPerformed
 
     private void jCheckBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox4ActionPerformed
         // TODO add your handling code here:
-        updateCoordinates(4);
+        boxMonster.setX(1);
+        boxMonster.setY(2);
+        gm.sendMonster(boxMonster);
     }//GEN-LAST:event_jCheckBox4ActionPerformed
 
     private void jCheckBox5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox5ActionPerformed
         // TODO add your handling code here:
-        updateCoordinates(5);
+        boxMonster.setX(2);
+        boxMonster.setY(2);
+        gm.sendMonster(boxMonster);
     }//GEN-LAST:event_jCheckBox5ActionPerformed
 
     private void jCheckBox6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox6ActionPerformed
         // TODO add your handling code here:
-        updateCoordinates(6);
+        boxMonster.setX(3);
+        boxMonster.setY(2);
+        gm.sendMonster(boxMonster);
     }//GEN-LAST:event_jCheckBox6ActionPerformed
 
     private void jCheckBox7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox7ActionPerformed
         // TODO add your handling code here:
-        updateCoordinates(7);
+        boxMonster.setX(1);
+        boxMonster.setY(3);
+        gm.sendMonster(boxMonster);
     }//GEN-LAST:event_jCheckBox7ActionPerformed
 
     private void jCheckBox8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox8ActionPerformed
         // TODO add your handling code here:
-        updateCoordinates(8);
+        boxMonster.setX(2);
+        boxMonster.setY(3);
+        gm.sendMonster(boxMonster);
     }//GEN-LAST:event_jCheckBox8ActionPerformed
 
     private void jCheckBox9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox9ActionPerformed
         // TODO add your handling code here:
-        updateCoordinates(9);
+        boxMonster.setX(3);
+        boxMonster.setY(3);
+        gm.sendMonster(boxMonster);
     }//GEN-LAST:event_jCheckBox9ActionPerformed
 
-    public void updateCoordinates(int num){
-        coor.setX(3-(num%2));
-        coor.setY(3-(num%3));
-        System.out.println(""+(3-(num%3)) +","+(3-(num%2)));
-        
-    }
+
+
     /**
      * @param args the command line arguments
      */
@@ -273,10 +296,12 @@ public class GameConsole extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(GameConsole.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                System.setProperty("java.net.preferIPv4Stack", "true");
                 new GameConsole().setVisible(true);
             }
         });

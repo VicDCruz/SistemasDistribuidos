@@ -1,188 +1,283 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package player;
 
-import interfaces.Credential;
-import interfaces.Play;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
+import interfaces.Information;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+
+import interfaces.Register;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
-import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.Socket;
-import java.net.SocketException;
-import java.net.UnknownHostException;
-import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.net.InetAddress;
+import master.Monster;
 
 /**
- *
- * @author VicDCruz
+ * Player
  */
-public class Player {
+public class Player extends Thread {
 
-    private InetAddress group;
-    private MulticastSocket socket;
-    private byte[] buffer;
+    private String id;
+    private String name;
+    private String password;
+    private String ip;
+    private String ipGameMaster;
+    private int multicastPort;
+    private String multicastIp;
+    private int tcpPort;
+    private Monster currentMonster;
+    private boolean isWinner;
+    private int score;
 
-    private String inetAddressNum;
-    private int socketGroupNum;
-
-    public Player() {
-    }
-
-    // Sin RMI
-    public Player(String myInetAddressNum, int myGroup) {
+    public Player(String name, String password) {
+        this.name = name;
+        this.password = password;
         try {
-            InetAddress inetAddress = InetAddress.getLocalHost();
-            this.group = InetAddress.getByName(inetAddressNum); // destination multicast group
-            this.socket = new MulticastSocket(6789);
-            this.socket.joinGroup(group);
-            this.buffer = new byte[1000];
-
-        } catch (UnknownHostException ex) {
-            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+            InetAddress inet = InetAddress.getLocalHost();
+            this.ip = inet.getHostAddress();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
         }
+
+        // EN UN FUTURO BORRAR
+        currentMonster = new Monster(1, 1, 1, this.ip);
+        isWinner = false;
     }
 
-    // Con RMI
-    public Player(String name, String password) throws UnknownHostException {
-        InetAddress inetAddress = InetAddress.getLocalHost();
-        if (lookUpGame(name, password, inetAddress.getHostAddress())) {
-            try {
-                this.group = InetAddress.getByName(inetAddressNum); // destination multicast group
-                this.socket = new MulticastSocket(socketGroupNum);
-                this.socket.joinGroup(group);
-                this.buffer = new byte[1000];
-
-            } catch (UnknownHostException ex) {
-                Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+    public int getScore() {
+        return this.score;
     }
 
-    // RMI Lookup
-    public boolean lookUpGame(String playerName, String password, String ip) {
+    public boolean isIsWinner() {
+        return isWinner;
+    }
+
+    public void setIsWinner(boolean isWinner) {
+        this.isWinner = isWinner;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    public String getIpGameMaster() {
+        return ipGameMaster;
+    }
+
+    public void setIpGameMaster(String ipGameMaster) {
+        this.ipGameMaster = ipGameMaster;
+    }
+
+    public int getMulticastPort() {
+        return multicastPort;
+    }
+
+    public void setMulticastPort(int multicastPort) {
+        this.multicastPort = multicastPort;
+    }
+
+    public String getMulticastIp() {
+        return multicastIp;
+    }
+
+    public void setMulticastIp(String multicastIp) {
+        this.multicastIp = multicastIp;
+    }
+
+    public int getTcpPort() {
+        return tcpPort;
+    }
+
+    public void setTcpPort(int tcpPort) {
+        this.tcpPort = tcpPort;
+    }
+
+    public Monster getCurrentMonster() {
+        return currentMonster;
+    }
+
+    public void setCurrentMonster(Monster currentMonster) {
+        this.currentMonster = currentMonster;
+    }
+
+    public void logIn() {
         System.setProperty("java.security.policy", "file:./src/player/player.policy");
-
         if (System.getSecurityManager() == null) {
             System.setSecurityManager(new SecurityManager());
         }
-
         try {
-            String name = "HitMonster";
-            Registry registry = LocateRegistry.getRegistry("localhost"); // server's ip address args[0]
-            Play playGame = (Play) registry.lookup(name);
+//            System.out.println("No olvidar comentar 125 y 126 y poner la IP!!!");
+//            System.exit(0);
+            String ipRmi = "148.205.133.199";
+            Registry registry = LocateRegistry.getRegistry(ipRmi);
+            Register register = (Register) registry.lookup("Register");
+            Information information = register.logIn(this.name, this.password, ip);
+            if (information != null) {
+                this.ipGameMaster = information.getIp();
+                this.multicastPort = information.getMulticastPort();
+                this.tcpPort = information.getTcpPort();
+                this.multicastIp = information.getMulticastIp();
+                this.id = information.getUserId();
+                System.out.println("Registrado con exito");
+                System.out.println(this.ipGameMaster);
+                System.out.println(this.multicastPort);
+                System.out.println(this.tcpPort);
 
-            Credential info = playGame.login(playerName, password, ip);
-            if (info == null) {
-                System.out.println("Sala totalmente llena");
-                return false;
+            } else {
+                System.out.println("No se pudo registrar");
             }
-            inetAddressNum = info.getInetAddressNum();
-            socketGroupNum = info.getSocketGroupNum();
-
-            System.out.println("La clave es: " + socketGroupNum + " " + inetAddressNum);
-            return true;
-        } catch (Exception e) {
-            System.err.println("exception");
+        } catch (RemoteException | NotBoundException e) {
             e.printStackTrace();
-            return false;
         }
     }
 
-    // UDP receiver
+    // UDP
     public boolean receiveMonster() {
-        MulticastSocket s = null;
-        try {       
-            InetAddress group = InetAddress.getByName("228.5.60.7"); // destination multicast group
-            s = new MulticastSocket(this.socketGroupNum);
-            s.joinGroup(group);
-            System.out.println("Waiting for messages");
-            DatagramPacket messageIn = new DatagramPacket(this.buffer, this.buffer.length);
-            s.receive(messageIn);
-            String[] data = messageIn.getData().toString().split(",");
-            int[] coordinates = new int[data.length];
-            for (int i = 0; i < data.length; i++) {
-                coordinates[i] = Integer.parseInt(data[i]);
-            }
-            System.out.println("Message: " + new String(messageIn.getData()) + " from: " + messageIn.getAddress());
-        } catch (SocketException e) {
-            System.out.println("Socket: " + e.getMessage());
-                    
-        } catch (IOException e) {
-            System.out.println("IO: " + e.getMessage());
+        // System.setProperty("java.net.preferIPv4Stack", "true");
+        boolean output = false;
+        MulticastSocket socket = null;
+        try {
+            socket = new MulticastSocket(this.multicastPort);
+            System.out.println(this.multicastIp);
+            InetAddress group = InetAddress.getByName(this.multicastIp);
+            socket.joinGroup(group);
+            byte[] buffer = new byte[1000];
+            DatagramPacket messageIn = null;
+            System.out.println("Esperando mensajes...");
+            messageIn = new DatagramPacket(buffer, buffer.length);
+            socket.receive(messageIn);
+            this.currentMonster = new Monster(messageIn.getData());
+            System.out.println("Message: " + this.currentMonster.toString() + " from: " + messageIn.getAddress());
+            socket.leaveGroup(group);
+            output = true;
+        } catch (IOException ex) {
+            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            if (this.socket != null) {
-                s.close();
-            }
+            if (socket != null)
+                socket.close();
         }
-        return true;
+        return output;
     }
 
-    // TCP Sender
-    public boolean sendAnswer(int x, int y) {
-        Socket s = null;
-        try {
-            int serverPort = 7896;
+    // TCP
+    public boolean sendAnswer() {
+        boolean resp = false;
 
-            s = new Socket("localhost", serverPort);
-            DataInputStream in = new DataInputStream(s.getInputStream());
-            DataOutputStream out = new DataOutputStream(s.getOutputStream());
-            String messageOut = x + ", " + y;
-            out.writeUTF(messageOut); // UTF is a string encoding
-            String messageIn = in.readUTF();
-            if (messageIn.equals(messageOut)) {
-                System.out.println("Confirmation received");
-                return true;
+        Socket socket = null;
+        try {
+            int serverPort = this.tcpPort;
+
+            socket = new Socket(this.ipGameMaster, serverPort);
+            // s = new Socket("127.0.0.1", serverPort);
+            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+
+            out.writeObject(this.ip);
+            int newPort = (int) in.readObject();
+
+            try {
+                socket.close();
+            } catch (IOException e) {
+                System.out.println("close:" + e.getMessage());
             }
-            return false;
+            System.out.println("Mandando desde el cliente");
+            this.currentMonster.setId(this.id);
+
+            socket = new Socket(this.ipGameMaster, newPort);
+            in = new ObjectInputStream(socket.getInputStream());
+            out = new ObjectOutputStream(socket.getOutputStream());
+
+            out.writeObject(this.currentMonster);
+            int score = (int) in.readObject();
+            if (score > -1) {
+                this.score = score;
+                System.out.println("Received: " + score);
+                System.out.println("Gane el MONSTRUO " + this.id);
+                if (score >= 10) {
+                    System.out.println("GANE la ronda");
+                    isWinner = true;
+                }
+            } else {
+                System.out.println("Perdi el MONSTRUO");
+            }
         } catch (UnknownHostException e) {
-            System.out.println("Sock: " + e.getMessage());
+            System.out.println("Sock:" + e.getMessage());
         } catch (EOFException e) {
-            System.out.println("EOF: " + e.getMessage());
+            System.out.println("EOF:" + e.getMessage());
         } catch (IOException e) {
-            System.out.println("IO: " + e.getMessage());
+            System.out.println("IO:" + e.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            if (s != null) {
+            if (socket != null) {
                 try {
-                    s.close();
+                    socket.close();
                 } catch (IOException e) {
-                    System.out.println("close: " + e.getMessage());
+                    System.out.println("close:" + e.getMessage());
                 }
             }
         }
-        return false;
+        return resp;
     }
 
-    public static void main(String args[]) throws UnknownHostException {
-        InetAddress inetAddress = InetAddress.getLocalHost();
-        System.out.println("Hello, I'm a player");
+    @Override
+    public void run() {
+        System.setProperty("java.net.preferIPv4Stack", "true");
+        System.out.println("Registrando");
+        this.logIn();
 
-        Player p;
-        try {
-            p = new Player("Paola", "hola");
-            p.lookUpGame("Paola", "hola", inetAddress.getHostAddress());
-        } catch (UnknownHostException ex) {
-            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+        while (true) {
+
+            System.out.println("Recibiendo monstruo");
+            this.receiveMonster();
+            System.out.println("Enviando respuesta");
+            this.sendAnswer();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
         }
-   
-
     }
 
+    public static void main(String[] args) {
+        System.setProperty("java.net.preferIPv4Stack", "true");
+        Scanner keyboard = new Scanner(System.in);
+        System.out.println("Registrando");
+        int myint = keyboard.nextInt();
+        double random = Math.random();
+        Player player = new Player("Victor " + random, "hola123");
+        player.logIn();
+        System.out.println("Recibiendo monstruo");
+        player.receiveMonster();
+        System.out.println("Enviando respuesta");
+        keyboard.nextInt();
+        player.sendAnswer();
+        while (true) {
+            player.receiveMonster();
+        }
+
+    }
 }
