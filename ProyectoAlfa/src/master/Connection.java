@@ -1,57 +1,86 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package master;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.EOFException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.IOException;
+import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-class Connection extends Thread {
-
-    DataInputStream in;
-    DataOutputStream out;
+/**
+ * Connection
+ */
+public class Connection extends Thread {
+    ObjectInputStream in;
+    ObjectOutputStream out;
     Socket clientSocket;
+    int newPort = -1;
 
-    public Connection(Socket aClientSocket) {
+    public Connection(Socket clientSocket) {
+        this.clientSocket = clientSocket;
         try {
-            clientSocket = aClientSocket;
-            in = new DataInputStream(clientSocket.getInputStream());
-            out = new DataOutputStream(clientSocket.getOutputStream());
+            this.out = new ObjectOutputStream(this.clientSocket.getOutputStream());
+            this.in = new ObjectInputStream(this.clientSocket.getInputStream());
         } catch (IOException e) {
-            System.out.println("Connection:" + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    
+    public Connection(Socket clientSocket, int newPort) {
+        this.clientSocket = clientSocket;
+        this.newPort = newPort;
+        try {
+            this.out = new ObjectOutputStream(this.clientSocket.getOutputStream());
+            this.in = new ObjectInputStream(this.clientSocket.getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
     @Override
-    public void run() {
-        try { // an echo server
-            String data = in.readUTF();
-            System.out.println("Message received from: " + clientSocket.getRemoteSocketAddress());
-            // PONER METODOLOGíA -> VICTOR CRUZ
-            out.writeUTF(data);
-            this.closeConnection();
-        } catch (EOFException e) {
-            System.out.println("EOF:" + e.getMessage());
-        } catch (IOException e) {
-            System.out.println("IO:" + e.getMessage());
-        } finally {
-            try {
-                clientSocket.close();
-            } catch (IOException e) {
-                System.out.println(e);
+    public synchronized void run() {
+        try {
+            if (this.newPort > 0) {
+                System.out.println("Sending new port...");
+                this.out.writeObject(this.newPort);
+                ServerSocket listenSocket = new ServerSocket(this.newPort);
+                System.out.println("Waiting for messages...");
+                Socket assistSocket = listenSocket.accept();
+                Connection connection = new Connection(assistSocket);
+                connection.start();
+            } else {
+                Monster monster = (Monster) this.in.readObject();
+                System.out.println("Monster received...");
+                System.out.println(monster.toString());
+                if (!Statics.hasWinner) {
+                    User player = Statics.findPlayer(monster.getId());
+                    if (player != null) {
+                        Statics.hasWinner = true;
+                        Statics.updateScore(player, player.getScore() + 1);
+                        this.out.writeObject(player.getScore());
+                        if (player.getScore() >= 10) {
+                            Statics.resetScore();
+                        }
+                    } else {
+                        System.out.println("No existen registros");
+                    }
+                } else {
+                    this.out.writeObject(-1);
+                }
             }
+        } catch (IOException ex) {
+            Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            this.closeConnection();
         }
     }
 
     public void closeConnection() {
-
         try {
-            clientSocket.close();
+            this.clientSocket.close();
         } catch (IOException e) {
             System.out.println(e);
         }

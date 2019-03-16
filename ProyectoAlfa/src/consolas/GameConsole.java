@@ -5,7 +5,7 @@
  */
 package consolas;
 
-import java.awt.Color;
+import javax.swing.JFrame;
 import master.GameMaster;
 import master.Monster;
 
@@ -23,11 +23,14 @@ public class GameConsole extends javax.swing.JFrame {
      */
     public GameConsole() {
         initComponents();
+        jInternalFrame1.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         jInternalFrame1.setTitle("Game Console");
         System.out.println("Game Console");
 
-        gm = new GameMaster(30, 10);
+        gm = new GameMaster(30, 2);
+        System.setProperty("java.rmi.server.hostname",gm.getIp());
         boxMonster = gm.getCurrentMonster();
+        gm.receiveAnswer();
     }
 
     /**
@@ -207,7 +210,6 @@ public class GameConsole extends javax.swing.JFrame {
         boxMonster.setX(1);
         boxMonster.setY(1);
        gm.sendMonster(boxMonster);
-
     }//GEN-LAST:event_jCheckBox1ActionPerformed
 
     private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox2ActionPerformed
@@ -222,7 +224,6 @@ public class GameConsole extends javax.swing.JFrame {
         boxMonster.setX(3);
         boxMonster.setY(1);
         gm.sendMonster(boxMonster);
-
     }//GEN-LAST:event_jCheckBox3ActionPerformed
 
     private void jCheckBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox4ActionPerformed
@@ -300,6 +301,7 @@ public class GameConsole extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                System.setProperty("java.net.preferIPv4Stack", "true");
                 new GameConsole().setVisible(true);
             }
         });

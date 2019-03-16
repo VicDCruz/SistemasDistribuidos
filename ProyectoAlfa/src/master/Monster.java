@@ -101,14 +101,9 @@ public class Monster implements Serializable {
         return output;
     }
 
+    @Override
     public String toString() {
         return "X: " + this.x + ", Y: " + this.y + ", ROUND: " + this.round;
-    }
-
-    public void deString(String s) {
-        this.x = s.charAt(3) - 48;
-        this.y = s.charAt(9)  - 48;
-        this.round = s.charAt(19)  - 48;
     }
 
 }
