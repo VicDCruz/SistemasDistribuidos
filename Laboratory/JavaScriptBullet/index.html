@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>My first bulletproof form!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="main.js"></script>
+</head>
+
+<body>
+    <div>
+        <h1>My first bulletproof form!</h1>
+    </div>
+    <div>
+        <form action="ok.html" method="get" onsubmit="return validateForm(this)" required>
+            <table>
+                <tr>
+                    <thead>Description</thead>
+                    <thead>Value</thead>
+                </tr>
+                <tr>
+                    <th>First name</th>
+                    <th>
+                        <input type="text" id="firstName" onkeydown="checkText(this)" onkeyup="checkText(this)"
+                            required>
+                    </th>
+                </tr>
+                <tr>
+                    <th>Last name</th>
+                    <th>
+                        <input type="text" id="lastName" onkeydown="checkText(this)" onkeyup="checkText(this)" required>
+                    </th>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <th>
+                        <input type="text" id="email" onchange="checkEmail(this)" required>
+                    </th>
+                </tr>
+                <tr>
+                    <th>Gender</th>
+                    <th>
+                        <input type="radio" name="gender" value="male" required> Male
+                        <input type="radio" name="gender" value="female" required> Female<br>
+                    </th>
+                </tr>
+                <tr>
+                    <th>Contry region</th>
+                    <th>
+                        <select required>
+                            <option></option>
+                            <option value="CDMX">CDMX</option>
+                            <option value="Queretaro">Queretaro</option>
+                            <option value="Torreon">Torreon</option>
+                            <option value="Chihuahua">Chihuahua</option>
+                        </select>
+                    </th>
+                </tr>
+                <tr>
+                    <th>All vaccines?</th>
+                    <th>
+                        <input type="checkbox" name="vaccines" id="vaccines" required> Vaccines
+                    </th>
+                </tr>
+                <tr>
+                    <th>Additional comments</th>
+                    <th>
+                        <input type="text" id="additionalComments" required>
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        <button type="reset">Reset</button>
+                    </th>
+                    <th>
+                        <button type="submit">Enviar</button>
+                    </th>
+                </tr>
+            </table>
+        </form>
+    </div>
+</body>
+
+</html>
