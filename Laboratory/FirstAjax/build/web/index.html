@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <script>
+        function loadNewContent(id, target) {
+            var ajaxRequest;
+            if (window.XMLHttpRequest){
+                ajaxRequest=new XMLHttpRequest(); // IE7+, Firefox, Chrome, Opera, Safari
+                // alert(ajaxRequest.readyState + " " + ajaxRequest.status);
+            } else {
+                ajaxRequest=new ActiveXObject("Microsoft.XMLHTTP"); // IE6, IE5
+            }
+            ajaxRequest.onreadystatechange = function(){
+                if (ajaxRequest.readyState==4 && ajaxRequest.status==200){
+                document.getElementById(id).innerHTML=ajaxRequest.responseText; }
+            }
+            // ajaxRequest.onreadystatechange = function(){
+                // alert(ajaxRequest.readyState + " " + ajaxRequest.status);
+                // if (ajaxRequest.readyState==4 && ajaxRequest.status==200){
+                //     document.getElementById(id).innerHTML=ajaxRequest.responseText; }
+            // }
+            // ajaxRequest.open("GET", target + "?name=Victor&age=21", true /*async*/);
+            // ajaxRequest.open("POST", target + "?name=Victor&age=21", true /*async*/);
+            // ajaxRequest. setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            // ajaxRequest. send();
+             ajaxRequest.onreadystatechange = function(){
+                if (ajaxRequest.readyState==4 && ajaxRequest.status==200){
+                    var xmlDoc=ajaxRequest.responseXML;
+                    var txt="";
+                    var x=xmlDoc.getElementsByTagName("ARTIST"); for (var i=0;i<x.length;i++) {
+                    txt=txt + x[i].childNodes[0].nodeValue + "<br>"; }
+                    document.getElementById("myDiv").innerHTML=txt;
+                }
+            }
+        }
+        </script>
+        <div id="myDiv">TODO write content</div>
+        <input type="button" value="AJAX" onclick="loadNewContent('myDiv', 'cdCatalog.xml')">
+    </body>
+</html>
