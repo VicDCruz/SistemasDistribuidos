@@ -10,6 +10,7 @@ import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,15 +23,15 @@ public class Conexion {
     public Conexion() {
     }
     
-    public void getTables() {
+    public String[] getTables(String dataBase) {
+        ArrayList<String> output = new ArrayList<String>();
         try {
             Class.forName("org.apache.derby.jdbc.ClientDriver");
-            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/myFirstDatabase", "root", "root");
+            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/" + dataBase, "root", "root");
             DatabaseMetaData meta = con.getMetaData();
             ResultSet res = meta.getTables(null, null, null, new String[] {"TABLE"});
-            System.out.println("List of tables: ");
             while (res.next()) {
-                System.out.println(res.getString("TABLE_NAME"));
+                output.add(res.getString("TABLE_NAME"));
             }
             res.close();
         } catch (ClassNotFoundException ex) {
@@ -38,10 +39,13 @@ public class Conexion {
         } catch (SQLException ex) {
             Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return output.toArray(new String[0]);
     }
     
     public static void main(String[] args) {
         Conexion c = new Conexion();
-        c.getTables();
+        // Test
+        for (String name: c.getTables("myFirstDatabase"))
+            System.out.println(name);
     }
 }
