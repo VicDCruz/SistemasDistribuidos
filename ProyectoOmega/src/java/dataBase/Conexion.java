@@ -23,6 +23,21 @@ public class Conexion {
     public Conexion() {
     }
     
+    public void createDatabase() {
+    }
+    
+    public void createTable() {
+    }
+    
+    public void deleteTable() {
+    }
+    
+    public void editTable() {
+    }
+    
+    public void scrollTable() {
+    }
+    
     public String[] getTables(String dataBase) {
         ArrayList<String> output = new ArrayList<String>();
         try {
