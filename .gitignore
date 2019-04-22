@@ -44,3 +44,5 @@ Laboratory/JavaBoTs/.vscode/launch.json
 **/.vscode
 Alfa2/nbproject/private/*
 /ProyectoOmega/nbproject/private/
+/ProyectoOmega/build/
+/ProyectoOmega/dist/
