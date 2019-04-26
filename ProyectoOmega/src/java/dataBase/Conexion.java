@@ -38,7 +38,8 @@ public class Conexion {
             this.query = con.createStatement();
             output = true;
         } catch (SQLException | ClassNotFoundException ex) {
-            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+            // Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("No existe BD");
         }
         return output;
     }
@@ -58,8 +59,13 @@ public class Conexion {
     
     public boolean createTable(String table, String[] attributes, String[] types) {
         // falta poner los atributos y tipos en el query
-        String queryString = "create table " + table + " (id int not null, name " +
-                "varchar(25),gender varchar(20),address varchar(50),phone varchar(20), primary key(id))";
+        String queryString = "create table " + table ;
+        for (int i = 0; i < attributes.length; i++)
+            queryString += attributes[i] + " " + types[i] + ",";
+        // As an example
+        // + " (id int not null, name " +
+        //    "varchar(25),gender varchar(20),address varchar(50),phone varchar(20), primary key(id))"
+        queryString = queryString.substring(0, queryString.length() - 1) + ")";
         return this.execQueryTable(queryString);
     }
     
@@ -72,7 +78,7 @@ public class Conexion {
         String queryString = "INSERT INTO " + table + " VALUES (";
         for (String value : values)
             queryString += value + ",";
-        queryString = queryString.substring(0, queryString.length() - 2) + ")";
+        queryString = queryString.substring(0, queryString.length() - 1) + ")";
         return this.execQueryTable(queryString);
     }
     
@@ -80,7 +86,7 @@ public class Conexion {
         String queryString = "DELETE FROM " + table + " WHERE ";
         for(String condition: conditions)
             queryString += condition + " AND ";
-        queryString = queryString.substring(0, queryString.length() - 2);
+        queryString = queryString.substring(0, queryString.length() - 5);
         return this.execQueryTable(queryString);
     }
     
@@ -88,14 +94,38 @@ public class Conexion {
         String queryString = "UPDATE " + table + " SET ";
         for (String value : values)
             queryString += value + ",";
-        queryString = queryString.substring(0, queryString.length() - 2) + " WHERE ";
+        queryString = queryString.substring(0, queryString.length() - 1) + " WHERE ";
         for(String condition: conditions)
             queryString += condition + " AND ";
-        queryString = queryString.substring(0, queryString.length() - 2);
+        queryString = queryString.substring(0, queryString.length() - 5);
         return this.execQueryTable(queryString);
     }
     
-    public void scrollTable(String table) {
+    /**
+     * 
+     * @param table Name of table
+     * @param start Index zero-based, where to start
+     * @param length Total of rows to get, it can be more than total of rows
+     * @return 
+     */
+    public String[][] scrollTable(String table, int start, int length) {
+        String[][] output = null;
+        String queryString = "SELECT * FROM " + table + " OFFSET " + start +
+                " ROWS FETCH NEXT " + length + " ROWS ONLY";
+        try {
+            ResultSet rs = this.query.executeQuery(queryString);
+            int i = 0, columns = rs.getMetaData().getColumnCount(), row = rs.getRow();
+            output = new String[row + 1][columns];
+            while (rs.next()) {
+                for (int j = 0; j < columns; j++) {
+                    output[i][j] = rs.getObject(j + 1).toString();
+                }
+                i++;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return output;
     }
     
     private boolean execQueryTable(String queryString)
@@ -129,9 +159,32 @@ public class Conexion {
         return output.toArray(new String[0]);
     }
     
+    public String printScroll(String table, int start, int length) {
+        String output = "";
+        for (String[] row : this.scrollTable(table, start, length)) {
+            String line = "";
+            for (String cell : row) {
+                line += cell + " | ";
+            }
+            output += line;
+        }
+        return output;
+    }
+    
     public static void main(String[] args) {
-        Conexion c = new Conexion("myFirstDatabase");
+        Conexion c = new Conexion("mySecondDatabase");
         // Test
+        for (String name: c.getTables())
+            System.out.println(name);
+        c.createTable("prueba", new String[1], new String[1]);
+        for (String name: c.getTables())
+            System.out.println(name);
+        c.insertTuple("prueba", new String[] {"1", "'VIctor'", "'M'", "'a'", "'b'"});
+        System.out.println(c.printScroll("prueba", 0, 10));
+        c.updateTuple("prueba", new String[] {"id = 2"}, new String[] {"id = 1"});
+        System.out.println(c.printScroll("prueba", 0, 10));
+        c.deleteTuple("prueba", new String[] {"id = 1"});
+        c.deleteTable("prueba");
         for (String name: c.getTables())
             System.out.println(name);
     }
