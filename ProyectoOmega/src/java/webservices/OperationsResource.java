@@ -13,6 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
+import org.json.simple.JSONObject;
 
 /**
  * REST Web Service
@@ -24,11 +25,13 @@ public class OperationsResource {
 
     @Context
     private UriInfo context;
+    private JSONObject json;
 
     /**
      * Creates a new instance of OperationsResource
      */
     public OperationsResource() {
+        this.json = new JSONObject();
     }
 
     /**
@@ -36,9 +39,10 @@ public class OperationsResource {
      * @return an instance of java.lang.String
      */
     @GET
-    @Produces("text/html")
+    @Produces("application/json")
     public String getJson() {
-        return "hola";
+        json.put("hello", "world!");
+        return json.toString();
     }
 
     /**
