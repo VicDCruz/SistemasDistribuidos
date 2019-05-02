@@ -5,6 +5,8 @@
  */
 package webservices;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.PathParam;
@@ -16,6 +18,8 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.Path;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /**
  * REST Web Service
@@ -24,6 +28,9 @@ import org.json.simple.JSONObject;
  */
 @Path("Operations")
 public class OperationsResource {
+    
+    private static final String TABLE = "table";
+    private static final String TUPLE = "tuple";
 
     @Context
     private UriInfo context;
@@ -65,8 +72,19 @@ public class OperationsResource {
      */
     @POST
     @Consumes("application/json")
-    public void postJson(String content) {
+    public String postJson(String content) {
         this.json = new JSONObject();
+        try {
+            JSONObject input = (JSONObject) (new JSONParser()).parse(content);
+            if (input.get("type").equals(OperationsResource.TABLE))
+                OperationsResource.createTable(content, content, content, content);
+            else if (input.get("type").equals(OperationsResource.TUPLE))
+                OperationsResource.createTuple(content, content, content);
+        } catch (ParseException ex) {
+            Logger.getLogger(OperationsResource.class.getName()).log(Level.SEVERE, null, ex);
+            this.json.put("Error", ex);
+        }
+        return this.json.toString();
     }
     
     /**
@@ -78,5 +96,41 @@ public class OperationsResource {
     @Consumes("application/json")
     public void deleteJson(String content) {
         this.json = new JSONObject();
+    }
+
+    private static boolean createTable(java.lang.String table, java.lang.String attributes, java.lang.String types, java.lang.String divider) {
+        webservicesclients.DataBaseService_Service service = new webservicesclients.DataBaseService_Service();
+        webservicesclients.DataBaseService port = service.getDataBaseServicePort();
+        return port.createTable(table, attributes, types, divider);
+    }
+
+    private static boolean createTuple(java.lang.String table, java.lang.String values, java.lang.String divider) {
+        webservicesclients.DataBaseService_Service service = new webservicesclients.DataBaseService_Service();
+        webservicesclients.DataBaseService port = service.getDataBaseServicePort();
+        return port.createTuple(table, values, divider);
+    }
+
+    private static boolean deleteTable(java.lang.String table) {
+        webservicesclients.DataBaseService_Service service = new webservicesclients.DataBaseService_Service();
+        webservicesclients.DataBaseService port = service.getDataBaseServicePort();
+        return port.deleteTable(table);
+    }
+
+    private static boolean deleteTuple(java.lang.String table, java.lang.String conditions, java.lang.String divider) {
+        webservicesclients.DataBaseService_Service service = new webservicesclients.DataBaseService_Service();
+        webservicesclients.DataBaseService port = service.getDataBaseServicePort();
+        return port.deleteTuple(table, conditions, divider);
+    }
+
+    private static boolean getDataBaseConnection(java.lang.String databaseName) {
+        webservicesclients.DataBaseService_Service service = new webservicesclients.DataBaseService_Service();
+        webservicesclients.DataBaseService port = service.getDataBaseServicePort();
+        return port.getDataBaseConnection(databaseName);
+    }
+
+    private static java.util.List<webservicesclients.StringArray> scrollTable(java.lang.String table, int start, int length) {
+        webservicesclients.DataBaseService_Service service = new webservicesclients.DataBaseService_Service();
+        webservicesclients.DataBaseService port = service.getDataBaseServicePort();
+        return port.scrollTable(table, start, length);
     }
 }
