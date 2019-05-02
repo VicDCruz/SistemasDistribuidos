@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI (http://jax-ws.java.net). RI's version is Metro/2.3.1-b419 (branches/2.3.1.x-7937; 2014-08-04T08:11:03+0000) JAXWS-RI/2.2.10-b140803.1500 JAXWS-API/2.2.11 JAXB-RI/2.2.10-b140802.1033 JAXB-API/2.2.12-b140109.1041 svn-revision#unknown. --><xs:schema xmlns:tns="http://webservices/" xmlns:ns1="http://jaxb.dev.java.net/array" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://webservices/">
+
+<xs:import namespace="http://jaxb.dev.java.net/array" schemaLocation="http://localhost:8080/DataBaseService/DataBaseService?xsd=2"/>
+
+<xs:element name="createTable" type="tns:createTable"/>
+
+<xs:element name="createTableResponse" type="tns:createTableResponse"/>
+
+<xs:element name="createTuple" type="tns:createTuple"/>
+
+<xs:element name="createTupleResponse" type="tns:createTupleResponse"/>
+
+<xs:element name="deleteTable" type="tns:deleteTable"/>
+
+<xs:element name="deleteTableResponse" type="tns:deleteTableResponse"/>
+
+<xs:element name="deleteTuple" type="tns:deleteTuple"/>
+
+<xs:element name="deleteTupleResponse" type="tns:deleteTupleResponse"/>
+
+<xs:element name="getDataBaseConnection" type="tns:getDataBaseConnection"/>
+
+<xs:element name="getDataBaseConnectionResponse" type="tns:getDataBaseConnectionResponse"/>
+
+<xs:element name="scrollTable" type="tns:scrollTable"/>
+
+<xs:element name="scrollTableResponse" type="tns:scrollTableResponse"/>
+
+<xs:complexType name="createTable">
+<xs:sequence>
+<xs:element name="table" type="xs:string" minOccurs="0"/>
+<xs:element name="attributes" type="xs:string" minOccurs="0"/>
+<xs:element name="types" type="xs:string" minOccurs="0"/>
+<xs:element name="divider" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="createTableResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="createTuple">
+<xs:sequence>
+<xs:element name="table" type="xs:string" minOccurs="0"/>
+<xs:element name="values" type="xs:string" minOccurs="0"/>
+<xs:element name="divider" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="createTupleResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="scrollTable">
+<xs:sequence>
+<xs:element name="table" type="xs:string" minOccurs="0"/>
+<xs:element name="start" type="xs:int"/>
+<xs:element name="length" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="scrollTableResponse">
+<xs:sequence>
+<xs:element name="return" type="ns1:stringArray" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="deleteTuple">
+<xs:sequence>
+<xs:element name="table" type="xs:string" minOccurs="0"/>
+<xs:element name="conditions" type="xs:string" minOccurs="0"/>
+<xs:element name="divider" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="deleteTupleResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="deleteTable">
+<xs:sequence>
+<xs:element name="table" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="deleteTableResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getDataBaseConnection">
+<xs:sequence>
+<xs:element name="databaseName" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getDataBaseConnectionResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

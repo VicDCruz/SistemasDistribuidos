@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://localhost:8080/DataBaseService/DataBaseService?WSDL" uri="src/conf/xml-resources/web-service-references/DataBaseService/wsdl/localhost_8080/DataBaseService/DataBaseService.wsdl"/>
+    <system systemId="http://localhost:8080/DataBaseService/DataBaseService?xsd=1" uri="src/conf/xml-resources/web-service-references/DataBaseService/wsdl/localhost_8080/DataBaseService/DataBaseService.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/DataBaseService/DataBaseService?xsd=2" uri="src/conf/xml-resources/web-service-references/DataBaseService/wsdl/localhost_8080/DataBaseService/DataBaseService.xsd_2.xsd"/>
+</catalog>

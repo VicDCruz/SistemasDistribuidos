@@ -21,13 +21,17 @@ import java.util.logging.Logger;
  */
 public class Conexion {
     private String database;
-    private Connection con;
+    private Connection con = null;
     private Statement query;
 
     public Conexion(String database) {
         this.database = database;
         if (!this.connectDatabase())
             this.createDatabase();
+    }
+    
+    public boolean hasConnection() {
+        return this.con != null;
     }
     
     private boolean connectDatabase() {
@@ -59,7 +63,7 @@ public class Conexion {
     
     public boolean createTable(String table, String[] attributes, String[] types) {
         // falta poner los atributos y tipos en el query
-        String queryString = "create table " + table ;
+        String queryString = "create table " + table + " (";
         for (int i = 0; i < attributes.length; i++)
             queryString += attributes[i] + " " + types[i] + ",";
         // As an example
@@ -74,7 +78,7 @@ public class Conexion {
         return this.execQueryTable(queryString);
     }
     
-    public boolean insertTuple(String table, String[] values) {
+    public boolean createTuple(String table, String[] values) {
         String queryString = "INSERT INTO " + table + " VALUES (";
         for (String value : values)
             queryString += value + ",";
@@ -176,13 +180,16 @@ public class Conexion {
         // Test
         for (String name: c.getTables())
             System.out.println(name);
-        c.createTable("prueba", new String[1], new String[1]);
+        c.createTable("prueba", new String[] {"id", "name", "gender", "address", "phone", "primary"}
+                , new String[] {"int not null", "varchar(25)", "varchar(20)", "varchar(50)", "varchar(20)", "key(id)"});
         for (String name: c.getTables())
             System.out.println(name);
-        c.insertTuple("prueba", new String[] {"1", "'VIctor'", "'M'", "'a'", "'b'"});
-        System.out.println(c.printScroll("prueba", 0, 10));
+        c.createTuple("prueba", new String[] {"1", "'VIctor'", "'M'", "'a'", "'b'"});
+        System.out.println(c.printScroll("prueba", 0, 10) + "\n");
+        c.updateTuple("prueba", new String[] {"name = 'Victor'"}, new String[] {"id = 1"});
+        System.out.println(c.printScroll("prueba", 0, 10) + "\n");
         c.updateTuple("prueba", new String[] {"id = 2"}, new String[] {"id = 1"});
-        System.out.println(c.printScroll("prueba", 0, 10));
+        System.out.println(c.printScroll("prueba", 0, 10) + "\n");
         c.deleteTuple("prueba", new String[] {"id = 1"});
         c.deleteTable("prueba");
         for (String name: c.getTables())
