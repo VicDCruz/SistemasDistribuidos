@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div>
+            <div id="MyDiv">Este texto cambia al dar clic en el boton</div><br>
+            <input type="button" name="call" value="Llamar servicio web RESTful"
+                   onclick="callRESTfulWebService(
+                                'MyDiv',
+                                'GET',
+                                'http://localhost:8080/RESTfulWebServices/webresources/MyPath',
+                                '')" />
+         </div>
+        <div>
+            <form action="http://localhost:8080/RESTfulWebServices/webresources/MyPath" method="GET">
+                <input type="text" name="name" value="Juan" />
+                <input type="text" name="age" value="44" />
+                <input type="submit" value="Send" />
+            </form>
+        </div>
+        <div>
+            <form action="http://localhost:8080/RESTfulWebServices/webresources/MyPath" method="POST">
+                <input type="text" name="name" value="Juan" />
+                <input type="text" name="age" value="44" />
+                <input type="submit" value="Send" />
+            </form>
+        </div>
+        <script>
+            function callRESTfulWebService(id, method, target, msg) {
+                var ajaxRequest;
+                if (window.XMLHttpRequest){
+                    ajaxRequest=new XMLHttpRequest(); // IE7+, Firefox, Chrome, Opera, Safari
+                } else {
+                    ajaxRequest=new ActiveXObject("Microsoft.XMLHTTP"); // IE6, IE5
+                }
+                ajaxRequest.onreadystatechange = function(){
+                    if (ajaxRequest.readyState==4 &&
+                        (ajaxRequest.status==200 || ajaxRequest.status==204)){
+                        document.getElementById(id).innerHTML=ajaxRequest.responseText;
+                    }
+                }
+                ajaxRequest.open(method, target, true /*async*/);
+                ajaxRequest.setRequestHeader("Content-Type", "text/html");
+                ajaxRequest. send(msg);
+            }
+        </script>
+    </body>
+</html>
