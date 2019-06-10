@@ -1,0 +1,222 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is Metro/2.3 (tags/2.3-7528; 2013-04-29T19:34:10+0000) JAXWS-RI/2.2.8 JAXWS/2.2 svn-revision#unknown. --><xs:schema xmlns:tns="http://webservices/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://webservices/">
+
+<xs:element name="checkPassword" type="tns:checkPassword"/>
+
+<xs:element name="checkPasswordResponse" type="tns:checkPasswordResponse"/>
+
+<xs:element name="checkUser" type="tns:checkUser"/>
+
+<xs:element name="checkUserResponse" type="tns:checkUserResponse"/>
+
+<xs:element name="createTable" type="tns:createTable"/>
+
+<xs:element name="createTableResponse" type="tns:createTableResponse"/>
+
+<xs:element name="createTuple" type="tns:createTuple"/>
+
+<xs:element name="createTupleResponse" type="tns:createTupleResponse"/>
+
+<xs:element name="deleteTable" type="tns:deleteTable"/>
+
+<xs:element name="deleteTableResponse" type="tns:deleteTableResponse"/>
+
+<xs:element name="deleteTuple" type="tns:deleteTuple"/>
+
+<xs:element name="deleteTupleResponse" type="tns:deleteTupleResponse"/>
+
+<xs:element name="getLength" type="tns:getLength"/>
+
+<xs:element name="getLengthResponse" type="tns:getLengthResponse"/>
+
+<xs:element name="getTableColumns" type="tns:getTableColumns"/>
+
+<xs:element name="getTableColumnsResponse" type="tns:getTableColumnsResponse"/>
+
+<xs:element name="getTableColumnsTypes" type="tns:getTableColumnsTypes"/>
+
+<xs:element name="getTableColumnsTypesResponse" type="tns:getTableColumnsTypesResponse"/>
+
+<xs:element name="getTablesName" type="tns:getTablesName"/>
+
+<xs:element name="getTablesNameResponse" type="tns:getTablesNameResponse"/>
+
+<xs:element name="scrollTable" type="tns:scrollTable"/>
+
+<xs:element name="scrollTableResponse" type="tns:scrollTableResponse"/>
+
+<xs:element name="updateTuple" type="tns:updateTuple"/>
+
+<xs:element name="updateTupleResponse" type="tns:updateTupleResponse"/>
+
+<xs:complexType name="checkUser">
+<xs:sequence>
+<xs:element name="database" type="xs:string" minOccurs="0"/>
+<xs:element name="table" type="xs:string" minOccurs="0"/>
+<xs:element name="conditions" type="xs:string" minOccurs="0"/>
+<xs:element name="divider" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="checkUserResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="createTable">
+<xs:sequence>
+<xs:element name="database" type="xs:string" minOccurs="0"/>
+<xs:element name="table" type="xs:string" minOccurs="0"/>
+<xs:element name="attributes" type="xs:string" minOccurs="0"/>
+<xs:element name="types" type="xs:string" minOccurs="0"/>
+<xs:element name="divider" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="createTableResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="checkPassword">
+<xs:sequence>
+<xs:element name="database" type="xs:string" minOccurs="0"/>
+<xs:element name="table" type="xs:string" minOccurs="0"/>
+<xs:element name="conditions" type="xs:string" minOccurs="0"/>
+<xs:element name="divider" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="checkPasswordResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getTableColumns">
+<xs:sequence>
+<xs:element name="database" type="xs:string" minOccurs="0"/>
+<xs:element name="table" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getTableColumnsResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getTableColumnsTypes">
+<xs:sequence>
+<xs:element name="database" type="xs:string" minOccurs="0"/>
+<xs:element name="table" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getTableColumnsTypesResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="createTuple">
+<xs:sequence>
+<xs:element name="database" type="xs:string" minOccurs="0"/>
+<xs:element name="table" type="xs:string" minOccurs="0"/>
+<xs:element name="values" type="xs:string" minOccurs="0"/>
+<xs:element name="divider" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="createTupleResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getLength">
+<xs:sequence>
+<xs:element name="database" type="xs:string" minOccurs="0"/>
+<xs:element name="table" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getLengthResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="scrollTable">
+<xs:sequence>
+<xs:element name="database" type="xs:string" minOccurs="0"/>
+<xs:element name="table" type="xs:string" minOccurs="0"/>
+<xs:element name="start" type="xs:int"/>
+<xs:element name="length" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="scrollTableResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="updateTuple">
+<xs:sequence>
+<xs:element name="database" type="xs:string" minOccurs="0"/>
+<xs:element name="table" type="xs:string" minOccurs="0"/>
+<xs:element name="values" type="xs:string" minOccurs="0"/>
+<xs:element name="conditions" type="xs:string" minOccurs="0"/>
+<xs:element name="divider" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="updateTupleResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getTablesName">
+<xs:sequence>
+<xs:element name="database" type="xs:string" minOccurs="0"/>
+<xs:element name="user" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getTablesNameResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="deleteTuple">
+<xs:sequence>
+<xs:element name="database" type="xs:string" minOccurs="0"/>
+<xs:element name="table" type="xs:string" minOccurs="0"/>
+<xs:element name="conditions" type="xs:string" minOccurs="0"/>
+<xs:element name="divider" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="deleteTupleResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="deleteTable">
+<xs:sequence>
+<xs:element name="database" type="xs:string" minOccurs="0"/>
+<xs:element name="table" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="deleteTableResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
