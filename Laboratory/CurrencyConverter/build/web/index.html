@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div>Convertidor de Moneda</div>
+        <div>
+            <input type="text" id="currency" value="5.3" /><br>
+            <select id="from">
+                <option value="USD">USD</option>
+                <option value="MXN">MXN</option>
+            </select>
+            <select id="to">
+                <option value="MXN">MXN</option>
+                <option value="USD">USD</option>
+            </select>
+            <input type="button" value="Convert" name="btn" 
+                   onclick="callRESTfulWebService(
+                                'output',
+                                'GET',
+                                'http://localhost:8080/CurrencyConverter/webresources/converterRestful',
+                                '')"
+                                 /><br>
+            <div>
+                <span>Resultado: </span>
+                <span id="output">0.0</span>
+            </div>
+        </div>
+        <script>
+            function callRESTfulWebService(id, method, target, msg) {
+                var currency = document.getElementById("currency").value;
+                var from = document.getElementById("from").value;
+                var to = document.getElementById("to").value;
+                var ajaxRequest;
+                if (window.XMLHttpRequest){
+                    ajaxRequest=new XMLHttpRequest(); // IE7+, Firefox, Chrome, Opera, Safari
+                } else {
+                    ajaxRequest=new ActiveXObject("Microsoft.XMLHTTP"); // IE6, IE5
+                }
+                ajaxRequest.onreadystatechange = function(){
+                    if (ajaxRequest.readyState==4 &&
+                        (ajaxRequest.status==200 || ajaxRequest.status==204)){
+                        document.getElementById(id).innerHTML=ajaxRequest.responseText;
+                    }
+                }
+                var url = target + 
+                        "?currency=" + currency + 
+                        "&from=" + from +
+                        "&to=" + to;
+                ajaxRequest.open(method, url, true /*async*/);
+                ajaxRequest.setRequestHeader("Content-Type", "text/html");
+                ajaxRequest.send(msg);
+            }
+        </script>
+    </body>
+</html>
