@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script>
+            function getNames() {
+                var ddl = document.getElementById("mySelect");
+                
+                var target = "DataExtractor";
+                var ajaxRequest;
+                if (window.XMLHttpRequest){
+                    ajaxRequest=new XMLHttpRequest(); // IE7+, Firefox, Chrome, Opera, Safari
+                    // alert(ajaxRequest.readyState + " " + ajaxRequest.status);
+                } else {
+                    ajaxRequest=new ActiveXObject("Microsoft.XMLHTTP"); // IE6, IE5
+                }
+                ajaxRequest.onreadystatechange = function() {
+                    if (ajaxRequest.readyState==4 && ajaxRequest.status==200){
+                        var JSONObject = JSON.parse(ajaxRequest.responseText);
+                        var txt = "";
+                        console.log(JSONObject.names.length);
+                        for(var i = 0; i < JSONObject.names.length; i++) {
+                            var option = document.createElement("option");
+                            option.text = JSONObject.names[i].name;
+                            option.value = JSONObject.names[i].id;
+                            ddl.add(option);
+                        }
+                        /*var txt = "field1: " + JSONObject.field1+
+                                " field2: "+ JSONObject.field2+
+                                " field3: "+ JSONObject.field3+
+                                "<br />";*/
+                    }
+                }
+                ajaxRequest.open("GET", target, true /*async*/);
+                ajaxRequest.send();
+            }
+        </script>
+    </head>
+    <body onload="getNames()">
+        <div>
+            <select name="names" id="mySelect" onchange="loadPersonContent(this.value, 'information')">
+                <option></option>
+            </select>
+        </div>
+        <p id="information"></p>
+        <script>
+            function loadPersonContent(value, id) {
+                var ajaxRequest;
+                if (window.XMLHttpRequest){
+                    ajaxRequest=new XMLHttpRequest(); // IE7+, Firefox, Chrome, Opera, Safari
+                    // alert(ajaxRequest.readyState + " " + ajaxRequest.status);
+                } else {
+                    ajaxRequest=new ActiveXObject("Microsoft.XMLHTTP"); // IE6, IE5
+                }
+                ajaxRequest.onreadystatechange = function() {
+                    if (ajaxRequest.readyState==4 && ajaxRequest.status==200){
+                        var JSONObject = JSON.parse(ajaxRequest.responseText);
+                        var txt = "";
+                        for(var i = 0; i < JSONObject.names.length; i++) {
+                            txt += "id: " + 
+                                    JSONObject.names[i].id + "<br>" +
+                                    "name: " + 
+                                    JSONObject.names[i].name + "<br>" +
+                                    "address: " + 
+                                    JSONObject.names[i].address + "<br>" +
+                                    "balance: " + 
+                                    JSONObject.names[i].balance + "<br>" +
+                                    "premium: " + 
+                                    JSONObject.names[i].premium + "<br>";
+                        }
+                        /*var txt = "field1: " + JSONObject.field1+
+                                " field2: "+ JSONObject.field2+
+                                " field3: "+ JSONObject.field3+
+                                "<br />";*/
+                        document.getElementById(id).innerHTML=txt;
+                    }
+                }
+                ajaxRequest.open("GET", "DataExtractor?id=" + value, true /*async*/);
+                ajaxRequest.send();
+            }
+        </script>
+    </body>
+</html>
